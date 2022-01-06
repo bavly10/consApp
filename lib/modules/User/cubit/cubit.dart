@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:helpy_app/model/post.dart';
 
 import 'package:helpy_app/model/user_model.dart';
 import 'package:helpy_app/modules/User/cubit/states.dart';
@@ -144,7 +145,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       print(value);
     });
   }
- void uploadImages(id){
+  void uploadImages(id){
     result!.files.forEach((element) async{
       String url = base_api + "/upload";
       var uri = Uri.parse(url);
@@ -255,4 +256,108 @@ class UserCubit extends Cubit<cons_login_Register_States> {
         emit(cons_not_connected_net_login());
       }
     }
+
+  //////////////////////////////////////////////ForgetPass////////////
+
+  Future<http.Response> updatePassword(String newPassword, int? id) {
+    return http.put(
+      Uri.parse("$base_api/Users/$id"),
+      headers: <String, String>{'Content-Type': 'application/json'},
+      body: jsonEncode(<String, String>{
+        'password': newPassword,
+      }),
+    );
   }
+
+  Future<http.Response> updateForgetPass(int id) {
+    return http.put(
+      Uri.parse("$base_api/Users/$id"),
+      headers: <String, String>{'Content-Type': 'application/json'},
+      body: jsonEncode(<String, bool>{'forgetPass': true}),
+    );
+  }
+
+  Future<void> getUser(email) async {
+    final url = Uri.parse("$base_api/Users?_where[email]=$email");
+    final http.Response res = await http.get(url);
+    if (res.statusCode == 200) {
+      late int myid;
+      print(res.body.toString());
+      List user = jsonDecode(res.body);
+      for (var x in user) {
+        myid = x['id'];
+      }
+      FirebaseAuth.instance.sendPasswordResetEmail(email: email).then((value) {
+        updateForgetPass(myid);
+        emit(LoginChangePassSucessState());
+      }).catchError((onError) {
+        emit(LoginChangePassSucessState());
+      });
+    } else {
+      print('no connect');
+    }
+  }
+
+  ////////////Add Post ////////////////
+  ///
+  PostModel? postModel;
+
+  Future<PostModel?> AddPost(String content, String time, dynamic id) async {
+    emit(ConsAddPostUserLoadingState());
+    final response = await http.post(
+      Uri.parse("$base_api/Posts?_where[users_id]=$id"),
+      headers: <String, String>{
+        'Content-Type': 'application/json ',
+      },
+      body: jsonEncode(<dynamic, dynamic>{
+        'content': content,
+        'time': time,
+        'users_id': 336,
+      }),
+    );
+    if (response.statusCode == 200) {
+      postModel = PostModel.fromJson(jsonDecode(response.body));
+      var jdson = jsonDecode(response.body);
+      var id_question = jdson['id'];
+      print(" id is $id_question");
+      if (imagee == null) {
+        print("arf");
+      } else {
+        uploadPostImage(imagee!.readAsBytesSync(), id_question);
+      }
+
+      emit(ConsAddPostUserSucessState());
+      return postModel;
+    } else if (response.statusCode == 500) {
+      var x = response.body.toString();
+    } else {
+      print(response.body.toString());
+      emit(ConsAddPostUserErrorState());
+      throw Exception('Failed to Add Post');
+    }
+  }
+
+  /////////uploadImagePost/////////////////
+  void uploadPostImage(Uint8List imageBytes, id) async {
+    Map<String, String> a = {
+      "files": imagee!.path,
+      "ref": "posts",
+      "refId": "$id",
+      "field": "img_post",
+    };
+    String url = base_api + "/upload";
+    var stream = http.ByteStream(DelegatingStream.typed(imagee!.openRead()));
+    var uri = Uri.parse(url);
+    int length = imageBytes.length;
+    var request = http.MultipartRequest("POST", uri);
+    var multipartFile = http.MultipartFile('files', stream, length,
+        filename: basename(pickedFile.path),
+        contentType: MediaType('image', 'jpg'));
+    request.files.add(multipartFile);
+    request.fields.addAll(a);
+    var response = await request.send();
+    response.stream.transform(utf8.decoder).listen((value) {
+      print(value);
+    });
+  }
+}

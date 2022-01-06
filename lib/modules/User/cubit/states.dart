@@ -49,6 +49,19 @@ class Cons_Change_Spec_Loading extends cons_login_Register_States{}
 class Cons_Change_Spec_Select extends cons_login_Register_States{}
 class Cons_Change_type_value extends cons_login_Register_States{}
 
+class LoginChangePassSucessState extends cons_login_Register_States {}
+
+class LoginChangePassErrorState extends cons_login_Register_States {}
+
+class ConsAddPostUserLoadingState extends cons_login_Register_States {}
+
+class ConsAddPostUserSucessState extends cons_login_Register_States {}
+
+class ConsAddPostUserErrorState extends cons_login_Register_States {}
+
+class ConImagePostSucessState extends cons_login_Register_States {}
+
+class ConImagePostErrorState extends cons_login_Register_States {}
 
 
 

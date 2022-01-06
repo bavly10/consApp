@@ -69,7 +69,7 @@ class ConsCubitIntro extends Cubit<cons_StatesIntro> {
                   Post_user(
                       content: e["content"],
                       publishedAt: e["published_at"],
-                      imgPost: Img_user.fromJson(e['img_post'])
+                      imgPost:e['img_post']==null?null:Img_user.fromJson(e['img_post'])
                   )
               ).toList(),
               filesIntros:(value['files_intros']as List<dynamic>).map((e) =>FilesIntro(

@@ -96,7 +96,6 @@ class CustomerCubit extends Cubit<Customer_States> {
 
 
   CustomerModel? model;
-
   void getCustomerData(id) async{
     emit(CustomerLoadinggState());
     await FirebaseFirestore.instance.collection("customers").doc(id).get().then((value){
@@ -121,6 +120,7 @@ class CustomerCubit extends Cubit<Customer_States> {
     emit(CustomerChangeState());
   }
 
+
   Future addUserINChat(String userid,String username,String customerid) async {
     emit(CustomerLoadingState());
     await FirebaseFirestore.instance.collection("AllChat").doc(customerid+userid).set({
@@ -142,6 +142,22 @@ class CustomerCubit extends Cubit<Customer_States> {
       emit(CustomerCreateChatState());
     });
   }
+  Future<http.Response> updatePassword(String newPassword, int? id) {
+    return http.put(
+      Uri.parse("$base_api/Customers/$id"),
+      headers: <String, String>{'Content-Type': 'application/json'},
+      body: jsonEncode(<String, String>{
+        'password': newPassword,
+      }),
+    );
+  }
 
+  Future<void> forgetPassword(email) async {
 
+    FirebaseAuth.instance.sendPasswordResetEmail(email: email).then((value) {
+      emit(LoginCustomerChangePassSucessState());
+    }).catchError((onError) {
+      emit(LoginCustomerChangePassSucessState());
+    });
+  }
 }

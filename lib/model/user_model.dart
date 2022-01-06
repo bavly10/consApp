@@ -1,22 +1,26 @@
-
 import 'dart:convert';
+
 class LoginModel {
   int? stauts;
-  String? error,token;
-   User? userClass;
+  String? error, token;
+  User? userClass;
   List<Datum>? message;
   List<Datum>? data;
 
   LoginModel.fromJson(Map<String, dynamic> json) {
-    stauts= json["statusCode"];
-    error= json["error"];
-    token= json["jwt"];
-    userClass=json["user"]!=null?User.fromJson(json["user"]):null;
-    message=json["message"]!=null? List<Datum>.from(json["message"].map((x) => Datum.fromJson(x))):null;
-    data=json["data"]!=null? List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))):null;
-
+    stauts = json["statusCode"];
+    error = json["error"];
+    token = json["jwt"];
+    userClass = json["user"] != null ? User.fromJson(json["user"]) : null;
+    message = json["message"] != null
+        ? List<Datum>.from(json["message"].map((x) => Datum.fromJson(x)))
+        : null;
+    data = json["data"] != null
+        ? List<Datum>.from(json["data"].map((x) => Datum.fromJson(x)))
+        : null;
   }
 }
+
 class Datum {
   Datum({
     this.messages,
@@ -25,7 +29,8 @@ class Datum {
   List<Messages>? messages;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
-    messages: List<Messages>.from(json["messages"].map((x) => Messages.fromJson(x))),
+    messages: List<Messages>.from(
+        json["messages"].map((x) => Messages.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -58,28 +63,28 @@ User userFromJson(String str) => User.fromJson(json.decode(str));
 String userToJson(User data) => json.encode(data.toJson());
 
 class User {
-  User({
-    required this.id,
-    required this.username,
-    this.email,
-    this.provider,
-    this.blocked,
-    this.role,
-    this.createdAt,
-    this.updatedAt,
-    this.categories,
-    this.specailst,
-    this.typeIntroducer,
-    this.phone,
-    this.confirmed,
-    this.city,
-    this.address,
-    this.introLogo,
-    this.introImg,
-    this.about,
-    this.posts,
-    this.filesIntros,
-  });
+  User(
+      {required this.id,
+        required this.username,
+        this.email,
+        this.provider,
+        this.blocked,
+        this.role,
+        this.createdAt,
+        this.updatedAt,
+        this.categories,
+        this.specailst,
+        this.typeIntroducer,
+        this.phone,
+        this.confirmed,
+        this.city,
+        this.address,
+        this.introLogo,
+        this.introImg,
+        this.about,
+        this.posts,
+        this.filesIntros,
+        this.forgetpass});
 
   late int? id;
   late String username;
@@ -97,6 +102,7 @@ class User {
   String? city;
   String? address;
   String? about;
+  bool? forgetpass;
   Img_user? introLogo;
   List<Img_user>? introImg;
   List<Post_user>? posts;
@@ -117,12 +123,18 @@ class User {
     typeIntroducer: json["type_introducer"],
     phone: json["phone"],
     confirmed: json["Confirmed"],
+    forgetpass: json['forgetPass'],
     city: json["city"],
     address: json["address"],
-    introLogo: json["intro_logo"]!=null?Img_user.fromJson(json["intro_logo"]):null,
-    introImg: List<Img_user>.from(json["intro_img"].map((x) => Img_user.fromJson(x))),
-    posts:List<Post_user>.from(json["posts"].map((x) => Post_user.fromJson(x))),
-    filesIntros: List<FilesIntro>.from(json["files_intros"].map((x) => FilesIntro.fromJson(x))),
+    introLogo: json["intro_logo"] != null
+        ? Img_user.fromJson(json["intro_logo"])
+        : null,
+    introImg: List<Img_user>.from(
+        json["intro_img"].map((x) => Img_user.fromJson(x))),
+    posts: List<Post_user>.from(
+        json["posts"].map((x) => Post_user.fromJson(x))),
+    filesIntros: List<FilesIntro>.from(
+        json["files_intros"].map((x) => FilesIntro.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -140,6 +152,7 @@ class User {
     "phone": phone,
     "Confirmed": confirmed,
     "city": city,
+    "forgetPass": forgetpass,
     "about": about,
     "address": address,
     "intro_logo": introLogo,
@@ -166,14 +179,15 @@ class Categories_user {
   DateTime? updatedAt;
   Img_user? catImg;
 
-  factory Categories_user.fromJson(Map<String, dynamic> json) => Categories_user(
-    id: json["id"],
-    title: json["Title"],
-    publishedAt: DateTime.parse(json["published_at"]),
-    createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
-    catImg: Img_user.fromJson(json["cat_img"]),
-  );
+  factory Categories_user.fromJson(Map<String, dynamic> json) =>
+      Categories_user(
+        id: json["id"],
+        title: json["Title"],
+        publishedAt: DateTime.parse(json["published_at"]),
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
+        catImg: Img_user.fromJson(json["cat_img"]),
+      );
 
   Map<String, dynamic> toJson() => {
     "id": id,
@@ -231,18 +245,23 @@ class Img_user {
     caption: json["caption"],
     width: json["width"],
     height: json["height"],
-    formats: json["formats"]!=null?Formats.fromJson(json["formats"]):null,
+    formats:
+    json["formats"] != null ? Formats.fromJson(json["formats"]) : null,
     hash: json["hash"],
     ext: extValues.map![json["ext"]],
     mime: mimeValues.map![json["mime"]],
     // ignore: prefer_null_aware_operators
-    size:json["size"]!=null? json["size"].toDouble():null,
+    size: json["size"] != null ? json["size"].toDouble() : null,
     url: json["url"],
     previewUrl: json["previewUrl"],
     provider: json["provider"],
     providerMetadata: json["provider_metadata"],
-    createdAt:json["created_at"]!=null? DateTime.parse(json["created_at"]):null,
-    updatedAt:json["updatedAt"]!=null? DateTime.parse(json["updatedAt"]):null,
+    createdAt: json["created_at"] != null
+        ? DateTime.parse(json["created_at"])
+        : null,
+    updatedAt: json["updatedAt"] != null
+        ? DateTime.parse(json["updatedAt"])
+        : null,
   );
 
   Map<String, dynamic> toJson() => {
@@ -268,9 +287,7 @@ class Img_user {
 
 enum Ext { JPG }
 
-final extValues = EnumValues({
-  ".jpg": Ext.JPG
-});
+final extValues = EnumValues({".jpg": Ext.JPG});
 
 class Formats {
   Formats({
@@ -350,9 +367,7 @@ class Medium {
 
 enum Mime { IMAGE_JPEG }
 
-final mimeValues = EnumValues({
-  "image/jpeg": Mime.IMAGE_JPEG
-});
+final mimeValues = EnumValues({"image/jpeg": Mime.IMAGE_JPEG});
 
 class Post_user {
   Post_user({
@@ -379,11 +394,11 @@ class Post_user {
     id: json["id"],
     content: json["content"],
     time: json["time"],
-    publishedAt:json["published_at"],
+    publishedAt: json["published_at"],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
     usersId: json["users_id"],
-    imgPost: Img_user.fromJson(json["img_post"]),
+    imgPost: json["img_post"]==null?null:Img_user.fromJson(json["img_post"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -480,7 +495,7 @@ class FilesIntro {
   int? id;
   String? fileName;
   int? usersPermissionsUser;
-  dynamic? publishedAt;
+  dynamic publishedAt;
   DateTime? createdAt;
   DateTime? updatedAt;
   File_intro? fileIntro;
@@ -505,6 +520,7 @@ class FilesIntro {
     "file_intro": fileIntro!.toJson(),
   };
 }
+
 class File_intro {
   File_intro({
     this.id,
@@ -546,33 +562,40 @@ class File_intro {
 
   factory File_intro.fromJson(Map<String, dynamic> json) => File_intro(
     id: json["id"],
-    name:json["name"],
-    alternativeText:json["alternativeText"],
-    caption:json["caption"],
+    name: json["name"],
+    alternativeText: json["alternativeText"],
+    caption: json["caption"],
     width: json["width"],
     height: json["height"],
-    formats: json["formats"] == null ? null : Formats.fromJson(json["formats"]),
+    formats:
+    json["formats"] == null ? null : Formats.fromJson(json["formats"]),
     hash: json["hash"],
     ext: extValues.map![json["ext"]],
     mime: mimeValues.map![json["mime"]],
     size: json["size"].toDouble(),
     url: json["url"],
     previewUrl: json["previewUrl"],
-    provider: json["provider"] == null ? null : providerValues.map![json["provider"]],
+    provider: json["provider"] == null
+        ? null
+        : providerValues.map![json["provider"]],
     providerMetadata: json["provider_metadata"],
-    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+    createdAt: json["created_at"] == null
+        ? null
+        : DateTime.parse(json["created_at"]),
+    updatedAt: json["updated_at"] == null
+        ? null
+        : DateTime.parse(json["updated_at"]),
   );
 
   Map<String, dynamic> toJson() => {
-    "id":id,
-    "name":name,
+    "id": id,
+    "name": name,
     "alternativeText": alternativeText,
     "caption": caption,
-    "width":width,
-    "height":height,
+    "width": width,
+    "height": height,
     "formats": formats!.toJson(),
-    "hash":hash,
+    "hash": hash,
     "ext": extValues.reverse[ext],
     "mime": mimeValues.reverse[mime],
     "size": size,
@@ -584,11 +607,11 @@ class File_intro {
     "updated_at": updatedAt == null ? null : updatedAt!.toIso8601String(),
   };
 }
+
 enum Provider { LOCAL }
 
-final providerValues = EnumValues({
-  "local": Provider.LOCAL
-});
+final providerValues = EnumValues({"local": Provider.LOCAL});
+
 class EnumValues<T> {
   Map<String, T>? map;
   Map<T, String>? reverseMap;
@@ -596,7 +619,7 @@ class EnumValues<T> {
   EnumValues(this.map);
 
   Map<T, String> get reverse {
-    reverseMap ??= map!.map((k, v) =>  MapEntry(v, k));
+    reverseMap ??= map!.map((k, v) => MapEntry(v, k));
     return reverseMap!;
   }
 }

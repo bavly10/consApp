@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:helpy_app/Cubit/my_observer.dart';
 import 'package:helpy_app/Cubit/cubit.dart';
+import 'package:helpy_app/modules/User/post/add_post.dart';
 import 'package:helpy_app/modules/customer/Chat/chats_screen.dart';
 import 'package:helpy_app/modules/User/cubit/cubit.dart';
 import 'package:helpy_app/modules/Splash_screen/animation_Splash/main.dart';
@@ -25,7 +26,6 @@ void main()async {
   Bloc.observer = MyBlocObserver();
     await Firebase.initializeApp();
   await CashHelper.init();
-  print(" id aho $customerID");
   runApp(MyApp());
 }
 

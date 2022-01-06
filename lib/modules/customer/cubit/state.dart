@@ -28,6 +28,19 @@ class CustomerErrorState extends Customer_States{
 class CustomerLoadingState extends Customer_States{}
 class CustomerCreateChatState extends Customer_States{}
 
+class ConGetCoustomersLoadingState extends Customer_States {
+}
+
+class ConGetCoustomersSucessState extends Customer_States {}
+
+class ConGetCoustomersErrorState extends Customer_States {}
+
+
+class LoginCustomerChangePassSucessState
+    extends Customer_States {}
+
+class LoginCustomerChangePassErrorState
+    extends Customer_States {}
 
 
 

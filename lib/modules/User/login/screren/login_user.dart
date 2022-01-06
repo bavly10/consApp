@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fadein/flutter_fadein.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+
 import 'package:helpy_app/modules/User/cubit/cubit.dart';
 import 'package:helpy_app/modules/User/cubit/states.dart';
-import 'package:helpy_app/modules/MainScreen/main_screen.dart';
+
+import 'package:helpy_app/modules/User/login/main_login.dart';
+import 'package:helpy_app/modules/User/post/add_post.dart';
 import 'package:helpy_app/modules/otp/otp_register.dart';
+import 'package:helpy_app/shared/compononet/custom_dialog.dart';
 import 'package:helpy_app/shared/componotents.dart';
 import 'package:helpy_app/shared/localization/translate.dart';
 import 'package:helpy_app/shared/my_colors.dart';
@@ -16,68 +20,93 @@ class LoginIntro extends StatefulWidget {
 }
 
 class _LoginIntroState extends State<LoginIntro> {
-  var emailsController=TextEditingController();
-  var passsController=TextEditingController();
-   GlobalKey<FormState> formState = GlobalKey();
-  bool myState=false;
+  var emailsController = TextEditingController();
+  var passsController = TextEditingController();
+  GlobalKey<FormState> formState = GlobalKey();
+  GlobalKey<FormState> formState2 = GlobalKey();
+  bool myState = false;
+  var newPasswordController = TextEditingController();
+  var emailController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    emailsController=TextEditingController();
-    passsController=TextEditingController();
+    emailsController = TextEditingController();
+    passsController = TextEditingController();
   }
+
   @override
   void dispose() {
     super.dispose();
     emailsController.dispose();
     passsController.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
-    return BlocListener<UserCubit,cons_login_Register_States>(
-      listener:(ctx,state){
-        if(state is cons_Loading_login) {
-          myState=true;
-        }
-        else if (state is cons_Login_Scusess) {
-          if (state.loginModel.userClass!.confirmed == true)
-          {
-            navigateToFinish(context, Mainscreen());
-          }
-          else {
+    return BlocListener<UserCubit, cons_login_Register_States>(
+      listener: (ctx, state) {
+        if (state is cons_Loading_login) {
+          myState = true;
+        } else if (state is cons_Login_Scusess) {
+          if (state.loginModel.userClass!.forgetpass == true) {
+            myToast(message: "change pass");
+            showDialog(
+                context: context,
+                builder: (ctx) => CustomTextFieldDialog(
+                    controller: newPasswordController,
+                    title: "EnterPass",
+                    buttonText: "Send",
+                    hintText: "Password",
+                    onPressed: () {
+                      FocusScope.of(context).unfocus();
+                      UserCubit.get(context).updatePassword(
+                          newPasswordController.text,
+                          state.loginModel.userClass!.id);
+                    }));
+            myToast(
+              message: mytranslate(context, "sucesspass"),
+            );
+
+            ///dialog yd5l password then y3ml update le pasword bta3 strapi
+          } else if (state.loginModel.userClass!.confirmed == true) {
+           myToast(message: "Done login");
+           navigateTo(context,CreatePost());
+          } else {
             My_CustomAlertDialog(
               icon: Icons.warning_rounded,
-              bigTitle:mytranslate(context, "dialogRegistertitle"),
+              bigTitle: mytranslate(context, "dialogRegistertitle"),
               content: mytranslate(context, "gialogLogin"),
               context: context,
               pressColor: myAmber,
-              pressTitle:mytranslate(context, "done"),
+              pressTitle: mytranslate(context, "done"),
               pressText: () {
                 Navigator.of(context).pop();
               },
             );
           }
-          myState=false;
-        }
-        else if (state is cons_Login_Error) {
-          state.loginModel.message!.map((e) => e.messages!.map((e) =>
-              My_CustomAlertDialog(
-                icon: Icons.warning_rounded,
-                bigTitle:mytranslate(context, "dialogRegistertitle"),
-                content:e.message.toString(),
-                context: context,
-                pressColor: myAmber,
-                pressTitle:mytranslate(context, "done"),
-                pressText: () {
-                  Navigator.of(context).pop();
-                },
-              ))).toString();
-          myState=false;
+          myState = false;
+        } else if (state is cons_Login_Error) {
+          state.loginModel.message!
+              .map((e) => e.messages!.map((e) => My_CustomAlertDialog(
+            icon: Icons.warning_rounded,
+            bigTitle: mytranslate(context, "dialogRegistertitle"),
+            content: e.message.toString(),
+            context: context,
+            pressColor: myAmber,
+            pressTitle: mytranslate(context, "done"),
+            pressText: () {
+              Navigator.of(context).pop();
+            },
+          )))
+              .toString();
+          myState = false;
+        } else if (state is LoginChangePassSucessState) {
+          myToast(message: (mytranslate(context, "Emailissent")));
         }
       },
-      child:FadeIn(
-        duration:const Duration(seconds: 1),
+      child: FadeIn(
+        duration: const Duration(seconds: 1),
         curve: Curves.easeInCirc,
         child: Form(
           key: formState,
@@ -85,30 +114,52 @@ class _LoginIntroState extends State<LoginIntro> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.00),
-                child: My_TextFormFiled(controller: emailsController,myhintText: mytranslate(context, "email"),
-                  validator:(String? s){if(s!.isEmpty) return  "Email is required";},
+                child: My_TextFormFiled(
+                  controller: emailsController,
+                  myhintText: mytranslate(context, "email"),
+                  validator: (String? s) {
+                    if (s!.isEmpty) return "Email is required";
+                  },
                 ),
-
               ),
-              const SizedBox(height: 15,),
+              const SizedBox(
+                height: 15,
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.00),
-                 child: My_TextFormFiled(controller: passsController,myhintText: mytranslate(context, "Password"),
-                validator:(String? s){if(s!.isEmpty) return  "Password is required";},
+                child: My_TextFormFiled(
+                  controller: passsController,
+                  myhintText: mytranslate(context, "Password"),
+                  validator: (String? s) {
+                    if (s!.isEmpty) return "Password is required";
+                  },
+                ),
               ),
+              const SizedBox(
+                height: 15,
               ),
-             const SizedBox(height: 15,),
               Center(
-                  child: Mybutton(color: myAmber,context: context, onPress: ()async {
-                    if(formState.currentState != null &&formState.currentState!.validate())
-                    {
-                      FocusScope.of(context).unfocus();
-                      await UserCubit.get(context).login(emailsController.text, passsController.text);
-                    }
-                  }, title: myState
-                      ? const Center(child:SpinKitCircle(color: Colors.white,))
-                      : Text(mytranslate(context, "login"), style: const TextStyle(color: Colors.white, fontSize: 18),))
-              ),
+                  child: Mybutton(
+                      color: myAmber,
+                      context: context,
+                      onPress: () async {
+                        if (formState.currentState != null &&
+                            formState.currentState!.validate()) {
+                          FocusScope.of(context).unfocus();
+                          await UserCubit.get(context).login(
+                              emailsController.text, passsController.text);
+                        }
+                      },
+                      title: myState
+                          ? const Center(
+                          child: SpinKitCircle(
+                            color: Colors.white,
+                          ))
+                          : Text(
+                        mytranslate(context, "login"),
+                        style: const TextStyle(
+                            color: Colors.white, fontSize: 18),
+                      ))),
               const SizedBox(
                 height: 20,
               ),
@@ -120,24 +171,52 @@ class _LoginIntroState extends State<LoginIntro> {
                     children: [
                       Text("${mytranslate(context, "donthave")} - ",
                           textAlign: TextAlign.center,
-                          style:const TextStyle(
+                          style: const TextStyle(
                             color: Colors.black,
                           )),
                       InkWell(
-                        onTap: (){
+                        onTap: () {
                           FocusScope.of(context).unfocus();
                           navigateTo(context, OtpRegister(false));
                         },
-                        child:Text(mytranslate(context, "Signup"), style:const TextStyle(fontSize: 14, color: Colors.black,fontWeight: FontWeight.bold),),
+                        child: Text(
+                          mytranslate(context, "Signup"),
+                          style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ],
                   ),
-                  TextButton(onPressed: (){},child: Text(mytranslate(context, "forgetpass"),style: TextStyle(color: myAmber),),)
+                  TextButton(
+                    onPressed: () {
+                      FocusScope.of(context).unfocus();
+                      showDialog(
+                          context: context,
+                          builder: (ctx) => CustomTextFieldDialog(
+                              controller: emailController,
+                              title: "EnterEmail",
+                              buttonText: "Send",
+                              hintText: "email",
+                              onPressed: () {
+                                FocusScope.of(context).unfocus();
+                                UserCubit.get(context)
+                                    .getUser(emailController.text);
+                                navigateTo(context, Main_login());
+                              }));
+                    },
+                    child: Text(
+                      mytranslate(context, "forgetpass"),
+                      style: TextStyle(color: myAmber),
+                    ),
+                  )
                 ],
               ),
             ],
           ),
         ),
-      ),);
+      ),
+    );
   }
 }

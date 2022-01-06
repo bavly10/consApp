@@ -26,12 +26,6 @@ class _ChatsScreenState extends State<ChatsScreen> {
                 leading:const SizedBox(),
                 backgroundColor:Colors.white,
                 title: const Text("Chats"),
-                actions: [
-                  IconButton(
-                    icon:const Icon(Icons.search),
-                    onPressed: () {},
-                  ),
-                ],
                 pinned: true,
                 snap: true,
                 floating: true,
