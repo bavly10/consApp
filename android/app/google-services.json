@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "835089793894",
+    "project_id": "helpy-9c564",
+    "storage_bucket": "helpy-9c564.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:835089793894:android:a06815d85a18063bbc3ea7",
+        "android_client_info": {
+          "package_name": "com.example.helpy_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "835089793894-3bjvn1aggls25duv4hjftm36qo2g30nf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.helpy_app",
+            "certificate_hash": "25cc9b8b545bde7910dad04aefa2ad6b340e40b1"
+          }
+        },
+        {
+          "client_id": "835089793894-2vc3pbfso0a584d16r0dhkjlbvmpfr1k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKbxexl8OzpCBcBj-_Gp5iyM_8mVcumYo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "835089793894-2vc3pbfso0a584d16r0dhkjlbvmpfr1k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
