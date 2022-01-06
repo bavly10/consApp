@@ -5,7 +5,7 @@ import 'package:helpy_app/Cubit/states.dart';
 import 'package:helpy_app/model/user_model.dart';
 
 class AboutIntro extends StatelessWidget {
-  final User cubit;
+  final UserStrapi cubit;
   // ignore: use_key_in_widget_constructors
   const AboutIntro(this.cubit);
   @override

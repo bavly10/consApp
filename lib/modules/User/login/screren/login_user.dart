@@ -48,7 +48,8 @@ class _LoginIntroState extends State<LoginIntro> {
       listener: (ctx, state) {
         if (state is cons_Loading_login) {
           myState = true;
-        } else if (state is cons_Login_Scusess) {
+        }
+        else if (state is cons_Login_Scusess) {
           if (state.loginModel.userClass!.forgetpass == true) {
             myToast(message: "change pass");
             showDialog(
@@ -60,16 +61,15 @@ class _LoginIntroState extends State<LoginIntro> {
                     hintText: "Password",
                     onPressed: () {
                       FocusScope.of(context).unfocus();
-                      UserCubit.get(context).updatePassword(
+                      UserCubit.get(context).updatePassStrapi(
                           newPasswordController.text,
                           state.loginModel.userClass!.id);
                     }));
-            myToast(
-              message: mytranslate(context, "sucesspass"),
-            );
+            myToast(message: mytranslate(context, "sucesspass"),);
 
             ///dialog yd5l password then y3ml update le pasword bta3 strapi
-          } else if (state.loginModel.userClass!.confirmed == true) {
+          }
+          else if (state.loginModel.userClass!.confirmed == true) {
            myToast(message: "Done login");
            navigateTo(context,CreatePost());
           } else {
@@ -86,7 +86,8 @@ class _LoginIntroState extends State<LoginIntro> {
             );
           }
           myState = false;
-        } else if (state is cons_Login_Error) {
+        }
+        else if (state is cons_Login_Error) {
           state.loginModel.message!
               .map((e) => e.messages!.map((e) => My_CustomAlertDialog(
             icon: Icons.warning_rounded,
@@ -101,7 +102,8 @@ class _LoginIntroState extends State<LoginIntro> {
           )))
               .toString();
           myState = false;
-        } else if (state is LoginChangePassSucessState) {
+        }
+        else if (state is LoginChangePassSucessState) {
           myToast(message: (mytranslate(context, "Emailissent")));
         }
       },
@@ -200,9 +202,8 @@ class _LoginIntroState extends State<LoginIntro> {
                               buttonText: "Send",
                               hintText: "email",
                               onPressed: () {
-                                FocusScope.of(context).unfocus();
-                                UserCubit.get(context)
-                                    .getUser(emailController.text);
+                                Navigator.pop(context);
+                                UserCubit.get(context).getUser("users",emailController.text);
                                 navigateTo(context, Main_login());
                               }));
                     },

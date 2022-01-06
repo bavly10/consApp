@@ -152,12 +152,4 @@ class CustomerCubit extends Cubit<Customer_States> {
     );
   }
 
-  Future<void> forgetPassword(email) async {
-
-    FirebaseAuth.instance.sendPasswordResetEmail(email: email).then((value) {
-      emit(LoginCustomerChangePassSucessState());
-    }).catchError((onError) {
-      emit(LoginCustomerChangePassSucessState());
-    });
-  }
 }

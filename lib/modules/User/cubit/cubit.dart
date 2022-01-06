@@ -8,6 +8,7 @@ import 'package:helpy_app/model/post.dart';
 
 import 'package:helpy_app/model/user_model.dart';
 import 'package:helpy_app/modules/User/cubit/states.dart';
+import 'package:helpy_app/shared/componotents.dart';
 import 'package:helpy_app/shared/network.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
@@ -259,9 +260,8 @@ class UserCubit extends Cubit<cons_login_Register_States> {
 
   //////////////////////////////////////////////ForgetPass////////////
 
-  Future<http.Response> updatePassword(String newPassword, int? id) {
-    return http.put(
-      Uri.parse("$base_api/Users/$id"),
+  Future<http.Response> updatePassStrapi(String newPassword, int? id) {
+    return http.put(Uri.parse("$base_api/Users/$id"),
       headers: <String, String>{'Content-Type': 'application/json'},
       body: jsonEncode(<String, String>{
         'password': newPassword,
@@ -269,30 +269,38 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     );
   }
 
-  Future<http.Response> updateForgetPass(int id) {
-    return http.put(
-      Uri.parse("$base_api/Users/$id"),
+  Future<http.Response> updateForget(String table,int id) {
+    return http.put(Uri.parse("$base_api/$table/$id"),
       headers: <String, String>{'Content-Type': 'application/json'},
-      body: jsonEncode(<String, bool>{'forgetPass': true}),
+      body: jsonEncode(<String, bool>{'forgetpass': true}),
     );
   }
 
-  Future<void> getUser(email) async {
-    final url = Uri.parse("$base_api/Users?_where[email]=$email");
+late String error="Email IsNot Exist";
+
+  Future<void> getUser(table,email) async {
+    final url = Uri.parse("$base_api/$table?_where[email]=$email");
     final http.Response res = await http.get(url);
     if (res.statusCode == 200) {
       late int myid;
+       String? myemail;
       print(res.body.toString());
-      List user = jsonDecode(res.body);
+      var user = jsonDecode(res.body);
       for (var x in user) {
-        myid = x['id'];
+        myid=x['id'];
+        myemail=x['email'];
       }
-      FirebaseAuth.instance.sendPasswordResetEmail(email: email).then((value) {
-        updateForgetPass(myid);
-        emit(LoginChangePassSucessState());
-      }).catchError((onError) {
-        emit(LoginChangePassSucessState());
-      });
+      if(myemail==email){
+        FirebaseAuth.instance.sendPasswordResetEmail(email: email).then((value) {
+          updateForget(table,myid);
+          emit(LoginChangePassSucessState());
+        }).catchError((onError) {
+          emit(LoginChangePassSucessState());
+        });
+      }else{
+        return myToast(message: error);
+      }
+
     } else {
       print('no connect');
     }

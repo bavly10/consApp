@@ -198,4 +198,7 @@ class cons_Cubit extends Cubit<cons_States> {
     var connection = PersistentConnection(smtpServer);
     await connection.close();
   }
+
+
+
 }

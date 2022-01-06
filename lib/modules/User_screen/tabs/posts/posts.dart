@@ -11,7 +11,7 @@ import 'package:intl/intl.dart' as intl;
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class PostsIntro extends StatelessWidget {
-  final User cubit;
+  final UserStrapi cubit;
   PostsIntro(this.cubit);
   String imgurl = base_api;
   @override

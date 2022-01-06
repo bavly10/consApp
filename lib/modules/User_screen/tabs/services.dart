@@ -14,7 +14,7 @@ import 'dart:io' as io;
 import 'package:slide_popup_dialog_null_safety/slide_popup_dialog.dart' as slideDialog;
 
 class ServicesIntro extends StatefulWidget {
-  final User cubit;
+  final UserStrapi cubit;
    ServicesIntro(this.cubit);
 
   @override

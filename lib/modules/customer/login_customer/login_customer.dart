@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fadein/flutter_fadein.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:helpy_app/modules/User/cubit/cubit.dart';
 import 'package:helpy_app/modules/User/login/main_login.dart';
 
 import 'package:helpy_app/modules/customer/cubit/state.dart';
@@ -142,8 +143,8 @@ class _LoginUserState extends State<LoginUser> {
                             buttonText: "Send",
                             hintText: "email",
                             onPressed: () {
-                              FocusScope.of(context).unfocus();
-                              CustomerCubit.get(context).forgetPassword(emailCheckController.text);
+                              Navigator.pop(context);
+                              UserCubit.get(context).getUser("Customers",emailCheckController.text);
                               myToast(message: "Emailissent");
                             }));
                   },

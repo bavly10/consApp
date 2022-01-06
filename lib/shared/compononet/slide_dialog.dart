@@ -9,7 +9,7 @@ import 'package:helpy_app/shared/my_colors.dart';
 
 
 class MySlideDialog extends StatelessWidget {
-  final User cubit;
+  final UserStrapi cubit;
   MySlideDialog(this.cubit);
   @override
   Widget build(BuildContext context) {

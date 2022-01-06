@@ -18,7 +18,7 @@ class ConsCubitIntro extends Cubit<cons_StatesIntro> {
   }
 
 
-  List<User> specIntro=[];
+  List<UserStrapi> specIntro=[];
   Future<void> getSpecIntro(id)async{
     emit(Cons_Loading_Special_intro());
     final url = Uri.parse("$base_api/users?_start=$limit&_limit=2&_where[specailst]=$id&_where[Confirmed]=true");
@@ -33,7 +33,7 @@ class ConsCubitIntro extends Cubit<cons_StatesIntro> {
         for(var value in list){
           final pro=specIntro.indexWhere((element) => element.id==value['id']);
           if (pro >= 0) {
-            specIntro[pro] = User(
+            specIntro[pro] = UserStrapi(
               id: value["id"],
               address: value["address"],
               city: value["city"],
@@ -55,7 +55,7 @@ class ConsCubitIntro extends Cubit<cons_StatesIntro> {
             );
           }
           else {
-            specIntro.add(User(
+            specIntro.add(UserStrapi(
               id: value["id"],
               address: value["address"],
               city: value["city"],
@@ -92,7 +92,7 @@ class ConsCubitIntro extends Cubit<cons_StatesIntro> {
   }
 
 
-  User findbyid(int id) {
+  UserStrapi findbyid(int id) {
     return specIntro.firstWhere((element) => element.id == id);
   }
 

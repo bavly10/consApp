@@ -3,7 +3,7 @@ import 'dart:convert';
 class LoginModel {
   int? stauts;
   String? error, token;
-  User? userClass;
+  UserStrapi? userClass;
   List<Datum>? message;
   List<Datum>? data;
 
@@ -11,7 +11,7 @@ class LoginModel {
     stauts = json["statusCode"];
     error = json["error"];
     token = json["jwt"];
-    userClass = json["user"] != null ? User.fromJson(json["user"]) : null;
+    userClass = json["user"] != null ? UserStrapi.fromJson(json["user"]) : null;
     message = json["message"] != null
         ? List<Datum>.from(json["message"].map((x) => Datum.fromJson(x)))
         : null;
@@ -58,12 +58,12 @@ class Messages {
   };
 }
 
-User userFromJson(String str) => User.fromJson(json.decode(str));
+UserStrapi userFromJson(String str) => UserStrapi.fromJson(json.decode(str));
 
-String userToJson(User data) => json.encode(data.toJson());
+String userToJson(UserStrapi data) => json.encode(data.toJson());
 
-class User {
-  User(
+class UserStrapi {
+  UserStrapi(
       {required this.id,
         required this.username,
         this.email,
@@ -108,7 +108,7 @@ class User {
   List<Post_user>? posts;
   List<FilesIntro>? filesIntros;
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
+  factory UserStrapi.fromJson(Map<String, dynamic> json) => UserStrapi(
     id: json["id"],
     username: json["username"],
     email: json["email"],
