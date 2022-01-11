@@ -8,8 +8,12 @@ import 'package:helpy_app/model/post.dart';
 
 import 'package:helpy_app/model/user_model.dart';
 import 'package:helpy_app/modules/User/cubit/states.dart';
+import 'package:helpy_app/modules/User/home_screen/user_main.dart';
+import 'package:helpy_app/modules/User/profile/profile_main.dart';
+import 'package:helpy_app/modules/customer/Chat/chats_screen.dart';
 import 'package:helpy_app/shared/componotents.dart';
 import 'package:helpy_app/shared/network.dart';
+import 'package:helpy_app/shared/shared_prefernces.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -23,6 +27,18 @@ import 'package:file_picker/file_picker.dart';
 class UserCubit extends Cubit<cons_login_Register_States> {
   UserCubit() : super(consSignInUp_InitalState());
   static UserCubit get(context) => BlocProvider.of(context);
+
+  int currentindex = 0;
+  List screen = [
+    const UserHome(),
+    ChatsScreen(),
+    const UserProfileScreen(),
+  ];
+
+  void changeIndex(int index) {
+    currentindex = index;
+    emit(UserChangeState());
+  }
 
   bool visable = true;
   void changeDesign(){
@@ -166,7 +182,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
   }
 
 
-  late LoginModel loginModel;
+   LoginModel? loginModel;
   late var myid;
   final _auth = FirebaseAuth.instance;
  late UserCredential authres;
@@ -210,8 +226,8 @@ class UserCubit extends Cubit<cons_login_Register_States> {
      else if(response.statusCode ==400){
      var jdsonn = jsonDecode(response.body);
      loginModel= LoginModel.fromJson(jdsonn);
-     print(loginModel.message!.map((e) => e.messages!.map((e) => e.message.toString())));
-     emit(cons_Login_Error(loginModel));
+     print(loginModel!.message!.map((e) => e.messages!.map((e) => e.message.toString())));
+     emit(cons_Login_Error(loginModel!));
      return false;
      }
      else{
@@ -226,38 +242,112 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       }
     }
 
-   login(String email,String password)async {
+  late String error="Email IsNot Exist";
+  late bool forgetpass;
+  late String myEmail;
+  late int forgetID;
+
+
+  Future<void> getUser(table,email) async {
+    final url = Uri.parse("$base_api/$table?_where[email]=$email");
+    final http.Response res = await http.get(url);
+    if (res.statusCode == 200) {
+      print(res.body.toString());
+      var user = jsonDecode(res.body);
+      for (var x in user) {
+        forgetID=x['id'];
+        myEmail=x['email'];
+        forgetpass=x['forgetpass'];
+      }
+      if(myEmail==email){
+        FirebaseAuth.instance.sendPasswordResetEmail(email: email).then((value) {
+          updateForget(table: table,id: forgetID,forget: true);
+          emit(LoginChangePassSucessState());
+        }).catchError((onError) {
+          emit(LoginChangePassSucessState());
+        });
+      }else{
+        return myToast(message: error);
+      }
+    } else {
+      print('no connect');
+    }
+  }
+  Future<void> getUserLogin(email) async {
+    final url = Uri.parse("$base_api/users?_where[email]=$email");
+    final http.Response res = await http.get(url);
+    if (res.statusCode == 200) {
+      print(res.body.toString());
+      var user = jsonDecode(res.body);
+      for (var x in user) {
+        forgetID=x['id'];
+        forgetpass=x['forgetpass'];
+      }
+    } else {
+      print('no connect');
+    }
+  }
+
+  late String tokenUser;
+   login(String email,String password)
+   {
+     final url = Uri.parse("$base_api/auth/local");
+     Map<String, String> headrs = {
+       'Accept': 'application/json',
+     };
+     Map<String, String> body = {
+       'identifier': email,
+       'password': password,
+     };
     emit(cons_Loading_login());
-    final url = Uri.parse("$base_api/auth/local");
-    Map<String, String> headrs = {
-      'Accept': 'application/json',
-    };
-    Map<String, String> body = {
-      'identifier': email,
-      'password': password,
-    };
-      var response = await http.post(url, headers: headrs, body: body);
-      if (response.statusCode == 200) {
-        var jdson = jsonDecode(response.body);
-        loginModel= LoginModel.fromJson(jdson);
-        print(loginModel.userClass!.email);
-        print(body);
-        emit(cons_Login_Scusess(loginModel));
-        return true;
-      }
-      else if(response.statusCode ==400){
-        var jdsonn = jsonDecode(response.body);
-        loginModel= LoginModel.fromJson(jdsonn);
-        emit(cons_Login_Error(loginModel));
-        // ignore: avoid_print
-        print(loginModel.message!.map((e) => e.messages!.map((e) => e.message.toString())));
-      }
-      else if(response.persistentConnection)
-      {
-        emit(cons_not_connected_net_login());
-      }
+     getUserLogin(email).then((value)async{
+       if(forgetpass==true)
+       {
+         emit(cons_getuser_login());
+       }
+       else
+         {
+         var response = await http.post(url, headers: headrs, body: body);
+         if (response.statusCode == 200) {
+           var jdson = jsonDecode(response.body);
+           loginModel= LoginModel.fromJson(jdson);
+           print(body);
+           tokenUser=loginModel!.token!;
+          int? useriD=loginModel!.userClass!.id;
+           CashHelper.putData("userToken", tokenUser);
+           CashHelper.putData("userId",useriD);
+           emit(cons_Login_Scusess(loginModel!));
+           return true;
+         }
+         else if(response.statusCode ==400){
+           var jdsonn = jsonDecode(response.body);
+           loginModel= LoginModel.fromJson(jdsonn);
+           emit(cons_Login_Error(loginModel!));
+           // ignore: avoid_print
+           print(loginModel!.message!.map((e) => e.messages!.map((e) => e.message.toString())));
+         }
+         else if(response.persistentConnection)
+         {
+           emit(cons_not_connected_net_login());
+         }
+       }
+     });
     }
 
+    List<UserStrapi> mydeatilsuser=[];
+   Future<void> getUserDetails(id)async{
+      final url = Uri.parse("$base_api/users/$id");
+      final http.Response res = await http.get(url);
+      if (res.statusCode == 200) {
+        print(res.body.toString());
+        var user = jsonDecode(res.body);
+        for (var x in user) {
+          mydeatilsuser.add(UserStrapi(id: x['id'], username: x['username'],),);
+        }
+      } else {
+        print('no connect');
+      }
+    }
   //////////////////////////////////////////////ForgetPass////////////
 
   Future<http.Response> updatePassStrapi(String newPassword, int? id) {
@@ -269,45 +359,16 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     );
   }
 
-  Future<http.Response> updateForget(String table,int id) {
+  Future<http.Response> updateForget({required String table,required int id, required bool forget}) {
     return http.put(Uri.parse("$base_api/$table/$id"),
       headers: <String, String>{'Content-Type': 'application/json'},
-      body: jsonEncode(<String, bool>{'forgetpass': true}),
+      body: jsonEncode(<String, bool>{'forgetpass': forget}),
     );
   }
 
-late String error="Email IsNot Exist";
 
-  Future<void> getUser(table,email) async {
-    final url = Uri.parse("$base_api/$table?_where[email]=$email");
-    final http.Response res = await http.get(url);
-    if (res.statusCode == 200) {
-      late int myid;
-       String? myemail;
-      print(res.body.toString());
-      var user = jsonDecode(res.body);
-      for (var x in user) {
-        myid=x['id'];
-        myemail=x['email'];
-      }
-      if(myemail==email){
-        FirebaseAuth.instance.sendPasswordResetEmail(email: email).then((value) {
-          updateForget(table,myid);
-          emit(LoginChangePassSucessState());
-        }).catchError((onError) {
-          emit(LoginChangePassSucessState());
-        });
-      }else{
-        return myToast(message: error);
-      }
-
-    } else {
-      print('no connect');
-    }
-  }
 
   ////////////Add Post ////////////////
-  ///
   PostModel? postModel;
 
   Future<PostModel?> AddPost(String content, String time, dynamic id) async {
@@ -368,4 +429,5 @@ late String error="Email IsNot Exist";
       print(value);
     });
   }
+
 }

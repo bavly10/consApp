@@ -33,4 +33,6 @@ List<String> suaid=const [
 const kDefaultPadding = 20.0;
 String? customerToken = CashHelper.getData("cust_token");
 String? customerID = CashHelper.getData("cust_id");
+String? userToken = CashHelper.getData("userToken");
+int? userID = CashHelper.getData("userId");
 //Color(0xFF1D1D35);

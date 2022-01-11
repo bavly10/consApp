@@ -136,7 +136,7 @@ class DialogButton extends StatelessWidget {
 
   }
   var buttonsRowDirection=1 ;//ROW DIRECTION
-  showDialog(context: context, builder: (ctx)=>AlertDialog(
+  showDialog(context: context, builder: (context)=>AlertDialog(
       backgroundColor:Colors.white,
       shape: _defaultShape(),
       insetPadding: EdgeInsets.all(8),
@@ -434,7 +434,7 @@ Builder buildDialogItemLogin(BuildContext context, String text, IconData icon, I
 }
 
  myToast({required String message})=>EasyLoading.showToast(message,toastPosition: EasyLoadingToastPosition.bottom
-    ,duration:const Duration(seconds: 3));
+    ,duration:const Duration(seconds: 5));
 
 ProfileTextField({TextEditingController? controller, TextInputType? type,  void Function(String?)? onSave,void Function(String)? onSubmit, void Function(String)? onChange, void Function()? onTap, bool? isPassword=false, String? Function(String?)? validate, String? label, String? hint, IconData? prefix, IconData? suffix, void Function()? suffixPressed, bool? isClickable=true, void Function(String)? onPressed,})=>TextFormField(
   scrollPadding: const EdgeInsets.only(right: 0),

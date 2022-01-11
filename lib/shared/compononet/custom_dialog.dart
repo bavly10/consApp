@@ -29,7 +29,7 @@ class CustomTextFieldDialog extends StatelessWidget {
           context,
           title,
         ),
-        style: TextStyle(
+        style:const TextStyle(
           fontSize: 14,
         ),
       ),
@@ -54,7 +54,7 @@ class CustomTextFieldDialog extends StatelessWidget {
                     context,
                     buttonText,
                   ),
-                  style: TextStyle(
+                  style:const TextStyle(
                     color: Colors.white,
                   )),
               onPressed: onPressed,

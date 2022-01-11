@@ -7,6 +7,7 @@ import 'package:helpy_app/modules/User/cubit/cubit.dart';
 import 'package:helpy_app/modules/User/cubit/states.dart';
 
 import 'package:helpy_app/modules/User/login/main_login.dart';
+import 'package:helpy_app/modules/User/main.dart';
 import 'package:helpy_app/modules/User/post/add_post.dart';
 import 'package:helpy_app/modules/otp/otp_register.dart';
 import 'package:helpy_app/shared/compononet/custom_dialog.dart';
@@ -49,29 +50,27 @@ class _LoginIntroState extends State<LoginIntro> {
         if (state is cons_Loading_login) {
           myState = true;
         }
-        else if (state is cons_Login_Scusess) {
-          if (state.loginModel.userClass!.forgetpass == true) {
-            myToast(message: "change pass");
-            showDialog(
-                context: context,
-                builder: (ctx) => CustomTextFieldDialog(
+        else if (state is cons_getuser_login ){
+          {
+            showDialog(context: context,
+          builder: (context) => CustomTextFieldDialog(
                     controller: newPasswordController,
                     title: "EnterPass",
                     buttonText: "Send",
                     hintText: "Password",
                     onPressed: () {
-                      FocusScope.of(context).unfocus();
-                      UserCubit.get(context).updatePassStrapi(
-                          newPasswordController.text,
-                          state.loginModel.userClass!.id);
+                      Navigator.pop(context);
+                      UserCubit.get(context).updatePassStrapi(newPasswordController.text, UserCubit.get(context).forgetID);
+                      UserCubit.get(context).updateForget(table: "users",id:  UserCubit.get(context).forgetID,forget: false);
+                      myToast(message: mytranslate(context, "sucesspass"),);
                     }));
-            myToast(message: mytranslate(context, "sucesspass"),);
-
-            ///dialog yd5l password then y3ml update le pasword bta3 strapi
+            myState = false;
           }
-          else if (state.loginModel.userClass!.confirmed == true) {
-           myToast(message: "Done login");
-           navigateTo(context,CreatePost());
+        }
+        else if (state is cons_Login_Scusess) {
+           if (state.loginModel.userClass!.confirmed == true) {
+           navigateTo(context, UserMain());
+          // navigateTo(context,CreatePost());
           } else {
             My_CustomAlertDialog(
               icon: Icons.warning_rounded,
@@ -81,7 +80,7 @@ class _LoginIntroState extends State<LoginIntro> {
               pressColor: myAmber,
               pressTitle: mytranslate(context, "done"),
               pressText: () {
-                Navigator.of(context).pop();
+                Navigator.pop(context);
               },
             );
           }
@@ -97,14 +96,13 @@ class _LoginIntroState extends State<LoginIntro> {
             pressColor: myAmber,
             pressTitle: mytranslate(context, "done"),
             pressText: () {
-              Navigator.of(context).pop();
-            },
-          )))
-              .toString();
+              Navigator.pop(context);
+            },))).toString();
           myState = false;
         }
         else if (state is LoginChangePassSucessState) {
           myToast(message: (mytranslate(context, "Emailissent")));
+          myState = false;
         }
       },
       child: FadeIn(

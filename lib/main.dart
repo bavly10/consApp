@@ -84,7 +84,7 @@ class MyApp extends StatelessWidget {
                 primarySwatch:Colors.amber,
               ),
             themeMode: ThemeMode.light,
-              home: CustomerProfileScreen(),
+              home: Animation_Splash(),
             builder:EasyLoading.init(),
           );
         },

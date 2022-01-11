@@ -32,6 +32,8 @@ class cons_Register_firebase_Error extends cons_login_Register_States{}
 
 
 class cons_Loading_login extends cons_login_Register_States{}
+class cons_getuser_login extends cons_login_Register_States{}
+class cons_getuser_logindone extends cons_login_Register_States{}
 class cons_Login_Scusess extends cons_login_Register_States{
   final LoginModel loginModel;
   cons_Login_Scusess(this.loginModel);
@@ -63,6 +65,7 @@ class ConImagePostSucessState extends cons_login_Register_States {}
 
 class ConImagePostErrorState extends cons_login_Register_States {}
 class NoemailErrorState extends cons_login_Register_States {}
+class UserChangeState extends cons_login_Register_States {}
 
 
 
