@@ -22,7 +22,7 @@ class UserMain extends StatelessWidget {
     return BlocBuilder<UserCubit, cons_login_Register_States>(
       builder: (context, state) {
         final cubit = UserCubit.get(context);
-        final model = UserCubit.get(context).mydeatilsuser;
+        final model = UserCubit.get(context).userStrapi;
         return SafeArea(
           child: Scaffold(
             backgroundColor: Colors.white,
@@ -35,7 +35,7 @@ class UserMain extends StatelessWidget {
                       style: const TextStyle(color: Colors.black, fontSize: 18),
                     ),
                     const SizedBox(width: 5,),
-                    Text("${model.map((e) => e.username)}", style: TextStyle(color: myAmber),)
+                    Text(model?.username??"Error", style: TextStyle(color: myAmber),)
                   ],
                 ),
                 actions: [

@@ -289,6 +289,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
   }
 
   late String tokenUser;
+
    login(String email,String password)
    {
      final url = Uri.parse("$base_api/auth/local");
@@ -335,15 +336,26 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     }
 
     List<UserStrapi> mydeatilsuser=[];
+   UserStrapi? userStrapi;
    Future<void> getUserDetails(id)async{
       final url = Uri.parse("$base_api/users/$id");
       final http.Response res = await http.get(url);
       if (res.statusCode == 200) {
         print(res.body.toString());
         var user = jsonDecode(res.body);
-        for (var x in user) {
-          mydeatilsuser.add(UserStrapi(id: x['id'], username: x['username'],),);
-        }
+        userStrapi=UserStrapi.fromJson(user);
+        // final pro = mydeatilsuser.indexWhere((element) => element.id == user['id']);
+        // if (pro >= 0) {
+        //   mydeatilsuser[pro] = UserStrapi(
+        //     id: user["id"],
+        //     username: user["username"],
+        //   );
+        // } else {
+        //   mydeatilsuser.add(UserStrapi(
+        //   id: user["id"],
+        //   username: user["username"],),
+        // );
+        // }
       } else {
         print('no connect');
       }

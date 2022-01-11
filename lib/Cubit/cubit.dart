@@ -113,8 +113,8 @@ class cons_Cubit extends Cubit<cons_States> {
               title: item["Title"],
               catImg: CatImgs.fromJson(item["cat_img"]),
             );
-          } else {
-            mycat.add(Categories(
+          } else
+            {mycat.add(Categories(
               id: item["id"],
               title: item["Title"],
               catImg: CatImgs.fromJson(item["cat_img"]),

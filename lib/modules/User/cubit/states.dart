@@ -66,6 +66,7 @@ class ConImagePostSucessState extends cons_login_Register_States {}
 class ConImagePostErrorState extends cons_login_Register_States {}
 class NoemailErrorState extends cons_login_Register_States {}
 class UserChangeState extends cons_login_Register_States {}
+class UserChangestrapi extends cons_login_Register_States {}
 
 
 
