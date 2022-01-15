@@ -243,7 +243,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     }
 
   late String error="Email IsNot Exist";
-  late bool forgetpass;
+   bool? forgetpass;
   late String myEmail;
   late int forgetID;
 
@@ -344,18 +344,6 @@ class UserCubit extends Cubit<cons_login_Register_States> {
         print(res.body.toString());
         var user = jsonDecode(res.body);
         userStrapi=UserStrapi.fromJson(user);
-        // final pro = mydeatilsuser.indexWhere((element) => element.id == user['id']);
-        // if (pro >= 0) {
-        //   mydeatilsuser[pro] = UserStrapi(
-        //     id: user["id"],
-        //     username: user["username"],
-        //   );
-        // } else {
-        //   mydeatilsuser.add(UserStrapi(
-        //   id: user["id"],
-        //   username: user["username"],),
-        // );
-        // }
       } else {
         print('no connect');
       }

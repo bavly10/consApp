@@ -123,13 +123,9 @@ class _LoginUserState extends State<LoginUser> {
                         },
                         title: state is LoginLoadingState
                             ? SpinKitCircle(
-                          color: myAmber,
+                          color: myWhite,
                         )
-                            : Text(
-                          mytranslate(context, "login"),
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: 18),
-                        ))),
+                            : Text(mytranslate(context, "login"), style: const TextStyle(color: Colors.white, fontSize: 18),))),
                 const SizedBox(
                   height: 20,
                 ),

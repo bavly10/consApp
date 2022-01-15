@@ -7,7 +7,7 @@ import 'package:helpy_app/model/categories_model.dart';
 import 'package:helpy_app/model/specailsts_model.dart';
 import 'package:helpy_app/modules/MainScreen/home.dart';
 import 'package:helpy_app/modules/MainScreen/ads.dart';
-import 'package:helpy_app/modules/MainScreen/setting.dart';
+import 'package:helpy_app/modules/User/login/main_login.dart';
 
 
 
@@ -62,7 +62,7 @@ class cons_Cubit extends Cubit<cons_States> {
   List<Widget> screen = [
     Home(),
     AdsScreen(),
-    Setting(),
+    Main_login(),
   ];
 
   void changeIndex(int index) {

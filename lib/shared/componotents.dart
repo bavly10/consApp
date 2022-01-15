@@ -26,15 +26,14 @@ void navigateToFinish(context, widget) => Navigator.pushReplacement(context, Mat
     labelStyle:const TextStyle(fontWeight: FontWeight.bold),
   ),
 );
- Mybutton({required BuildContext context,required Function onPress,required Widget title,Color color=Colors.blue})=>  Container(
-  width:double.infinity,
-  height: MediaQuery.of(context).size.width*0.12,
-  decoration: BoxDecoration(
+ Mybutton({required BuildContext context,required Function onPress,required Widget title,Color color=Colors.blue})=>
+     Container(width:double.infinity, height: MediaQuery.of(context).size.width*0.12,
+        decoration: BoxDecoration(
     borderRadius: BorderRadius.circular(12.00),
  color: color
   ),
-  child: TextButton(
-      onPressed: (){onPress();},
+     child: MaterialButton(
+         onPressed: (){onPress();},
       child:title),
 );
 

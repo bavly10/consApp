@@ -32,7 +32,7 @@ class Introducer extends StatelessWidget {
   List imglist = ['assets/as.png', 'assets/ae.jpg', 'assets/ar.jpg'];
   String imgurl = base_api;
   Color mycolor=Colors.white;
-  String? token="koawkda";
+  String? token="adwa";
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ConsCubitIntro, cons_StatesIntro>(

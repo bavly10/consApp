@@ -151,10 +151,9 @@ class _LoginIntroState extends State<LoginIntro> {
                         }
                       },
                       title: myState
-                          ? const Center(
-                          child: SpinKitCircle(
+                          ?const SpinKitCircle(
                             color: Colors.white,
-                          ))
+                          )
                           : Text(
                         mytranslate(context, "login"),
                         style: const TextStyle(
