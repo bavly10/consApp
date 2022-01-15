@@ -32,7 +32,7 @@ class Introducer extends StatelessWidget {
   List imglist = ['assets/as.png', 'assets/ae.jpg', 'assets/ar.jpg'];
   String imgurl = base_api;
   Color mycolor=Colors.white;
-  String? token="adwa";
+  String? token=customerToken;
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ConsCubitIntro, cons_StatesIntro>(
@@ -221,7 +221,9 @@ class Introducer extends StatelessWidget {
         )),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () async{
-            if(token==null){
+            print(customerToken);
+            print(customerID);
+            if(customerToken==null){
               slideDialog.showSlideDialog(
                   pillColor: myAmber,
                   backgroundColor:Colors.white,

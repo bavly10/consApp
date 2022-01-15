@@ -66,7 +66,7 @@ class CustomerCubit extends Cubit<Customer_States> {
   }
 
   late String tokenCustomer;
-  late String myCustomerId;
+   String? myCustomerId;
 
 
   Future<void> signin(String email, String pass) async {
@@ -85,8 +85,10 @@ class CustomerCubit extends Cubit<Customer_States> {
       tokenCustomer=resdata['idToken'];
       myCustomerId=resdata['localId'];
       print("token is :$tokenCustomer");
-      CashHelper.putData("cust_token", tokenCustomer);
+      print("token is :$myCustomerId");
+      CashHelper.putData("tokenCustomer", tokenCustomer);
       CashHelper.putData("cust_id", myCustomerId);
+      getCustomerData(myCustomerId);
       emit(LoginSuccessState());
     } catch (e) {
       emit(LoginErrorState());
@@ -96,9 +98,10 @@ class CustomerCubit extends Cubit<Customer_States> {
 
 
   CustomerModel? model;
-  void getCustomerData(id) async{
+  void getCustomerData(myCustomerId) async{
+    model?.deleteJson();
     emit(CustomerLoadinggState());
-    await FirebaseFirestore.instance.collection("customers").doc(id).get().then((value){
+    await FirebaseFirestore.instance.collection("customers").doc(myCustomerId).get().then((value){
           model=CustomerModel.fromJson(value.data()!);
       emit(CustomerSuccessState());
     }).catchError((error){

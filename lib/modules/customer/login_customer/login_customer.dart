@@ -15,6 +15,7 @@ import 'package:helpy_app/shared/componotents.dart';
 import 'package:helpy_app/shared/error_compon.dart';
 import 'package:helpy_app/shared/localization/translate.dart';
 import 'package:helpy_app/shared/my_colors.dart';
+import 'package:helpy_app/shared/strings.dart';
 import 'package:http/http.dart';
 
 class LoginUser extends StatefulWidget {
@@ -95,10 +96,7 @@ class _LoginUserState extends State<LoginUser> {
                                   emailController.text, passController.text)
                                   .then((value) {
                                 navigateTo(context, MainCustomer());
-
-                                ///if le gay mn forget pass= true e3ml dialog hn3ml fe textfield password w ha5od pass e3mlo update mn email ely da5l be
-                                ///lw false go to mainscreen
-                              });
+                                  });
                             } catch (error) {
                               var errormsg = mytranslate(context, "errorlogin");
                               print('error:${error.toString()}');

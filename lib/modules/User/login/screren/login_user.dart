@@ -61,7 +61,7 @@ class _LoginIntroState extends State<LoginIntro> {
                     onPressed: () {
                       Navigator.pop(context);
                       UserCubit.get(context).updatePassStrapi(newPasswordController.text, UserCubit.get(context).forgetID);
-                      UserCubit.get(context).updateForget(table: "users",id:  UserCubit.get(context).forgetID,forget: false);
+                      UserCubit.get(context).updateForget(table: "users",id:  UserCubit.get(context).forgetID!,forget: false);
                       myToast(message: mytranslate(context, "sucesspass"),);
                     }));
             myState = false;
@@ -199,9 +199,8 @@ class _LoginIntroState extends State<LoginIntro> {
                               buttonText: "Send",
                               hintText: "email",
                               onPressed: () {
-                                Navigator.pop(context);
                                 UserCubit.get(context).getUser("users",emailController.text);
-                                navigateTo(context, Main_login());
+                                Navigator.pop(context);
                               }));
                     },
                     child: Text(

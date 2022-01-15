@@ -9,17 +9,16 @@ import 'package:helpy_app/shared/componotents.dart';
 import 'package:helpy_app/shared/localization/translate.dart';
 import 'package:helpy_app/shared/my_colors.dart';
 import 'package:helpy_app/shared/shared_prefernces.dart';
-import 'package:helpy_app/shared/strings.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class MainCustomer extends StatelessWidget {
+  @override
   Widget build(BuildContext context) {
-    CustomerCubit.get(context).getCustomerData(customerID);
     return BlocBuilder<CustomerCubit, Customer_States>(
         builder: (context,state){
           final cubit = CustomerCubit.get(context);
-          final model = CustomerCubit.get(context).model;
+          CustomerModel? model = CustomerCubit.get(context).model;
           return SafeArea(
             child: Scaffold(
               backgroundColor:mygrey,
@@ -39,7 +38,7 @@ class MainCustomer extends StatelessWidget {
                   )),
                 IconButton(
                   onPressed: () {
-                    CashHelper.removeData("cust_token");
+                    CashHelper.removeData("tokenCustomer");
                     CashHelper.removeData("cust_id");
                     navigateToFinish(context, Main_login());
                   },

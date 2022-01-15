@@ -4,11 +4,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:helpy_app/model/user_model.dart';
 import 'package:helpy_app/modules/User_screen/slide_dialog.dart';
-import 'package:helpy_app/shared/componotents.dart';
 import 'package:helpy_app/shared/error_compon.dart';
 import 'package:helpy_app/shared/localization/translate.dart';
 import 'package:helpy_app/shared/my_colors.dart';
 import 'package:helpy_app/shared/network.dart';
+import 'package:helpy_app/shared/strings.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io' as io;
 import 'package:slide_popup_dialog_null_safety/slide_popup_dialog.dart' as slideDialog;
@@ -23,7 +23,7 @@ class ServicesIntro extends StatefulWidget {
 
 class _ServicesIntroState extends State<ServicesIntro> {
   File? f;
-   String? token;
+   String? token=customerToken;
   @override
   Widget build(BuildContext context) {
     return widget.cubit.filesIntros!.isEmpty

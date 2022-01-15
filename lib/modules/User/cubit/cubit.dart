@@ -244,8 +244,8 @@ class UserCubit extends Cubit<cons_login_Register_States> {
 
   late String error="Email IsNot Exist";
    bool? forgetpass;
-  late String myEmail;
-  late int forgetID;
+   String? myEmail;
+   int? forgetID;
 
 
   Future<void> getUser(table,email) async {
@@ -261,7 +261,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       }
       if(myEmail==email){
         FirebaseAuth.instance.sendPasswordResetEmail(email: email).then((value) {
-          updateForget(table: table,id: forgetID,forget: true);
+          updateForget(table: table,id: forgetID!,forget: true);
           emit(LoginChangePassSucessState());
         }).catchError((onError) {
           emit(LoginChangePassSucessState());

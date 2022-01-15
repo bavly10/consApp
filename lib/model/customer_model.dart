@@ -1,7 +1,5 @@
 class CustomerModel {
   final String username, email,phone;
-
-
   CustomerModel({
     required this.username,
         required this.email,
@@ -12,4 +10,5 @@ class CustomerModel {
         email: json["email"],
         phone: json["phone"],
       );
+   void deleteJson()=>CustomerModel(username: '', email: '', phone: '');
 }

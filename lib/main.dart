@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context)=>cons_Cubit()..checkInternetConnectivity()..getCategories()..getSpecailsts()),
         BlocProvider(create: (context)=>ConsCubitIntro()),
-        BlocProvider(create: (context)=>CustomerCubit()),
+        BlocProvider(create: (context)=>CustomerCubit()..getCustomerData(customerID)),
         BlocProvider(create: (context)=>UserCubit()),
       ],
       child: BlocBuilder<cons_Cubit,cons_States>(
