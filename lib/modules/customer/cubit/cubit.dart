@@ -24,7 +24,6 @@ class CustomerCubit extends Cubit<Customer_States> {
   final _auth = FirebaseAuth.instance;
   late UserCredential authres;
 
-
   register({required String username,required String  email,required String  password,required String  phone}) async{
     emit(RegisterLoadingState());
     late var response;
@@ -99,7 +98,7 @@ class CustomerCubit extends Cubit<Customer_States> {
 
 
   CustomerModel? myModel;
-  void getCustomerData(myCustomerId) async{
+  Future<void> getCustomerData(myCustomerId) async{
     emit(CustomerLoadinggState());
     await FirebaseFirestore.instance.collection("customers").doc(myCustomerId).get().then((value){
           myModel=CustomerModel.fromJson(value.data()!);

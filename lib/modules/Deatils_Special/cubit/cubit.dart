@@ -150,7 +150,8 @@ class ConsCubitIntro extends Cubit<cons_StatesIntro> {
   //   //                       },
   // }
 
-  getPay({name,email,phone,address,amount,cartid,descprtioncart,addressLine}) async{
+  getPay({name,email,phone,amount,user}) async{
+    emit(Cons_Payment_Loading());
     final url=Uri.parse("https://secure-egypt.paytabs.com/payment/request");
     Map<String,String> headers={
       "Content-Type": 'application/json',
@@ -161,13 +162,13 @@ class ConsCubitIntro extends Cubit<cons_StatesIntro> {
       "tran_type": "sale",
       "tran_class": "ecom" ,
       "cart_id":"4244b9fd-c7e9-4f16-8d3c-4fe7bf6c48ca",
-      "cart_description": "Dummy Order 35925502061445345",
+      "cart_description": "${user+ "Cons App"}",
       "cart_currency": "EGP",
-      "cart_amount": 10,
+      "cart_amount": amount,
       "customer_details": {
-        "name": "John Smith",
-        "email": "jsmith@gmail.com",
-        "phone": "9711111111111",
+        "name": name,
+        "email": email,
+        "phone": phone,
         "street1": "404, 11th st, void",
         "city": "Cairo",
         "state": "EG",

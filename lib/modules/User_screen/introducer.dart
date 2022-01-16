@@ -37,10 +37,50 @@ class Introducer extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<ConsCubitIntro, cons_StatesIntro>(
         listener: (ctx,state){
-          if(state is Cons_Payment_done)
+          if (state is Cons_Payment_Loading){
+            showDialog(context: context, builder: (context)=>AlertDialog(
+                backgroundColor:Colors.white,
+                insetPadding: EdgeInsets.all(8),
+                elevation: 10,
+                titlePadding: const EdgeInsets.all(0.0),
+                title: Container(
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding:const EdgeInsets.fromLTRB(
+                              20,10, 20, 0),
+                          child: Column(
+                            children: [
+                              Text(
+                                "Company",
+                                style: TextStyle(
+                                    color: myAmber,
+                                    fontWeight: FontWeight.w500,
+                                    fontStyle: FontStyle.normal),
+                                textAlign: TextAlign.center,
+                              ),
+                               SizedBox(
+                                height:MediaQuery.of(context).size.height*0.05,
+                              ),
+                              CircularProgressIndicator(color: myAmber,),
+                             const SizedBox(height: 5,),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                contentPadding: EdgeInsets.all(8),
+            ));
+          }
+         else if(state is Cons_Payment_done)
           {
             navigateTo(context, PaymentsTest(state.url));
-          }else  if(state is Cons_Payment_notdone){
+          }
+          else if(state is Cons_Payment_notdone){
             EasyLoading.showToast(state.error,toastPosition: EasyLoadingToastPosition.bottom
                 ,duration:const Duration(seconds: 3));
           }
@@ -230,8 +270,17 @@ class Introducer extends StatelessWidget {
                   context: context,
                   child: MySlideDialog(cubit.username, mytranslate(context, "connect")));
             }else{
+
+              CustomerCubit.get(context).getCustomerData(customerID).then((value)async{
+                  var model = CustomerCubit.get(context).myModel;
               ///payment method
-             await CustomerCubit.get(context).addUserINChat(cubit.id.toString(), cubit.username,customerID!);
+              await ConsCubitIntro.get(context).getPay(
+                  user: cubit.username,name: model!.username,email: model.email,phone: model.phone
+                  ,amount: 30
+              );
+              });
+
+            // await CustomerCubit.get(context).addUserINChat(cubit.id.toString(), cubit.username,customerID!);
             }
           },
           label: const Text('Connect'),
