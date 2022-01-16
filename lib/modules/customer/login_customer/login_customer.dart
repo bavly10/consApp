@@ -139,7 +139,7 @@ class _LoginUserState extends State<LoginUser> {
                             onPressed: () {
                               Navigator.pop(context);
                               UserCubit.get(context).getUser("Customers",emailCheckController.text);
-                              myToast(message: "Emailissent");
+                              myToast(message: mytranslate(context, "Emailissent"));
                             }));
                   },
                   child: Text(

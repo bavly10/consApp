@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:helpy_app/modules/User/login/main_login.dart';
 import 'package:helpy_app/modules/customer/cubit/cubit.dart';
 import 'package:helpy_app/modules/customer/cubit/state.dart';
 import 'package:helpy_app/shared/componotents.dart';
@@ -54,14 +55,15 @@ class _RegisterCustomerState extends State<RegisterCustomer> {
         if (state is RegisterSuccessState) {
           ///go to payment
           My_CustomAlertDialog(
-            bigTitle: mytranslate(context, "dialogRegistertitle"),
-            content: mytranslate(context, "dialogRegister"),
+            bigTitle: mytranslate(context, "customerTitle"),
+            content: mytranslate(context, "cusomterdone"),
             context: context,
             pressTitle:mytranslate(context, "done"),
             pressColor:myAmber,
             icon: MdiIcons.checkCircleOutline,
             pressText: () {
-             print("Ok");
+            ///go To payment with sqflite data user
+              navigateToFinish(context, Main_login());
             },);
         }
         ///lw fe error mn database

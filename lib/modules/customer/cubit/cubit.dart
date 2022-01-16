@@ -97,12 +97,12 @@ class CustomerCubit extends Cubit<Customer_States> {
   }
 
 
-  CustomerModel? model;
+
+  CustomerModel? myModel;
   void getCustomerData(myCustomerId) async{
-    model?.deleteJson();
     emit(CustomerLoadinggState());
     await FirebaseFirestore.instance.collection("customers").doc(myCustomerId).get().then((value){
-          model=CustomerModel.fromJson(value.data()!);
+          myModel=CustomerModel.fromJson(value.data()!);
       emit(CustomerSuccessState());
     }).catchError((error){
       print(error.toString());
@@ -133,7 +133,7 @@ class CustomerCubit extends Cubit<Customer_States> {
       "key":userid+customerid,
       //"image":imguser,
     }).then((value)async{
-      final userdata = await FirebaseFirestore.instance.collection('customers').doc("HRiLIuWnyBTn09s6RHsAjwk7qZI3").get();
+      final userdata = await FirebaseFirestore.instance.collection('customers').doc(customerid).get();
       await FirebaseFirestore.instance.collection("AllChat").doc(userid+customerid).set(
           {
             "myid": userid,
@@ -145,6 +145,7 @@ class CustomerCubit extends Cubit<Customer_States> {
       emit(CustomerCreateChatState());
     });
   }
+
   Future<http.Response> updatePassword(String newPassword, int? id) {
     return http.put(
       Uri.parse("$base_api/Customers/$id"),
