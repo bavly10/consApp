@@ -56,3 +56,10 @@ class cons_SendTOP_Loading extends cons_States{}
 class cons_SendTOP_Error extends cons_States{}
 
 
+class Cons_Success_Ads extends cons_States{}
+class Cons_Loading_Ads extends cons_States{}
+class Cons_Error_Ads extends cons_States{
+  final String error;
+
+  Cons_Error_Ads(this.error);
+}

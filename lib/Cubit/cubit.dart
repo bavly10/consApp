@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:helpy_app/Cubit/states.dart';
+import 'package:helpy_app/model/ads.dart';
 import 'package:helpy_app/model/categories_model.dart';
 import 'package:helpy_app/model/specailsts_model.dart';
 import 'package:helpy_app/modules/MainScreen/home.dart';
@@ -95,7 +96,7 @@ class cons_Cubit extends Cubit<cons_States> {
   ///////
   List<Categories> mycat = [];
   List<Specailsts> myspec = [];
-
+  List<AdsModel> myads = [];
   Future getCategories() async {
     emit(Cons_Loading_Cate());
     final url = Uri.parse("$base_api/Categories");
@@ -199,6 +200,27 @@ class cons_Cubit extends Cubit<cons_States> {
     await connection.close();
   }
 
+  Future<void> getAds() async {
 
+    ///pagination
+    emit(Cons_Loading_Ads());
+    final url = Uri.parse("$base_api/Ads");
+    final http.Response res = await http.get(url);
+
+    List ads = json.decode(res.body);
+    if ( res.statusCode ==200){
+      for(var item in ads){
+        myads.add(AdsModel(id: item['id'], username: item['username'],
+            description: item['description'],
+            profileImage: AdsImage.fromJson(item['profileImage']),
+
+            contentImage:AdsImage.fromJson(item['contentImage'])));
+      }
+      emit(Cons_Success_Ads());
+    }
+    else if (res.statusCode ==500){
+      emit(Cons_Error_Ads(e.toString()));
+    }
+  }
 
 }

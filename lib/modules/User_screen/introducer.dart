@@ -53,8 +53,7 @@ class Introducer extends StatelessWidget {
                               20,10, 20, 0),
                           child: Column(
                             children: [
-                              Text(
-                                "Company",
+                              Text("Company",
                                 style: TextStyle(
                                     color: myAmber,
                                     fontWeight: FontWeight.w500,

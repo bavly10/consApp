@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context)=>cons_Cubit()..checkInternetConnectivity()..getCategories()..getSpecailsts()),
+        BlocProvider(create: (context)=>cons_Cubit()..checkInternetConnectivity()..getCategories()..getSpecailsts()..getAds()),
         BlocProvider(create: (context)=>ConsCubitIntro()),
         BlocProvider(create: (context)=>CustomerCubit()..getCustomerData(customerID)),
         BlocProvider(create: (context)=>UserCubit()),
