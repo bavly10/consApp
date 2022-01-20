@@ -201,21 +201,33 @@ class cons_Cubit extends Cubit<cons_States> {
   }
 
   Future<void> getAds() async {
-
     ///pagination
     emit(Cons_Loading_Ads());
     final url = Uri.parse("$base_api/Ads");
     final http.Response res = await http.get(url);
-
     List ads = json.decode(res.body);
-    if ( res.statusCode ==200){
+    if (res.statusCode ==200){
       for(var item in ads){
-        myads.add(AdsModel(id: item['id'], username: item['username'],
-            description: item['description'],
-            profileImage: AdsImage.fromJson(item['profileImage']),
-
-            contentImage:AdsImage.fromJson(item['contentImage'])));
-      }
+  final pro=myads.indexWhere((element) => element.id==item['id']);
+  if(pro>=0){
+    myads[pro]=(AdsModel(
+        id: item['id'],
+        username: item['username'],
+        description: item['description'],
+        profileImage: AdsImage.fromJson(item['profileImage']),
+        contentImage:AdsImage.fromJson(item['contentImage'])));
+    emit(Cons_noNewData_Ads());
+    print("no data new");
+  }else{
+    myads.add(AdsModel(
+        id: item['id'],
+        username: item['username'],
+        description: item['description'],
+        profileImage: AdsImage.fromJson(item['profileImage']),
+        contentImage:AdsImage.fromJson(item['contentImage']))
+    );
+  }
+}
       emit(Cons_Success_Ads());
     }
     else if (res.statusCode ==500){

@@ -104,5 +104,14 @@
    "oldchat": "History Chats",
    "chat": "New Chats",
    "posttext": "To Add Post...",
-   "point": "400 SR"
+   "point": "400 SR",
+   "congrate": "Your Information Is Edited",
+   "verifyimage": "Please Go To Edit Profile To Save Image",
+   "changproimage": "Edit image sucessfully",
+   "loadimage": "Loading....",
+   "editing": "ُEdit Profile sucessfully..",
+   "sendurl": "SEND",
+   "passtext": "To reset your password please put your email",
+   "reviewemail": "Check your email to reset password",
+   "errorpass": "Error!!"
 }

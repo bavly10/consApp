@@ -35,4 +35,5 @@ String? customerToken = CashHelper.getData("tokenCustomer");
 String? customerID = CashHelper.getData("cust_id");
 String? userToken = CashHelper.getData("userToken");
 int? userID = CashHelper.getData("userId");
+final RegExp nameRegExp = RegExp('[a-zA-Z]');
 //Color(0xFF1D1D35);

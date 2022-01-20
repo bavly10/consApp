@@ -57,6 +57,7 @@ class cons_SendTOP_Error extends cons_States{}
 
 
 class Cons_Success_Ads extends cons_States{}
+class Cons_noNewData_Ads extends cons_States{}
 class Cons_Loading_Ads extends cons_States{}
 class Cons_Error_Ads extends cons_States{
   final String error;

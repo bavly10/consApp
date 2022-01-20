@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:helpy_app/model/customer_model.dart';
 import 'package:helpy_app/modules/customer/Chat/chats_screen.dart';
@@ -14,6 +16,7 @@ import 'package:helpy_app/shared/network.dart';
 import 'package:helpy_app/shared/shared_prefernces.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CustomerCubit extends Cubit<Customer_States> {
   CustomerCubit() : super(consSignInUpCustomer_InitalState());
@@ -101,7 +104,7 @@ class CustomerCubit extends Cubit<Customer_States> {
   Future<void> getCustomerData(myCustomerId) async{
     emit(CustomerLoadinggState());
     await FirebaseFirestore.instance.collection("customers").doc(myCustomerId).get().then((value){
-          myModel=CustomerModel.fromJson(value.data()!);
+      myModel=CustomerModel.fromJson(value.data()!);
       emit(CustomerSuccessState());
     }).catchError((error){
       print(error.toString());
@@ -122,6 +125,84 @@ class CustomerCubit extends Cubit<Customer_States> {
     emit(CustomerChangeState());
   }
 
+  updateCustomerData({String? userName, String? phone, required String id}) {
+    FirebaseFirestore.instance
+        .collection("customers")
+        .doc(id)
+        .update({'username': userName, 'phone': phone}).then((value) {
+      emit(UpdateCustomerDataSucessState());
+    }).catchError((onError) {
+      print(onError.toString());
+      emit(UpdateCustomerDataErrorState());
+    });
+  }
+  final picker = ImagePicker();
+  var pickedFile;
+  File? imagee;
+  Future getImageBloc(ImageSource src) async {
+    pickedFile = await picker.pickImage(source: src, imageQuality: 50);
+    if (pickedFile != null) {
+      imagee = File(pickedFile.path);
+      emit(TakeImageCustomer_State());
+      print("image selected");
+    } else {
+      print("no image selected");
+    }
+  }
+
+  deleteImageBlocLogin() {
+    imagee = null;
+    emit(DeleteImageCustomer_State());
+    print("image Deleted");
+  }
+
+  void uploadProfileImage({required String id}) {
+    FirebaseStorage.instance
+        .ref()
+        .child('customers/${Uri.file(imagee!.path).pathSegments.last}')
+        .putFile(imagee!)
+        .then((value) {
+      value.ref.getDownloadURL().then((String? value) {
+        print(value);
+        updateCustomerImage(image: value, id: id);
+        emit(UploadCustomerImageSucessState());
+
+        //profileImageUrl = value!;
+      }).catchError((error) {
+        emit(UploadCustomerImageErrorState());
+      });
+    }).catchError((onError) {
+      emit(UploadCustomerImageErrorState());
+    });
+  }
+
+  updateCustomerImage({String? image, required String id}) {
+    emit(LoadingChangeCustomerImage());
+    FirebaseFirestore.instance
+        .collection("customers")
+        .doc(id)
+        .update({'image': image}).then((value) {
+      // myToast(message: mytranslate(context, "congrate"));
+      // updateCustomerStrapi(
+      //   username: userName, email: email, phone: phone, id: id);
+      emit(ChangeCustomerImageSuessState());
+    }).catchError((onError) {
+      print(onError.toString());
+      emit(ChangeCustomerImageErrorState());
+    });
+  }
+
+  Future<http.Response> updateCustomerStrapi({required String username, required String email, required String phone, dynamic id}) {
+    return http.put(
+      Uri.parse("$base_api/Customers/$id"),
+      headers: <String, String>{'Content-Type': 'application/json'},
+      body: jsonEncode(<String, String>{
+        'username': username,
+        'email': email,
+        'phone': phone
+      }),
+    );
+  }
 
   Future addUserINChat(String userid,String username,String customerid) async {
     emit(CustomerLoadingState());
@@ -144,6 +225,7 @@ class CustomerCubit extends Cubit<Customer_States> {
       emit(CustomerCreateChatState());
     });
   }
+
 
   Future<http.Response> updatePassword(String newPassword, int? id) {
     return http.put(
