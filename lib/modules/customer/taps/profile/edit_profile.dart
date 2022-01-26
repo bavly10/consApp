@@ -31,6 +31,9 @@ class EditProfile extends StatelessWidget {
         myToast(message: mytranslate(context, "changproimage"));
       } else if (state is UpdateCustomerDataSucessState) {
         myToast(message: mytranslate(context, "editing"));
+      } else if (state is TakeImageCustomer_State) {
+        CustomerCubit.get(context)
+            .uploadProfileImage(id: cons_Cubit.get(context).customerID!);
       }
     }, builder: (context, state) {
       File? image = CustomerCubit.get(context).imagee;
@@ -54,7 +57,7 @@ class EditProfile extends StatelessWidget {
                 Mybutton(
                   context: context,
                   title: Text(
-                  "UPDATE",
+                    "UPDATE",
                     style: const TextStyle(color: Colors.white),
                   ),
                   onPress: () {
@@ -63,7 +66,7 @@ class EditProfile extends StatelessWidget {
                       CustomerCubit.get(context).updateCustomerData(
                           userName: nameController.text,
                           phone: phoneController.text,
-                          id:cons_Cubit.get(context).customerID!);
+                          id: cons_Cubit.get(context).customerID!);
                     }
                   },
                   color: HexColor('#C18F3A'),
@@ -81,7 +84,7 @@ class EditProfile extends StatelessWidget {
                       CustomerCubit.get(context).updateCustomerData(
                           userName: nameController.text,
                           phone: phoneController.text,
-                          id:cons_Cubit.get(context).customerID!);
+                          id: cons_Cubit.get(context).customerID!);
                     }
                   },
                 ),
@@ -136,49 +139,30 @@ class EditProfile extends StatelessWidget {
                     style: TextStyle(fontSize: 14),
                   ),
                 ),
-                MaterialButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(35.0)),
-                  color: HexColor('#C18F3A'),
-                  onPressed: state is TakeImageCustomer_State
-                      ? () {
-                          CustomerCubit.get(context).uploadProfileImage(id: cons_Cubit.get(context).customerID!);
-                        }
-                      : null,
-                  child: state is LoadingChangeCustomerImage
-                      ? SpinKitCircle(
-                          color: myWhite,
-                        )
-                      : Text(
-                          mytranslate(context, "changeimage"),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            letterSpacing: 2,
-                          ),
-                        ),
-                ),
                 const SizedBox(
                   height: 20,
                 ),
                 Stack(
                   alignment: AlignmentDirectional.bottomCenter,
                   children: [
-                    if(cusImage==null)
-                     const CircleAvatar(backgroundImage:  AssetImage('assets/logo.png'),radius: 50,)
+                    if (cusImage == null)
+                      const CircleAvatar(
+                        backgroundImage: AssetImage('assets/logo.png'),
+                        radius: 50,
+                      )
                     else
                       CircleAvatar(
                         backgroundImage: NetworkImage(cusImage),
                         radius: 50,
                       ),
-                    if (image !=null)
+                    if (image != null)
                       CircleAvatar(
                         backgroundImage: FileImage(image),
                         radius: 50,
                       ),
                     Positioned(
                       // top: 750,
-                      left: 105,
+                      left: 120,
                       child: Center(
                         child: Container(
                           //alignment: AlignmentDirectional.topStart,
@@ -192,7 +176,8 @@ class EditProfile extends StatelessWidget {
                           width: 20,
                           child: InkWell(
                             onTap: () {
-                              CustomerCubit.get(context).getImageBloc(ImageSource.gallery);
+                              CustomerCubit.get(context)
+                                  .getImageBloc(ImageSource.gallery);
                             },
                             child: const Align(
                               alignment: Alignment.center,

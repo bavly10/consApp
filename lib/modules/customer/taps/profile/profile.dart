@@ -31,23 +31,14 @@ class ProfileScreen extends StatelessWidget {
               child: Column(
                 children: [
                   if (cusImage == null)
-                    Container(
-                      decoration: BoxDecoration(
-                        image: const DecorationImage(
-                            image: AssetImage('assets/logo.png')),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * .18,
+                    const CircleAvatar(
+                      backgroundImage: AssetImage('assets/logo.png'),
+                      radius: 50,
                     ),
                   if (cusImage != null)
-                    Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(image: NetworkImage(cusImage)),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * .18,
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(cusImage),
+                      radius: 50,
                     ),
                   const SizedBox(
                     height: 20,
