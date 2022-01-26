@@ -113,5 +113,8 @@
    "sendurl": "SEND",
    "passtext": "To reset your password please put your email",
    "reviewemail": "Check your email to reset password",
-   "errorpass": "Error!!"
+   "errorpass": "Error!!",
+   "updating": "UPDATE",
+   "emailtrue": "Email Is Correct",
+   "emailfalse": "Email Is Not Correct..Please Try Again "
 }

@@ -18,7 +18,7 @@ class MainCustomer extends StatelessWidget {
     return BlocBuilder<CustomerCubit, Customer_States>(
         builder: (context,state){
           final cubit = CustomerCubit.get(context);
-          var model = CustomerCubit.get(context).myModel;
+          var model = CustomerCubit.get(context).model;
           return SafeArea(
             child: Scaffold(
               backgroundColor:mygrey,

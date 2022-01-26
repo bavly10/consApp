@@ -64,3 +64,10 @@ class TakeImageCustomer_State extends Customer_States {}
 class DeleteImageCustomer_State extends Customer_States {}
 
 class LoadingChangeCustomerImage extends Customer_States {}
+class EmailCustomerisExitState extends Customer_States {}
+
+class EmailCustomerisNotExitState extends Customer_States {}
+
+class CustomerPasswordIsChangeState extends Customer_States {}
+
+class CustomerPasswordIsNotChange extends Customer_States {}

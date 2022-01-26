@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/model/user_model.dart';
 import 'package:helpy_app/modules/User_screen/slide_dialog.dart';
 import 'package:helpy_app/shared/error_compon.dart';
@@ -23,7 +24,7 @@ class ServicesIntro extends StatefulWidget {
 
 class _ServicesIntroState extends State<ServicesIntro> {
   File? f;
-   String? token=customerToken;
+
   @override
   Widget build(BuildContext context) {
     return widget.cubit.filesIntros!.isEmpty
@@ -37,8 +38,9 @@ class _ServicesIntroState extends State<ServicesIntro> {
               Padding(
                 padding: const EdgeInsets.only(left: 8.0,right: 8.0),
                 child: TextButton(onPressed: (){
+                  cons_Cubit.get(context).getMyShared();
                   final myfile=base_api+e.fileIntro!.url!;
-                  if(token==null) {
+                  if(cons_Cubit.get(context).customerToken==null) {
                     slideDialog.showSlideDialog(
                         pillColor: myAmber,
                         backgroundColor:Colors.white,

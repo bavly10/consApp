@@ -22,8 +22,8 @@ class ProfileScreen extends StatelessWidget {
     return BlocConsumer<CustomerCubit, Customer_States>(
       listener: (context, state) {},
       builder: (context, state) {
-        var model = CustomerCubit.get(context).myModel;
-        var cusImage = CustomerCubit.get(context).myModel?.image;
+        var model = CustomerCubit.get(context).model;
+        var cusImage = CustomerCubit.get(context).model?.image;
         return Directionality(
           textDirection: TextDirection.rtl,
           child: Scaffold(

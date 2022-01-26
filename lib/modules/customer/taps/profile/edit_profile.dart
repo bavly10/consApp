@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/modules/customer/cubit/cubit.dart';
 import 'package:helpy_app/modules/customer/cubit/state.dart';
 import 'package:helpy_app/shared/componotents.dart';
@@ -19,9 +20,9 @@ class EditProfile extends StatelessWidget {
   var emailController = TextEditingController();
   var phoneController = TextEditingController();
   var formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
+    cons_Cubit.get(context).getMyShared();
     return BlocConsumer<CustomerCubit, Customer_States>(
         listener: (context, state) {
       if (state is LoadingChangeCustomerImage) {
@@ -33,7 +34,8 @@ class EditProfile extends StatelessWidget {
       }
     }, builder: (context, state) {
       File? image = CustomerCubit.get(context).imagee;
-      var cusImage = CustomerCubit.get(context).myModel?.image;
+      var cusImage = CustomerCubit.get(context).model?.image;
+      var model = CustomerCubit.get(context).model;
       return Scaffold(
           appBar: AppBar(
             title: Text(
@@ -49,21 +51,37 @@ class EditProfile extends StatelessWidget {
               reverse: true,
               shrinkWrap: true,
               children: [
-                ProfileTextField(
-                  controller: phoneController,
-                  type: TextInputType.phone,
-                  hint: '5963585462',
-                  validate: (value) => value!.isEmpty
-                      ? 'Enter your phone'
-                      : validateMobile(value),
-                  onSubmit: (value) {
-                    print(customerID);
+                Mybutton(
+                  context: context,
+                  title: Text(
+                  "UPDATE",
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                  onPress: () {
                     FocusScope.of(context).requestFocus(FocusNode());
                     if (formKey.currentState!.validate()) {
                       CustomerCubit.get(context).updateCustomerData(
                           userName: nameController.text,
                           phone: phoneController.text,
-                          id: customerID!);
+                          id:cons_Cubit.get(context).customerID!);
+                    }
+                  },
+                  color: HexColor('#C18F3A'),
+                ),
+                ProfileTextField(
+                  controller: phoneController,
+                  type: TextInputType.phone,
+                  hint: model?.phone,
+                  validate: (value) => value!.isEmpty
+                      ? 'Enter your phone'
+                      : validateMobile(value),
+                  onSubmit: (value) {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                    if (formKey.currentState!.validate()) {
+                      CustomerCubit.get(context).updateCustomerData(
+                          userName: nameController.text,
+                          phone: phoneController.text,
+                          id:cons_Cubit.get(context).customerID!);
                     }
                   },
                 ),
@@ -102,7 +120,7 @@ class EditProfile extends StatelessWidget {
                 ProfileTextField(
                   controller: nameController,
                   type: TextInputType.name,
-                  hint: 'احمد علي',
+                  hint: model!.username,
                   validate: (value) => value!.isEmpty
                       ? 'Enter Your Name'
                       : (nameRegExp.hasMatch(value)
@@ -124,9 +142,7 @@ class EditProfile extends StatelessWidget {
                   color: HexColor('#C18F3A'),
                   onPressed: state is TakeImageCustomer_State
                       ? () {
-                          print(customerID);
-                          CustomerCubit.get(context)
-                              .uploadProfileImage(id: customerID!);
+                          CustomerCubit.get(context).uploadProfileImage(id: cons_Cubit.get(context).customerID!);
                         }
                       : null,
                   child: state is LoadingChangeCustomerImage
@@ -149,22 +165,16 @@ class EditProfile extends StatelessWidget {
                   alignment: AlignmentDirectional.bottomCenter,
                   children: [
                     if(cusImage==null)
-                      Image(
-                      fit: BoxFit.fill,
-                      image: AssetImage('assets/logo.png'),
-                      width: MediaQuery.of(context).size.width * 0.30,
-                    )
+                     const CircleAvatar(backgroundImage:  AssetImage('assets/logo.png'),radius: 50,)
                     else
-                      Image(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(cusImage),
-                      width: MediaQuery.of(context).size.width * 0.30,
-                    ),
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(cusImage),
+                        radius: 50,
+                      ),
                     if (image !=null)
-                      Image(
-                        image: FileImage(image),
-                        fit: BoxFit.fill,
-                        width: MediaQuery.of(context).size.width * 0.30,
+                      CircleAvatar(
+                        backgroundImage: FileImage(image),
+                        radius: 50,
                       ),
                     Positioned(
                       // top: 750,

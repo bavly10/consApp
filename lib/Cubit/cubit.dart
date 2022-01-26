@@ -15,6 +15,7 @@ import 'package:helpy_app/modules/User/login/main_login.dart';
 import 'package:helpy_app/shared/network.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:helpy_app/shared/shared_prefernces.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
@@ -233,6 +234,16 @@ class cons_Cubit extends Cubit<cons_States> {
     else if (res.statusCode ==500){
       emit(Cons_Error_Ads(e.toString()));
     }
+  }
+  String? customerToken;
+  String? customerID;
+  String? userToken;
+  int? userID;
+  void getMyShared(){
+    customerToken = CashHelper.getData("tokenCustomer");
+     customerID = CashHelper.getData("cust_id");
+    userToken = CashHelper.getData("userToken");
+    userID = CashHelper.getData("userId");
   }
 
 }

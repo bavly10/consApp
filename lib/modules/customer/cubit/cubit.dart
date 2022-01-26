@@ -26,7 +26,7 @@ class CustomerCubit extends Cubit<Customer_States> {
   late var myid;
   final _auth = FirebaseAuth.instance;
   late UserCredential authres;
-
+  late String customerImage;
   register({required String username,required String  email,required String  password,required String  phone}) async{
     emit(RegisterLoadingState());
     late var response;
@@ -100,11 +100,11 @@ class CustomerCubit extends Cubit<Customer_States> {
 
 
 
-  CustomerModel? myModel;
+  CustomerModel? model;
   Future<void> getCustomerData(myCustomerId) async{
     emit(CustomerLoadinggState());
     await FirebaseFirestore.instance.collection("customers").doc(myCustomerId).get().then((value){
-      myModel=CustomerModel.fromJson(value.data()!);
+      model=CustomerModel.fromJson(value.data()!);
       emit(CustomerSuccessState());
     }).catchError((error){
       print(error.toString());
@@ -237,4 +237,24 @@ class CustomerCubit extends Cubit<Customer_States> {
     );
   }
 
+  void changePassword(String email, id) async {
+    await FirebaseFirestore.instance
+        .collection('customers')
+        .doc(id)
+        .get()
+        .then((value) {
+      if (value.get('email') == email) {
+        emit(EmailCustomerisExitState());
+        FirebaseAuth.instance
+            .sendPasswordResetEmail(email: email)
+            .then((value) {
+          emit(CustomerPasswordIsChangeState());
+        }).catchError((onError) {
+          emit(CustomerPasswordIsNotChange());
+        });
+      } else {
+        emit(EmailCustomerisNotExitState());
+      }
+    }).catchError((onError) {});
+  }
 }

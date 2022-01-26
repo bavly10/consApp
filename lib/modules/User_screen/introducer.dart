@@ -5,6 +5,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/modules/Deatils_Special/cubit/cubit.dart';
 import 'package:helpy_app/modules/Deatils_Special/cubit/states.dart';
 
@@ -32,9 +33,9 @@ class Introducer extends StatelessWidget {
   List imglist = ['assets/as.png', 'assets/ae.jpg', 'assets/ar.jpg'];
   String imgurl = base_api;
   Color mycolor=Colors.white;
-  String? token=customerToken;
   @override
   Widget build(BuildContext context) {
+
     return BlocConsumer<ConsCubitIntro, cons_StatesIntro>(
         listener: (ctx,state){
           if (state is Cons_Payment_Loading){
@@ -77,7 +78,7 @@ class Introducer extends StatelessWidget {
           }
          else if(state is Cons_Payment_done)
           {
-            navigateTo(context, PaymentsTest(state.url));
+            navigateTo(context, PaymentsTest(state.url,id));
           }
           else if(state is Cons_Payment_notdone){
             EasyLoading.showToast(state.error,toastPosition: EasyLoadingToastPosition.bottom
@@ -260,25 +261,19 @@ class Introducer extends StatelessWidget {
         )),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () async{
-            print(customerToken);
-            print(customerID);
-            if(customerToken==null){
+            cons_Cubit.get(context).getMyShared();
+            if(cons_Cubit.get(context).customerToken==null){
               slideDialog.showSlideDialog(
                   pillColor: myAmber,
                   backgroundColor:Colors.white,
                   context: context,
                   child: MySlideDialog(cubit.username, mytranslate(context, "connect")));
             }else{
-
-              CustomerCubit.get(context).getCustomerData(customerID).then((value)async{
-                  var model = CustomerCubit.get(context).myModel;
+              CustomerCubit.get(context).getCustomerData(cons_Cubit.get(context).customerID).then((value)async{
+                  var model = CustomerCubit.get(context).model;
               ///payment method
-              await ConsCubitIntro.get(context).getPay(
-                  user: cubit.username,name: model!.username,email: model.email,phone: model.phone
-                  ,amount: 30
-              );
+              await ConsCubitIntro.get(context).getPay(user: cubit.username,name: model!.username,email: model.email,phone: model.phone,amount: 30);
               });
-
             // await CustomerCubit.get(context).addUserINChat(cubit.id.toString(), cubit.username,customerID!);
             }
           },

@@ -143,8 +143,7 @@ class _LoginIntroState extends State<LoginIntro> {
                       color: myAmber,
                       context: context,
                       onPress: () async {
-                        if (formState.currentState != null &&
-                            formState.currentState!.validate()) {
+                        if (formState.currentState != null && formState.currentState!.validate()) {
                           FocusScope.of(context).unfocus();
                           await UserCubit.get(context).login(
                               emailsController.text, passsController.text);

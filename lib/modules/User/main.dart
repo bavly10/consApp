@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/model/customer_model.dart';
 import 'package:helpy_app/model/user_model.dart';
 import 'package:helpy_app/modules/User/cubit/cubit.dart';
@@ -18,7 +19,8 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 class UserMain extends StatelessWidget {
   Widget build(BuildContext context) {
-    UserCubit.get(context).getUserDetails(userID);
+    cons_Cubit.get(context).getMyShared();
+    UserCubit.get(context).getUserDetails(cons_Cubit.get(context).userID);
     return BlocBuilder<UserCubit, cons_login_Register_States>(
       builder: (context, state) {
         final cubit = UserCubit.get(context);

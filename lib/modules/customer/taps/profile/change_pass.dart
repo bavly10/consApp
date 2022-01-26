@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/modules/User/cubit/cubit.dart';
 import 'package:helpy_app/modules/User/cubit/states.dart';
 import 'package:helpy_app/modules/customer/cubit/cubit.dart';
@@ -20,10 +21,16 @@ class ChangePassword extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<CustomerCubit, Customer_States>(
         listener: (context, state) {
-      if (state is LoginChangePassSucessState) {
+      if (state is EmailCustomerisExitState) {
+        myToast(message: mytranslate(context, "emailtrue"));
+      } else if (state is EmailCustomerisNotExitState) {
+        myToast(message: mytranslate(context, "emailfalse"));
+      } else if (state is CustomerPasswordIsChangeState) {
         myToast(message: mytranslate(context, "reviewemail"));
-      } else if (state is LoginChangePassErrorState) {
-        myToast(message: "errorpass");
+        navigateToFinish(context, const ProfileScreen());
+      } else if (state is CustomerPasswordIsNotChange) {
+        myToast(message: mytranslate(context, "errorpass"));
+        myToast(message: mytranslate(context, "nomoreData"));
       }
     }, builder: (context, state) {
       return Scaffold(
@@ -48,11 +55,9 @@ class ChangePassword extends StatelessWidget {
                   color: HexColor('#C18F3A'),
                   onPressed: () {
                     FocusScope.of(context).requestFocus(FocusNode());
-
-                    UserCubit.get(context)
-                        .getUser("Customers", emailController.text);
-
-                    navigateToFinish(context, ProfileScreen());
+                    if (formKey.currentState!.validate()) {
+                      CustomerCubit.get(context).changePassword(emailController.text, cons_Cubit.get(context).customerID);
+                    }
                   },
                   child: Text(
                     mytranslate(context, "sendurl"),
