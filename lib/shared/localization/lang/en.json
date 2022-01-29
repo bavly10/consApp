@@ -116,5 +116,9 @@
    "errorpass": "Error!!",
    "updating": "UPDATE",
    "emailtrue": "Email Is Correct",
-   "emailfalse": "Email Is Not Correct..Please Try Again "
+   "emailfalse": "Email Is Not Correct..Please Try Again ",
+   "rating": "Rating of Customers",
+   "wallet": "Wallet",
+   "logout": "Logout",
+   "editpass": "Please Check Your Email Now!! Then logout and Login Again"
 }

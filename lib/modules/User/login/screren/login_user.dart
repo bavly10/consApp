@@ -63,6 +63,7 @@ class _LoginIntroState extends State<LoginIntro> {
                       UserCubit.get(context).updatePassStrapi(newPasswordController.text, UserCubit.get(context).forgetID);
                       UserCubit.get(context).updateForget(table: "users",id:  UserCubit.get(context).forgetID!,forget: false);
                       myToast(message: mytranslate(context, "sucesspass"),);
+                      navigateToFinish(context, UserMain());
                     }));
             myState = false;
           }
@@ -145,8 +146,7 @@ class _LoginIntroState extends State<LoginIntro> {
                       onPress: () async {
                         if (formState.currentState != null && formState.currentState!.validate()) {
                           FocusScope.of(context).unfocus();
-                          await UserCubit.get(context).login(
-                              emailsController.text, passsController.text);
+                          await UserCubit.get(context).login(emailsController.text, passsController.text);
                         }
                       },
                       title: myState

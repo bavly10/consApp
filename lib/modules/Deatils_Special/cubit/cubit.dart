@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:helpy_app/model/payment.dart';
 import 'package:helpy_app/model/user_model.dart';
 import 'package:helpy_app/modules/Deatils_Special/cubit/states.dart';
 import 'package:helpy_app/shared/network.dart';
@@ -195,4 +196,28 @@ class ConsCubitIntro extends Cubit<cons_StatesIntro> {
     }
   }
 
+  ModelPayment? modelPayment;
+  Future<void> addPay(trancontroller)async {
+    emit(Cons_Payments_loading());
+    final url=Uri.parse("https://secure-egypt.paytabs.com/payment/query");
+    Map<String,String> headers={
+      "Content-Type": 'application/json',
+      'authorization': 'SBJNBBRGMW-J2L9JG2DLH-9K6WHZRGZL'
+    };
+    Map<String,dynamic> body={
+      "profile_id":83652,
+       "tran_ref":trancontroller,
+    };
+    var response= await http.post(url, headers: headers, body:jsonEncode(body));
+    if (response.statusCode == 200) {
+      var jdson=jsonDecode(response.body);
+      modelPayment=ModelPayment.fromJson(jdson);
+      print(response.body);
+      emit(Cons_Payments_add(modelPayment!));
+    }
+    else if(response.statusCode ==400){
+      var jdsonn = jsonDecode(response.body);
+      emit(Cons_Payments_error(jdsonn['message'].toString()));
+    }
+  }
 }

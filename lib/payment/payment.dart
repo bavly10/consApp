@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helpy_app/modules/Deatils_Special/cubit/cubit.dart';
+import 'package:helpy_app/modules/Deatils_Special/cubit/states.dart';
 import 'package:helpy_app/shared/componotents.dart';
 import 'package:helpy_app/shared/my_colors.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -7,7 +9,6 @@ import 'package:webview_flutter/webview_flutter.dart';
 class PaymentsTest extends StatelessWidget {
   final String url;
   final int id;
-
   PaymentsTest(this.url,this.id);
 
   TextEditingController controller = TextEditingController();
@@ -16,29 +17,54 @@ class PaymentsTest extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = ConsCubitIntro.get(context).findbyid(id);
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            myTran(context,cubit.username),
-            const  Padding(
-              padding:  EdgeInsets.all(8.0),
-              child:  Divider(height: 1,color: Colors.black,),
+    return BlocConsumer<ConsCubitIntro,cons_StatesIntro>(
+      listener: (ctx,state){
+        if(state is Cons_Payments_loading )
+          {
+            myToast(message: "Loading.....");
+          }
+        else if (state is Cons_Payments_add)
+          {
+            if(state.modelPayment.tran_ref==controller.text){
+              myToast(message: "Let's Goooooooooooooooooooo with ${cubit.username}");
+              print("done");
+              ///navigate to chat with cubit
+            }else {
+              myToast(message: "SomeThing error!!");
+            }
+          }
+        else if (state is Cons_Payments_error)
+        {
+          myToast(message:state.error);
+        }
+      },
+      builder:(ctx,state){
+        return Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            elevation: 0,
+          ),
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                myTran(context,cubit.username),
+                const  Padding(
+                  padding:  EdgeInsets.all(8.0),
+                  child:  Divider(height: 1,color: Colors.black,),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height *1,
+                  child: WebView(
+                    initialUrl: url,
+
+                    javascriptMode: JavascriptMode.unrestricted,
+                  ),
+                ),
+              ],
             ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height *1,
-              child: WebView(
-                initialUrl: url,
-                javascriptMode: JavascriptMode.unrestricted,
-              ),
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      }
     );
   }
 
@@ -80,7 +106,7 @@ class PaymentsTest extends StatelessWidget {
                         onPress: () {
                           if (formState.currentState!.validate()) {
                             FocusScope.of(context).unfocus();
-                            print("Done");
+                            ConsCubitIntro.get(context).addPay(controller.text);
                           }
                         },
                         title:const Text(
@@ -96,4 +122,9 @@ class PaymentsTest extends StatelessWidget {
       ),
     );
   }
+
+  Widget center(){
+    return  const SizedBox(height: 150,width: 150,child:Center(child: CircularProgressIndicator(color: Colors.black,),));
+  }
+
 }

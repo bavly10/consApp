@@ -9,7 +9,8 @@ import 'package:helpy_app/model/post.dart';
 import 'package:helpy_app/model/user_model.dart';
 import 'package:helpy_app/modules/User/cubit/states.dart';
 import 'package:helpy_app/modules/User/home_screen/user_main.dart';
-import 'package:helpy_app/modules/User/profile/profile_main.dart';
+import 'package:helpy_app/modules/User/profile/profile.dart';
+
 import 'package:helpy_app/modules/customer/Chat/chats_screen.dart';
 import 'package:helpy_app/shared/componotents.dart';
 import 'package:helpy_app/shared/network.dart';
@@ -186,6 +187,8 @@ class UserCubit extends Cubit<cons_login_Register_States> {
   late var myid;
   final _auth = FirebaseAuth.instance;
  late UserCredential authres;
+
+
    register({String? username, email, password, phone,String? listImages,address,about}) async{
     emit(cons_Loading_Register());
     late var response;
@@ -260,12 +263,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
         forgetpass=x['forgetpass'];
       }
       if(myEmail==email){
-        FirebaseAuth.instance.sendPasswordResetEmail(email: email).then((value) {
-          updateForget(table: table,id: forgetID!,forget: true);
-          emit(LoginChangePassSucessState());
-        }).catchError((onError) {
-          emit(LoginChangePassSucessState());
-        });
+        sendEmailPassword(table, email,forgetID!);
       }else{
         return myToast(message: error);
       }
@@ -273,6 +271,16 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       print('no connect');
     }
   }
+
+  Future<void> sendEmailPassword(table,email,id)async {
+    FirebaseAuth.instance.sendPasswordResetEmail(email: email).then((value) {
+      updateForget(table: table,id: id,forget: true);
+      emit(LoginChangePassSucessState());
+    }).catchError((onError) {
+      emit(LoginChangePassSucessState());
+    });
+  }
+
   Future<void> getUserLogin(email) async {
     final url = Uri.parse("$base_api/users?_where[email]=$email");
     final http.Response res = await http.get(url);
@@ -289,9 +297,8 @@ class UserCubit extends Cubit<cons_login_Register_States> {
   }
 
   late String tokenUser;
-
-   login(String email,String password)
-   {
+  ///////////////////////login/////////////
+   login(String email,String password) {
      final url = Uri.parse("$base_api/auth/local");
      Map<String, String> headrs = {
        'Accept': 'application/json',
@@ -306,33 +313,29 @@ class UserCubit extends Cubit<cons_login_Register_States> {
        {
          emit(cons_getuser_login());
        }
-       else
-         {
+       else {
          var response = await http.post(url, headers: headrs, body: body);
          if (response.statusCode == 200) {
            var jdson = jsonDecode(response.body);
-           loginModel= LoginModel.fromJson(jdson);
+           loginModel = LoginModel.fromJson(jdson);
            print(body);
-           tokenUser=loginModel!.token!;
-          int? useriD=loginModel!.userClass!.id;
+           tokenUser = loginModel!.token!;
+           int? useriD = loginModel!.userClass!.id;
            CashHelper.putData("userToken", tokenUser);
-           CashHelper.putData("userId",useriD);
+           CashHelper.putData("userId", useriD);
            emit(cons_Login_Scusess(loginModel!));
            return true;
          }
-         else if(response.statusCode ==400){
+         else if (response.statusCode == 400) {
            var jdsonn = jsonDecode(response.body);
-           loginModel= LoginModel.fromJson(jdsonn);
+           loginModel = LoginModel.fromJson(jdsonn);
            emit(cons_Login_Error(loginModel!));
            // ignore: avoid_print
-           print(loginModel!.message!.map((e) => e.messages!.map((e) => e.message.toString())));
-         }
-         else if(response.persistentConnection)
-         {
-           emit(cons_not_connected_net_login());
+           print(loginModel!.message!.map((e) =>
+               e.messages!.map((e) => e.message.toString())));
          }
        }
-     });
+      });
     }
 
     List<UserStrapi> mydeatilsuser=[];
@@ -365,7 +368,6 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       body: jsonEncode(<String, bool>{'forgetpass': forget}),
     );
   }
-
 
 
   ////////////Add Post ////////////////

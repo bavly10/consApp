@@ -16,32 +16,24 @@ class CustomCard extends StatelessWidget {
       onTap: (){
         navigateTo(context, SpecialList(cat.title));
       },
-      child: Card(
-          shadowColor: HexColor('#C18F3A'),
-          elevation: 0,
-          // color: HexColor('#C18F3A'),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-          child: Column(
-            children: [
-              Flexible(
-                flex: 1,
-                child: FadeInImage(
-                  height:MediaQuery.of(context).size.height*0.15,
-                  placeholder: const AssetImage("assets/logo.png"),
-                  image: NetworkImage(imgurl + cat.catImg.url!),
-                  fit: BoxFit.cover,
-                ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Flexible(
+              flex: 1,
+              child: FadeInImage(
+                height:MediaQuery.of(context).size.height*0.15,
+                placeholder: const AssetImage("assets/logo.png"),
+                image: NetworkImage(imgurl + cat.catImg.url!),
+                fit: BoxFit.cover,
               ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                cat.title,
-                style: TextStyle(color: HexColor('#C18F3A'),fontWeight: FontWeight.bold),
-              ),
-            ],
-          )),
+            ),
+           const SizedBox(height: 10,),
+            Text(cat.title, style: TextStyle(color: HexColor('#C18F3A'),fontWeight: FontWeight.bold),),
+          ],
+        ),
+      ),
     );
   }
 }

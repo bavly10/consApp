@@ -6,6 +6,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/modules/customer/cubit/cubit.dart';
 import 'package:helpy_app/modules/customer/cubit/state.dart';
+import 'package:helpy_app/shared/compononet/ProfileTextField.dart';
 import 'package:helpy_app/shared/componotents.dart';
 import 'package:helpy_app/shared/error_compon.dart';
 import 'package:helpy_app/shared/localization/translate.dart';
@@ -50,15 +51,15 @@ class EditProfile extends StatelessWidget {
           body: Form(
             key: formKey,
             child: ListView(
-              padding: EdgeInsets.all(15),
+              padding:const EdgeInsets.all(15),
               reverse: true,
               shrinkWrap: true,
               children: [
                 Mybutton(
                   context: context,
-                  title: Text(
+                  title:const Text(
                     "UPDATE",
-                    style: const TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.white),
                   ),
                   onPress: () {
                     FocusScope.of(context).requestFocus(FocusNode());
@@ -75,7 +76,8 @@ class EditProfile extends StatelessWidget {
                   controller: phoneController,
                   type: TextInputType.phone,
                   hint: model?.phone,
-                  validate: (value) => value!.isEmpty
+                  validate: (value) =>
+                  value!.isEmpty
                       ? 'Enter your phone'
                       : validateMobile(value),
                   onSubmit: (value) {
@@ -84,8 +86,7 @@ class EditProfile extends StatelessWidget {
                       CustomerCubit.get(context).updateCustomerData(
                           userName: nameController.text,
                           phone: phoneController.text,
-                          id: cons_Cubit.get(context).customerID!);
-                    }
+                          id: cons_Cubit.get(context).customerID!);}
                   },
                 ),
                 Padding(
@@ -136,7 +137,7 @@ class EditProfile extends StatelessWidget {
                       right: 10, bottom: 8, top: 8, left: 5),
                   child: Text(
                     mytranslate(context, "Name"),
-                    style: TextStyle(fontSize: 14),
+                    style:const TextStyle(fontSize: 14),
                   ),
                 ),
                 const SizedBox(
@@ -171,13 +172,11 @@ class EditProfile extends StatelessWidget {
                             shape: BoxShape.rectangle,
                             color: HexColor('#C18F3A'),
                           ),
-                          //  alignment: Alignment.topRight,
                           height: 20,
                           width: 20,
                           child: InkWell(
                             onTap: () {
-                              CustomerCubit.get(context)
-                                  .getImageBloc(ImageSource.gallery);
+                              CustomerCubit.get(context).getImageBloc(ImageSource.gallery);
                             },
                             child: const Align(
                               alignment: Alignment.center,

@@ -1,3 +1,5 @@
+import 'package:helpy_app/model/payment.dart';
+
 abstract class cons_StatesIntro{}
 class ConSpecial_InitalState extends cons_StatesIntro{}
 
@@ -23,6 +25,7 @@ class Cons_Payment_Error extends cons_StatesIntro{
 class Cons_Payment_event extends cons_StatesIntro{
 }
 
+
 class Cons_Payment_done extends cons_StatesIntro{
   final String url;
 
@@ -34,3 +37,13 @@ class Cons_Payment_notdone extends cons_StatesIntro{
   Cons_Payment_notdone(this.error);
 }
 
+class Cons_Payments_loading extends cons_StatesIntro{
+}
+class Cons_Payments_add extends cons_StatesIntro{
+  final ModelPayment modelPayment;
+  Cons_Payments_add(this.modelPayment);
+}
+class Cons_Payments_error extends cons_StatesIntro{
+  final String error;
+  Cons_Payments_error(this.error);
+}

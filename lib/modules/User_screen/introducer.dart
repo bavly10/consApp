@@ -44,33 +44,31 @@ class Introducer extends StatelessWidget {
                 insetPadding: EdgeInsets.all(8),
                 elevation: 10,
                 titlePadding: const EdgeInsets.all(0.0),
-                title: Container(
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding:const EdgeInsets.fromLTRB(
-                              20,10, 20, 0),
-                          child: Column(
-                            children: [
-                              Text("Company",
-                                style: TextStyle(
-                                    color: myAmber,
-                                    fontWeight: FontWeight.w500,
-                                    fontStyle: FontStyle.normal),
-                                textAlign: TextAlign.center,
-                              ),
-                               SizedBox(
-                                height:MediaQuery.of(context).size.height*0.05,
-                              ),
-                              CircularProgressIndicator(color: myAmber,),
-                             const SizedBox(height: 5,),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+                title: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding:const EdgeInsets.fromLTRB(
+                            20,10, 20, 0),
+                        child: Column(
+                          children: [
+                            Text("Company",
+                              style: TextStyle(
+                                  color: myAmber,
+                                  fontWeight: FontWeight.w500,
+                                  fontStyle: FontStyle.normal),
+                              textAlign: TextAlign.center,
+                            ),
+                             SizedBox(
+                              height:MediaQuery.of(context).size.height*0.05,
+                            ),
+                            CircularProgressIndicator(color: myAmber,),
+                           const SizedBox(height: 5,),
+                          ],
+                        ),
+                      )
+                    ],
                   ),
                 ),
                 contentPadding: EdgeInsets.all(8),
@@ -277,8 +275,11 @@ class Introducer extends StatelessWidget {
             // await CustomerCubit.get(context).addUserINChat(cubit.id.toString(), cubit.username,customerID!);
             }
           },
-          label: const Text('Connect'),
-          icon: const Icon(Icons.thumb_up),
+          label:  Row(children: const [
+            Text('Connect'),
+            SizedBox(width: 5,),
+            Text('45 l.e',style: TextStyle(color: Colors.white,fontSize: 18),),
+          ],),
           backgroundColor: Colors.yellow.shade800,
         ),
       );

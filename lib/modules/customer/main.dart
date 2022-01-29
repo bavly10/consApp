@@ -21,7 +21,7 @@ class MainCustomer extends StatelessWidget {
           var model = CustomerCubit.get(context).model;
           return SafeArea(
             child: Scaffold(
-              backgroundColor:mygrey,
+              backgroundColor:Colors.white,
               appBar: AppBar(title: Row(
                 mainAxisAlignment: MainAxisAlignment.start, children: [
                   Text(mytranslate(context, "welcome",),style:const TextStyle(color: Colors.black,fontSize: 18),),

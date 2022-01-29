@@ -23,8 +23,8 @@ class UserMain extends StatelessWidget {
     UserCubit.get(context).getUserDetails(cons_Cubit.get(context).userID);
     return BlocBuilder<UserCubit, cons_login_Register_States>(
       builder: (context, state) {
-        final cubit = UserCubit.get(context);
         final model = UserCubit.get(context).userStrapi;
+        final cubit = UserCubit.get(context);
         return SafeArea(
           child: Scaffold(
             backgroundColor: Colors.white,
