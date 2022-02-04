@@ -134,17 +134,16 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     emit(DeleteImages_State());
     print("images Deleted");
   }
-  void pickFiles(mediaXtype)async{
+
+  void pickFiles(mediaXtype,bool allowMultiple )async{
     result= (await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: mediaXtype,
-      allowMultiple: true,withReadStream: true,withData: true,))!;
+      allowMultiple: allowMultiple,withReadStream: true,withData: true,))!;
     if(result==null) {
       emit(TakeImagess_Error_State());
     }else {
       emit(TakeImagess_State());
     }
   }
-
-
 
   void uploadImage(Uint8List imageBytes,id) async {
     Map<String,String> a = {"files":imagee!.path,"ref":"user","refId":"$id","field":"intro_logo","source":"users-permissions"};
@@ -184,9 +183,9 @@ class UserCubit extends Cubit<cons_login_Register_States> {
 
 
    LoginModel? loginModel;
-  late var myid;
-  final _auth = FirebaseAuth.instance;
- late UserCredential authres;
+   late var myid;
+   final _auth = FirebaseAuth.instance;
+   late UserCredential authres;
 
 
    register({String? username, email, password, phone,String? listImages,address,about}) async{
@@ -372,20 +371,15 @@ class UserCubit extends Cubit<cons_login_Register_States> {
 
   ////////////Add Post ////////////////
   PostModel? postModel;
-
   Future<PostModel?> AddPost(String content, String time, dynamic id) async {
     emit(ConsAddPostUserLoadingState());
-    final response = await http.post(
-      Uri.parse("$base_api/Posts?_where[users_id]=$id"),
-      headers: <String, String>{
+    final response = await http.post(Uri.parse("$base_api/Posts?_where[users_id]=$id"), headers: <String, String>{
         'Content-Type': 'application/json ',
-      },
-      body: jsonEncode(<dynamic, dynamic>{
+      }, body: jsonEncode(<dynamic, dynamic>{
         'content': content,
         'time': time,
         'users_id': 336,
-      }),
-    );
+      }),);
     if (response.statusCode == 200) {
       postModel = PostModel.fromJson(jsonDecode(response.body));
       var jdson = jsonDecode(response.body);
@@ -407,7 +401,6 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       throw Exception('Failed to Add Post');
     }
   }
-
   /////////uploadImagePost/////////////////
   void uploadPostImage(Uint8List imageBytes, id) async {
     Map<String, String> a = {
@@ -431,5 +424,47 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       print(value);
     });
   }
+  ////////////////file//////////
+  Future<void> addFile(price,userid,path,name)async{
+    Map<String, String> headrs = {
+      'Accept': 'application/json',
+    };
+    Map<String,dynamic>body={
+      "users_permissions_user":userid,
+      "price":price,
+      "filename":name,
+      "Filepdf":path
+    };
+    final response = await http.post(Uri.parse("$base_api/Filesusers"),headers:headrs,body:body,);
+    print("done deatils file");
+    if(response.statusCode==200){
+      var jdson = jsonDecode(response.body);
+      var id=jdson['id'];
+      uploadFilePdf(id);
+    }else{
+      print("errorrrrrrrrrrrrrr${response.body}");
+    }
+
+  }
+void uploadFilePdf(id)async{
+    result!.files.forEach((element) {
+      result!.files.forEach((element) async{
+        String url = base_api + "/upload";
+        var uri = Uri.parse(url);
+        var request =  http.MultipartRequest("POST", uri);
+        Map<String,String> a = {"files":element.path!,"ref":"filesuser","refId":"$id","field":"filepdf"};
+        var stream = http.ByteStream(DelegatingStream.typed(element.readStream!));
+        int? length = element.bytes!.length;
+        var multipartFile =  http.MultipartFile('files', stream, length, filename: basename(element.path!), contentType:MediaType('application', 'pdf'));
+        request.fields.addAll(a);
+        request.files.add(multipartFile);
+        final response = await request.send();
+        response.stream.transform(utf8.decoder).listen((value) {
+          print(value);
+          // ignore: void_checks
+        });
+      });
+    });
+}
 
 }

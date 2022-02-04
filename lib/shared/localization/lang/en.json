@@ -120,5 +120,11 @@
    "rating": "Rating of Customers",
    "wallet": "Wallet",
    "logout": "Logout",
-   "editpass": "Please Check Your Email Now!! Then logout and Login Again"
+   "editpass": "Please Check Your Email Now!! Then logout and Login Again",
+   "pricepdf": "Write Price of File Here...",
+   "nfile": "Add New File",
+   "uploadfile": "UPLOAD",
+   "filen": "File Name",
+   "filez": "File Size",
+   "fileE": "File Extension"
 }

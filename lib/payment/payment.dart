@@ -1,10 +1,16 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+
+
 import 'package:helpy_app/modules/Deatils_Special/cubit/cubit.dart';
 import 'package:helpy_app/modules/Deatils_Special/cubit/states.dart';
 import 'package:helpy_app/shared/componotents.dart';
 import 'package:helpy_app/shared/my_colors.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+
 
 class PaymentsTest extends StatelessWidget {
   final String url;
@@ -13,7 +19,6 @@ class PaymentsTest extends StatelessWidget {
 
   TextEditingController controller = TextEditingController();
   GlobalKey<FormState> formState = GlobalKey();
-
   @override
   Widget build(BuildContext context) {
     final cubit = ConsCubitIntro.get(context).findbyid(id);
@@ -52,14 +57,25 @@ class PaymentsTest extends StatelessWidget {
                   padding:  EdgeInsets.all(8.0),
                   child:  Divider(height: 1,color: Colors.black,),
                 ),
+
                 SizedBox(
                   height: MediaQuery.of(context).size.height *1,
-                  child: WebView(
-                    initialUrl: url,
-
-                    javascriptMode: JavascriptMode.unrestricted,
-                  ),
-                ),
+                  child: InAppWebView(
+                    initialUrlRequest: URLRequest(url: Uri.parse(url)),
+                      onAjaxReadyStateChange: (controller,load)async{
+                      print("restext ${load.responseText}");
+                      print("XML ${load.url}");
+                      print("XML ${load.responseXML}");
+                      if(load.responseText!.contains("Transaction not completed")){
+                        print("failed");
+                        return AjaxRequestAction.PROCEED;
+                      }else{
+                        print("done");
+                        return AjaxRequestAction.PROCEED;
+                      }
+                    },
+                  )
+                  ,),
               ],
             ),
           ),
@@ -121,10 +137,6 @@ class PaymentsTest extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Widget center(){
-    return  const SizedBox(height: 150,width: 150,child:Center(child: CircularProgressIndicator(color: Colors.black,),));
   }
 
 }

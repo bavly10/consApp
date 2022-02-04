@@ -267,10 +267,10 @@ class _Register_introState extends State<Register_intro> {
                                 onPressed: () {
                                   FocusScope.of(context).unfocus();
                                   CustomAlertDialogButtons(onTapPdf: (){
-                                    cubit.pickFiles(['pdf']);
+                                    cubit.pickFiles(['pdf'],true);
                                     cubit.changeMedia(false);Navigator.of(context).pop();
                                   },onTapImages: (){
-                                    cubit.pickFiles(['png', 'jpg']);
+                                    cubit.pickFiles(['png', 'jpg'],true);
                                     cubit.changeMedia(true);
                                     Navigator.pop(context);
                                   },context: context,

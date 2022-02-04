@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helpy_app/Cubit/cubit.dart';
+import 'package:helpy_app/modules/User/add_file/add_file.dart';
 
 import 'package:helpy_app/modules/User/cubit/cubit.dart';
 import 'package:helpy_app/modules/User/cubit/states.dart';
@@ -126,6 +127,20 @@ class UserProfileScreen extends StatelessWidget {
                         navigateTo(context,const WalletScreen());
                       },
                     )),
+                Padding(
+                    padding: const EdgeInsets.only(
+                      right: 5,
+                      bottom: 8,
+                      top: 5,
+                    ),
+                    child: CustomListTile(
+                      textTitle: "nfile",
+                      trailingIcon: Icons.arrow_forward_ios_rounded,
+                      onTap: () {
+                        navigateTo(context, CreateFile());
+                      },
+                    )),
+
                 Padding(
                     padding: const EdgeInsets.only(
                       right: 5,

@@ -73,9 +73,9 @@ class ConsCubitIntro extends Cubit<cons_StatesIntro> {
                       imgPost:e['img_post']==null?null:Img_user.fromJson(e['img_post'])
                   )
               ).toList(),
-              filesIntros:(value['files_intros']as List<dynamic>).map((e) =>FilesIntro(
-                fileIntro: File_intro.fromJson(e["file_intro"]),
-                fileName:e["file_name"],
+              filesIntros:(value['filesusers']as List<dynamic>).map((e) =>FilesIntro(
+                fileIntro: File_intro.fromJson(e["filepdf"]),
+                fileName:e["filename"],
               )).toList(),
             ));
             emit(Cons_newSuccess_Special_intro());

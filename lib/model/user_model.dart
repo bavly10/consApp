@@ -133,8 +133,8 @@ class UserStrapi {
         json["intro_img"].map((x) => Img_user.fromJson(x))),
     posts: List<Post_user>.from(
         json["posts"].map((x) => Post_user.fromJson(x))),
-    filesIntros: List<FilesIntro>.from(
-        json["files_intros"].map((x) => FilesIntro.fromJson(x))),
+    filesIntros:  json["filesusers"]==null?null: List<FilesIntro>.from(
+        json["filesusers"].map((x) => FilesIntro.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -158,7 +158,7 @@ class UserStrapi {
     "intro_logo": introLogo,
     "intro_img": List<dynamic>.from(introImg!.map((x) => x.toJson())),
     "posts": List<dynamic>.from(posts!.map((x) => x.toJson())),
-    "files_intros": List<dynamic>.from(filesIntros!.map((x) => x.toJson())),
+    "filesusers": List<dynamic>.from(filesIntros!.map((x) => x.toJson())),
   };
 }
 
@@ -490,10 +490,11 @@ class FilesIntro {
     this.createdAt,
     this.updatedAt,
     this.fileIntro,
+    this.price
   });
 
   int? id;
-  String? fileName;
+  String? fileName,price;
   int? usersPermissionsUser;
   dynamic publishedAt;
   DateTime? createdAt;
@@ -502,12 +503,13 @@ class FilesIntro {
 
   factory FilesIntro.fromJson(Map<String, dynamic> json) => FilesIntro(
     id: json["id"],
-    fileName: json["file_name"],
+    fileName: json["filename"],
     usersPermissionsUser: json["users_permissions_user"],
     publishedAt: json["published_at"],
+    price: json["price"],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
-    fileIntro: File_intro.fromJson(json["file_intro"]),
+    fileIntro: File_intro.fromJson(json["filepdf"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -517,7 +519,8 @@ class FilesIntro {
     "published_at": publishedAt,
     "created_at": createdAt!.toIso8601String(),
     "updated_at": updatedAt!.toIso8601String(),
-    "file_intro": fileIntro!.toJson(),
+    "Filepdf": fileIntro!.toJson(),
+    "price": price,
   };
 }
 
