@@ -17,6 +17,7 @@ import 'package:helpy_app/shared/localization/translate.dart';
 import 'package:helpy_app/shared/my_colors.dart';
 import 'package:helpy_app/shared/strings.dart';
 import 'package:http/http.dart';
+import 'package:helpy_app/Cubit/cubit.dart';
 
 class LoginUser extends StatefulWidget {
   @override
@@ -93,10 +94,10 @@ class _LoginUserState extends State<LoginUser> {
                             try {
                               await CustomerCubit.get(context)
                                   .signin(
-                                  emailController.text, passController.text)
+                                      emailController.text, passController.text)
                                   .then((value) {
                                 navigateTo(context, MainCustomer());
-                                  });
+                              });
                             } catch (error) {
                               var errormsg = mytranslate(context, "errorlogin");
                               print('error:${error.toString()}');
@@ -121,9 +122,13 @@ class _LoginUserState extends State<LoginUser> {
                         },
                         title: state is LoginLoadingState
                             ? SpinKitCircle(
-                          color: myWhite,
-                        )
-                            : Text(mytranslate(context, "login"), style: const TextStyle(color: Colors.white, fontSize: 18),))),
+                                color: myWhite,
+                              )
+                            : Text(
+                                mytranslate(context, "login"),
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 18),
+                              ))),
                 const SizedBox(
                   height: 20,
                 ),
@@ -138,8 +143,10 @@ class _LoginUserState extends State<LoginUser> {
                             hintText: "email",
                             onPressed: () {
                               Navigator.pop(context);
-                              UserCubit.get(context).getUser("Customers",emailCheckController.text);
-                              myToast(message: mytranslate(context, "Emailissent"));
+                              UserCubit.get(context).getUser(
+                                  "Customers", emailCheckController.text);
+                              myToast(
+                                  message: mytranslate(context, "Emailissent"));
                             }));
                   },
                   child: Text(

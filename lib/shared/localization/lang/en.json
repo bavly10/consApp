@@ -7,7 +7,7 @@
    "chose_spec": "Specialists",
    "city": "City",
    "Company": "Company",
-   "Freelancer":"Freelancer",
+   "Freelancer": "Freelancer",
    "ChoosePicturefrom": "Choose Picture from",
    "Camera": "Camera",
    "Gallery": "Gallery",
@@ -124,7 +124,9 @@
    "pricepdf": "Write Price of File Here...",
    "nfile": "Add New File",
    "uploadfile": "UPLOAD",
-   "filen": "File Name",
-   "filez": "File Size",
-   "fileE": "File Extension"
+   "filen": "File Name :",
+   "filez": "File Size :",
+   "fileE": "File Extension :",
+   "suessfully": "Uploading Sucessfully..",
+   "delete": "Deleted..."
 }
