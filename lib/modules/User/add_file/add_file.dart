@@ -13,9 +13,19 @@ class CreateFile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<UserCubit, cons_login_Register_States>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is UploadUserFileLoadingState) {
+          myToast(message: mytranslate(context, "loadimage"));
+        } else if (state is UploadUserFileSueeeState) {
+          myToast(message: mytranslate(context, "suessfully"));
+        } else if (state is UploadUserFileErrorState) {
+          myToast(message: mytranslate(context, "errorpass"));
+        } else if (state is DeleteImages_State) {
+          myToast(message: mytranslate(context, "delete"));
+        }
+      },
       builder: (context, state) {
-        final result=UserCubit.get(context).result;
+        final result = UserCubit.get(context).result;
         return Scaffold(
           appBar: AppBar(
             centerTitle: false,
@@ -27,7 +37,7 @@ class CreateFile extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: InkWell(
                   onTap: () {
-                    UserCubit.get(context).pickFiles(['pdf'],false);
+                    UserCubit.get(context).pickFiles(['pdf'], false);
                   },
                   child: Icon(
                     Icons.picture_as_pdf_rounded,
@@ -55,11 +65,6 @@ class CreateFile extends StatelessWidget {
                               fontSize: 14,
                               color: Colors.grey[700]),
                         ),
-
-                        //  Icon(
-                        // Icons.add_a_photo_outlined,
-                        // color: HexColor('#C18F3A'),
-                        //  ),
                         Divider(
                           height: 1,
                           color: Colors.grey[400],
@@ -103,7 +108,7 @@ class CreateFile extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
-                  if (result!= null)
+                  if (result != null)
                     Stack(
                       alignment: AlignmentDirectional.topEnd,
                       children: [
@@ -135,49 +140,55 @@ class CreateFile extends StatelessWidget {
                                   ),
                                   Row(
                                     children: [
-                                      Text(
-                                        mytranslate(context, "filen"),
-                                        style: const TextStyle(
-                                            color: Colors.blueGrey),
+                                      Padding(
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: Text(
+                                          mytranslate(context, "filen"),
+                                          style: const TextStyle(
+                                              color: Colors.blueGrey),
+                                        ),
                                       ),
+
                                        Text(
                                         result.files.single.name,
                                         style: const TextStyle(
+                                            color: Colors.blueGrey)),
+                                      Text(
+                                        result.files.single.name,
+                                        style:
+                                            TextStyle(color: Colors.blueGrey),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: Text(
+                                          mytranslate(context, "filez"),
+                                          style: const TextStyle(
+                                              color: Colors.blueGrey),
+                                        ),
+                                      ),
+                                      Text(
+                                        '${result.files.single.size} KB',
+                                        style: const TextStyle(
                                             color: Colors.blueGrey),
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
                                   Row(
                                     children: [
-                                      Text(
-                                        mytranslate(context, "filez"),
-                                        style: const TextStyle(
-                                            color: Colors.blueGrey),
+                                      Padding(
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: Text(
+                                          mytranslate(context, "fileE"),
+                                          style: const TextStyle(
+                                              color: Colors.blueGrey),
+                                        ),
                                       ),
-                                      Text(
-                                          result.files.single.size.toString(),
-                                        style: const TextStyle(
-                                            color: Colors.blueGrey),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        mytranslate(context, "fileE"),
-                                        style: const TextStyle(
-                                            color: Colors.blueGrey),
-                                      ),
-                                      Text(
-                                          result.files.single.extension.toString(),
-                                        style: const TextStyle(
-                                            color: Colors.blueGrey),
+                                      Text(result.files.single.extension.toString(),
+                                        style: const TextStyle(color: Colors.blueGrey),
                                       ),
                                     ],
                                   ),
@@ -187,7 +198,9 @@ class CreateFile extends StatelessWidget {
                           ),
                         ),
                         IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              UserCubit.get(context).deleteImageBlocList();
+                            },
                             icon: Icon(
                               Icons.cancel,
                               color: HexColor('#C18F3A'),
@@ -195,15 +208,15 @@ class CreateFile extends StatelessWidget {
                             )),
                       ],
                     ),
-                 Mybutton(
+                  Mybutton(
                       context: context,
                       onPress: () {
-                     UserCubit.get(context).addFile(
-                       textController.text,
-                       cons_Cubit.get(context).userID.toString(),
-                       result!.files.first.path,
-                       result.files.first.name,
-                     );
+                        UserCubit.get(context).addFile(
+                          textController.text,
+                          cons_Cubit.get(context).userID.toString(),
+                          result!.files.first.path,
+                          result.files.first.name,
+                        );
                       },
                       title: Text(
                         mytranslate(context, "uploadfile"),

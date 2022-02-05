@@ -18,13 +18,13 @@ import 'package:helpy_app/shared/my_colors.dart';
 import 'package:helpy_app/shared/shared_prefernces.dart';
 import 'package:helpy_app/shared/strings.dart';
 
-
 import 'modules/Deatils_Special/cubit/cubit.dart';
+import 'modules/customer/taps/customer_category.dart';
 
-void main()async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
-    await Firebase.initializeApp();
+  await Firebase.initializeApp();
   await CashHelper.init();
   runApp(MyApp());
 }
@@ -35,60 +35,68 @@ class MyApp extends StatelessWidget {
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context)=>cons_Cubit()..checkInternetConnectivity()..getCategories()..getSpecailsts()..getAds()),
-        BlocProvider(create: (context)=>ConsCubitIntro()),
-        BlocProvider(create: (context)=>CustomerCubit()..getCustomerData(cons_Cubit.get(context).customerID)),
-        BlocProvider(create: (context)=>UserCubit()),
+        BlocProvider(
+            create: (context) => cons_Cubit()
+              ..checkInternetConnectivity()
+              ..getCategories()
+              ..getSpecailsts()
+              ..getAds()),
+        BlocProvider(create: (context) => ConsCubitIntro()),
+        BlocProvider(
+            create: (context) => CustomerCubit()
+              ..getCustomerData(cons_Cubit.get(context).customerID)),
+        BlocProvider(create: (context) => UserCubit()),
       ],
-      child: BlocBuilder<cons_Cubit,cons_States>(
-        builder: (context,state){
-          final cubit=cons_Cubit.get(context);
+      child: BlocBuilder<cons_Cubit, cons_States>(
+        builder: (context, state) {
+          final cubit = cons_Cubit.get(context);
           return MaterialApp(
             locale: cubit.locale_cubit,
-              localizationsDelegates: const [
-                SetLocalztion.localizationsDelegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              localeResolutionCallback:(deviceLocal,supportedLocales){
-                for (var local in supportedLocales){
-                  if (local.languageCode==deviceLocal!.languageCode && local.countryCode==deviceLocal.countryCode){
-                    return deviceLocal;
-                  }
+            localizationsDelegates: const [
+              SetLocalztion.localizationsDelegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            localeResolutionCallback: (deviceLocal, supportedLocales) {
+              for (var local in supportedLocales) {
+                if (local.languageCode == deviceLocal!.languageCode &&
+                    local.countryCode == deviceLocal.countryCode) {
+                  return deviceLocal;
                 }
-                return supportedLocales.first;
-              },
-              supportedLocales: const [
-                Locale('en', 'US'), // English, no country code
-                Locale('ar', 'SA'), // Spanish, no country code
-              ],
-              title: 'Consultation',
-              debugShowCheckedModeBanner: false,
-              theme: ThemeData(
-                appBarTheme: AppBarTheme(
-                  titleTextStyle: TextStyle(color: myAmber,fontSize: 22,fontWeight: FontWeight.w600),
+              }
+              return supportedLocales.first;
+            },
+            supportedLocales: const [
+              Locale('en', 'US'), // English, no country code
+              Locale('ar', 'SA'), // Spanish, no country code
+            ],
+            title: 'Consultation',
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              appBarTheme: AppBarTheme(
+                  titleTextStyle: TextStyle(
+                      color: myAmber,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w600),
                   backgroundColor: Colors.white,
                   elevation: 0,
                   centerTitle: true,
-                    systemOverlayStyle: const SystemUiOverlayStyle(
-                        statusBarColor: Colors.white,
-                        statusBarIconBrightness:Brightness.dark,
-                        statusBarBrightness:Brightness.dark
-                    ),
-                  iconTheme: IconThemeData(color: myAmber)
-                ),
-                scaffoldBackgroundColor: Colors.white,
-                visualDensity: VisualDensity.adaptivePlatformDensity,
-                primarySwatch:Colors.amber,
-              ),
+                  systemOverlayStyle: const SystemUiOverlayStyle(
+                      statusBarColor: Colors.white,
+                      statusBarIconBrightness: Brightness.dark,
+                      statusBarBrightness: Brightness.dark),
+                  iconTheme: IconThemeData(color: myAmber)),
+              scaffoldBackgroundColor: Colors.white,
+              visualDensity: VisualDensity.adaptivePlatformDensity,
+              primarySwatch: Colors.amber,
+            ),
             themeMode: ThemeMode.light,
-              home: Animation_Splash(),
-            builder:EasyLoading.init(),
+            home: Animation_Splash(),
+            builder: EasyLoading.init(),
           );
         },
       ),
     );
   }
-
 }

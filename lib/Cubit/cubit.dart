@@ -10,8 +10,6 @@ import 'package:helpy_app/modules/MainScreen/home.dart';
 import 'package:helpy_app/modules/MainScreen/ads.dart';
 import 'package:helpy_app/modules/User/login/main_login.dart';
 
-
-
 import 'package:helpy_app/shared/network.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -115,8 +113,8 @@ class cons_Cubit extends Cubit<cons_States> {
               title: item["Title"],
               catImg: CatImgs.fromJson(item["cat_img"]),
             );
-          } else
-            {mycat.add(Categories(
+          } else {
+            mycat.add(Categories(
               id: item["id"],
               title: item["Title"],
               catImg: CatImgs.fromJson(item["cat_img"]),
@@ -207,43 +205,49 @@ class cons_Cubit extends Cubit<cons_States> {
     final url = Uri.parse("$base_api/Ads");
     final http.Response res = await http.get(url);
     List ads = json.decode(res.body);
-    if (res.statusCode ==200){
-      for(var item in ads){
-  final pro=myads.indexWhere((element) => element.id==item['id']);
-  if(pro>=0){
-    myads[pro]=(AdsModel(
-        id: item['id'],
-        username: item['username'],
-        description: item['description'],
-        profileImage: AdsImage.fromJson(item['profileImage']),
-        contentImage:AdsImage.fromJson(item['contentImage'])));
-    emit(Cons_noNewData_Ads());
-    print("no data new");
-  }else{
-    myads.add(AdsModel(
-        id: item['id'],
-        username: item['username'],
-        description: item['description'],
-        profileImage: AdsImage.fromJson(item['profileImage']),
-        contentImage:AdsImage.fromJson(item['contentImage']))
-    );
-  }
-}
+    if (res.statusCode == 200) {
+      for (var item in ads) {
+        final pro = myads.indexWhere((element) => element.id == item['id']);
+        if (pro >= 0) {
+          myads[pro] = (AdsModel(
+              id: item['id'],
+              username: item['username'],
+              description: item['description'],
+              profileImage: AdsImage.fromJson(item['profileImage']),
+              contentImage: AdsImage.fromJson(item['contentImage'])));
+          emit(Cons_noNewData_Ads());
+          print("no data new");
+        } else {
+          myads.add(AdsModel(
+              id: item['id'],
+              username: item['username'],
+              description: item['description'],
+              profileImage: AdsImage.fromJson(item['profileImage']),
+              contentImage: AdsImage.fromJson(item['contentImage'])));
+        }
+      }
       emit(Cons_Success_Ads());
-    }
-    else if (res.statusCode ==500){
+    } else if (res.statusCode == 500) {
       emit(Cons_Error_Ads(e.toString()));
     }
   }
+
   String? customerToken;
   String? customerID;
   String? userToken;
   int? userID;
-  void getMyShared(){
+  void getMyShared() {
     customerToken = CashHelper.getData("tokenCustomer");
-     customerID = CashHelper.getData("cust_id");
+    customerID = CashHelper.getData("cust_id");
     userToken = CashHelper.getData("userToken");
     userID = CashHelper.getData("userId");
   }
 
+  IconData iconVisiblity = Icons.visibility;
+  bool isPasword = true;
+  void changPasswordVisibilty() {
+    isPasword = !isPasword;
+    iconVisiblity =
+        isPasword ? Icons.visibility_off_outlined : Icons.visibility;
+  }
 }
