@@ -22,7 +22,6 @@ class UserProfileScreen extends StatelessWidget {
   const UserProfileScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    UserCubit.get(context).getUserDetails(cons_Cubit.get(context).userID);
     return BlocBuilder<UserCubit, cons_login_Register_States>(
       builder: (context, state) {
         final model = UserCubit.get(context).userStrapi;
@@ -140,7 +139,6 @@ class UserProfileScreen extends StatelessWidget {
                         navigateTo(context, CreateFile());
                       },
                     )),
-
                 Padding(
                     padding: const EdgeInsets.only(
                       right: 5,

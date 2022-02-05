@@ -140,9 +140,9 @@ class CreateFile extends StatelessWidget {
                                         style: const TextStyle(
                                             color: Colors.blueGrey),
                                       ),
-                                      const Text(
-                                        "dwad",
-                                        style: TextStyle(
+                                       Text(
+                                        result.files.single.name,
+                                        style: const TextStyle(
                                             color: Colors.blueGrey),
                                       ),
                                     ],
@@ -158,7 +158,7 @@ class CreateFile extends StatelessWidget {
                                             color: Colors.blueGrey),
                                       ),
                                       Text(
-                                        "daw",
+                                          result.files.single.size.toString(),
                                         style: const TextStyle(
                                             color: Colors.blueGrey),
                                       ),
@@ -175,7 +175,7 @@ class CreateFile extends StatelessWidget {
                                             color: Colors.blueGrey),
                                       ),
                                       Text(
-                                        "dawda",
+                                          result.files.single.extension.toString(),
                                         style: const TextStyle(
                                             color: Colors.blueGrey),
                                       ),

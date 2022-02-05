@@ -19,6 +19,7 @@ class PaymentsTest extends StatelessWidget {
 
   TextEditingController controller = TextEditingController();
   GlobalKey<FormState> formState = GlobalKey();
+  InAppWebViewController? webView;
   @override
   Widget build(BuildContext context) {
     final cubit = ConsCubitIntro.get(context).findbyid(id);
@@ -62,17 +63,25 @@ class PaymentsTest extends StatelessWidget {
                   height: MediaQuery.of(context).size.height *1,
                   child: InAppWebView(
                     initialUrlRequest: URLRequest(url: Uri.parse(url)),
-                      onAjaxReadyStateChange: (controller,load)async{
-                      print("restext ${load.responseText}");
-                      print("XML ${load.url}");
-                      print("XML ${load.responseXML}");
-                      if(load.responseText!.contains("Transaction not completed")){
-                        print("failed");
-                        return AjaxRequestAction.PROCEED;
-                      }else{
-                        print("done");
-                        return AjaxRequestAction.PROCEED;
-                      }
+                    onWebViewCreated: (InAppWebViewController controller) {
+                      webView = controller;
+                    },
+                    initialOptions: InAppWebViewGroupOptions(
+                      crossPlatform: InAppWebViewOptions(
+                        allowFileAccessFromFileURLs: true,
+                          allowUniversalAccessFromFileURLs: true,
+                          useOnLoadResource: true,
+                          javaScriptEnabled: true,
+                      ),
+                    ),
+                    onLoadStop:(InAppWebViewController controller, url)async{
+                      var html = await controller.evaluateJavascript(
+                          source: "window.document.getElementsByTagName('html')[0].outerHTML;");
+                      print(html);
+                      print(url!.path);
+                      // if(url.path.contains("Transaction not completed")){
+                      //
+                      // }
                     },
                   )
                   ,),
