@@ -212,14 +212,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
   final _auth = FirebaseAuth.instance;
   late UserCredential authres;
 
-  register(
-      {String? username,
-      email,
-      password,
-      phone,
-      String? listImages,
-      address,
-      about}) async {
+  register({String? username, email, password, phone, String? listImages, address, about}) async {
     emit(cons_Loading_Register());
     late var response;
     final url = Uri.parse("$base_api/auth/local/register");
@@ -349,7 +342,8 @@ class UserCubit extends Cubit<cons_login_Register_States> {
         emit(cons_getuser_login());
       } else {
         var response = await http.post(url, headers: headrs, body: body);
-        if (response.statusCode == 200) {
+        if (response.statusCode == 200)
+        {
           var jdson = jsonDecode(response.body);
           loginModel = LoginModel.fromJson(jdson);
           print(body);
@@ -372,14 +366,14 @@ class UserCubit extends Cubit<cons_login_Register_States> {
   }
 
   List<UserStrapi> mydeatilsuser = [];
-  UserStrapi? userStrapi;
+
   Future<void> getUserDetails(id) async {
     final url = Uri.parse("$base_api/users/$id");
     final http.Response res = await http.get(url);
     if (res.statusCode == 200) {
       print(res.body.toString());
-      var user = jsonDecode(res.body);
-      userStrapi = UserStrapi.fromJson(user);
+      Map<String,dynamic> user = jsonDecode(res.body);
+      loginModel = LoginModel.fromJson(user);
     } else {
       print('no connect');
     }
@@ -410,14 +404,14 @@ class UserCubit extends Cubit<cons_login_Register_States> {
   Future<PostModel?> AddPost(String content, String time, dynamic id) async {
     emit(ConsAddPostUserLoadingState());
     final response = await http.post(
-      Uri.parse("$base_api/Posts?_where[users_id]=$id"),
+      Uri.parse("$base_api/Posts"),
       headers: <String, String>{
         'Content-Type': 'application/json ',
       },
       body: jsonEncode(<dynamic, dynamic>{
         'content': content,
         'time': time,
-        'users_id': 336,
+        'users_id': id,
       }),
     );
     if (response.statusCode == 200) {
@@ -430,11 +424,9 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       } else {
         uploadPostImage(imagee!.readAsBytesSync(), id_question);
       }
-
       emit(ConsAddPostUserSucessState());
       return postModel;
     } else if (response.statusCode == 500) {
-      var x = response.body.toString();
     } else {
       print(response.body.toString());
       emit(ConsAddPostUserErrorState());
@@ -467,7 +459,6 @@ class UserCubit extends Cubit<cons_login_Register_States> {
   }
 
   ////////////////file//////////
-  ///
 
   Future<void> addFile(price, userid, path, name) async {
     emit(UploadUserFileLoadingState());

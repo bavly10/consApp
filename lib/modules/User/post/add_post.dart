@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/modules/User/cubit/cubit.dart';
 import 'package:helpy_app/modules/User/cubit/states.dart';
 import 'package:helpy_app/shared/componotents.dart';
@@ -123,7 +124,7 @@ class CreatePost extends StatelessWidget {
                     context: context,
                     onPress: () {
                       UserCubit.get(context).AddPost(
-                          textController.text, DateTime.now().toString(), 336);
+                          textController.text, DateTime.now().toString(), cons_Cubit.get(context).userID);
                     },
                     title: Text(
                       mytranslate(context, "posts"),

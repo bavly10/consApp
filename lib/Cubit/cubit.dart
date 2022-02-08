@@ -244,10 +244,10 @@ class cons_Cubit extends Cubit<cons_States> {
   }
 
   IconData iconVisiblity = Icons.visibility;
-  bool isPasword = true;
+  bool isPassword = true;
   void changPasswordVisibilty() {
-    isPasword = !isPasword;
+    isPassword = !isPassword;
     iconVisiblity =
-        isPasword ? Icons.visibility_off_outlined : Icons.visibility;
+    isPassword ? Icons.visibility_off_outlined : Icons.visibility;
   }
 }

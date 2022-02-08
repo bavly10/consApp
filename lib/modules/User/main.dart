@@ -23,7 +23,7 @@ class UserMain extends StatelessWidget {
     UserCubit.get(context).getUserDetails(cons_Cubit.get(context).userID);
     return BlocBuilder<UserCubit, cons_login_Register_States>(
       builder: (context, state) {
-        final model = UserCubit.get(context).userStrapi;
+        final model = UserCubit.get(context).loginModel;
         final cubit = UserCubit.get(context);
         return SafeArea(
           child: Scaffold(
@@ -32,12 +32,9 @@ class UserMain extends StatelessWidget {
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      mytranslate(context, "welcome",),
-                      style: const TextStyle(color: Colors.black, fontSize: 18),
-                    ),
+                    Text(mytranslate(context, "welcome",), style: const TextStyle(color: Colors.black, fontSize: 18),),
                     const SizedBox(width: 5,),
-                    Text(model?.username??"Error", style: TextStyle(color: myAmber),)
+                    Text(model?.userClass!.username??model?.userClass!.username??"error", style: TextStyle(color: myAmber),)
                   ],
                 ),
                 actions: [

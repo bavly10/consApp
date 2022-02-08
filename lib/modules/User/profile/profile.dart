@@ -16,15 +16,13 @@ import 'package:helpy_app/shared/shared_prefernces.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 
-
-
 class UserProfileScreen extends StatelessWidget {
   const UserProfileScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserCubit, cons_login_Register_States>(
       builder: (context, state) {
-        final model = UserCubit.get(context).userStrapi;
+        final model = UserCubit.get(context).loginModel;
         cons_Cubit.get(context).getMyShared();
         return Scaffold(
           body: SingleChildScrollView(
@@ -75,7 +73,7 @@ class UserProfileScreen extends StatelessWidget {
                   height: 20,
                 ),
                 Text(
-                  model?.username ?? 'Error',
+                  model?.userClass!.username ?? 'Error',
                   style: TextStyle(
                       fontSize: 18,
                       color: HexColor('#C18F3A'),

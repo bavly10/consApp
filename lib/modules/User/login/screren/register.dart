@@ -442,17 +442,21 @@ class _Register_introState extends State<Register_intro> {
           const  SizedBox(
             height: 15,
           ),
-          My_TextFormFiled(
-            validator:(String? s){
-              if(s!.isEmpty) {
-                return  "Password is required";
-              }
-              else if (s.length < 6) {
-                return "Too Short Number";
-              } else {return null;}
+          My_PasswordFormFiled(
+            suffix: cons_Cubit.get(context).iconVisiblity,
+            suffixPressed: () {
+              cons_Cubit.get(context).changPasswordVisibilty();
             },
-            maxLines: 1,
-            obscureText: true,
+            isPassword: cons_Cubit.get(context).isPassword,
+            validator: (String? s) {
+              if (s!.isEmpty) {
+                return "Password is required";
+              } else if (s.length < 6) {
+                return "Too Short Number";
+              } else {
+                return null;
+              }
+            },
             controller: passwordController,
             myhintText: mytranslate(context, "Password"),
           ),

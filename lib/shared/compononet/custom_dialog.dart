@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:helpy_app/Cubit/cubit.dart';
+import 'package:helpy_app/shared/componotents.dart';
 import 'package:helpy_app/shared/localization/translate.dart';
 import 'package:hexcolor/hexcolor.dart';
 
@@ -33,11 +35,17 @@ class CustomTextFieldDialog extends StatelessWidget {
           fontSize: 14,
         ),
       ),
-      content: TextField(
+      content: My_PasswordFormFiled(
+        suffix: cons_Cubit.get(context).iconVisiblity,
+        suffixPressed: () {
+          cons_Cubit.get(context).changPasswordVisibilty();
+        },
+        isPassword: cons_Cubit.get(context).isPassword,
         controller: controller,
-        decoration: InputDecoration(
-          hintText: mytranslate(context, hintText),
-        ),
+        myhintText: mytranslate(context, hintText),
+        validator: (String? s) {
+          if (s!.isEmpty) return "Password is required";
+        },
       ),
       actions: <Widget>[
         Center(

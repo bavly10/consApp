@@ -26,7 +26,7 @@ class ChangePasswordUser extends StatelessWidget {
   Widget build(BuildContext context) {
     cons_Cubit.get(context).getMyShared();
     UserCubit.get(context).getUserDetails(cons_Cubit.get(context).userID);
-    final model = UserCubit.get(context).userStrapi;
+    final model = UserCubit.get(context).loginModel;
     return BlocConsumer<UserCubit, cons_login_Register_States>(
         listener: (context, state) {
       if (state is LoginChangePassSucessState) {
@@ -67,7 +67,7 @@ class ChangePasswordUser extends StatelessWidget {
                     onPressed: () {
                       FocusScope.of(context).requestFocus(FocusNode());
                       if (formKey.currentState!.validate()) {
-                        UserCubit.get(context).sendEmailPassword("users",model!.email,model.id);
+                        UserCubit.get(context).sendEmailPassword("users",model!.userClass!.email,model.userClass!.id);
                       }
                     },
                     child: Text(
@@ -80,7 +80,7 @@ class ChangePasswordUser extends StatelessWidget {
                     ),
                   ),
                 ),
-                Text("${model!.email}",style: TextStyle(color: myAmber,fontWeight: FontWeight.bold,fontSize: 20.0),),
+                Text("${model!.userClass!.email}",style: TextStyle(color: myAmber,fontWeight: FontWeight.bold,fontSize: 20.0),),
                const SizedBox(
                   height: 10,
                 ),

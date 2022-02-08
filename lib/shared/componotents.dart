@@ -26,6 +26,8 @@ My_TextFormFiled({
   TextDirection? textdirection,
   TextInputAction? textInputAction,
   TextInputType? textInputType,
+  IconData? suffix,
+  void Function()? suffixPressed,
 }) =>
     TextFormField(
       autofocus: autofocus,
@@ -38,16 +40,66 @@ My_TextFormFiled({
       style: const TextStyle(color: Colors.black),
       controller: controller,
       decoration: InputDecoration(
+        suffixIcon: suffix != null
+            ? IconButton(
+          onPressed: suffixPressed,
+          icon: Icon(
+            suffix,
+          ),
+        )
+            : null,
+        border: InputBorder.none,
+        labelText: myhintText ?? '',
+        labelStyle: const TextStyle(fontWeight: FontWeight.bold),
+      ),
+    );
+
+////////
+My_PasswordFormFiled({
+  bool autofocus = false,
+  TextStyle? style,
+  required TextEditingController controller,
+  IconData? icon,
+  Widget? iconsuffix,
+  String? lable,
+  bool isPassword = false,
+  required String? Function(String? val)? validator,
+  String? myhintText,
+  IconData? myIcons,
+  TextDirection? textdirection,
+  TextInputAction? textInputAction,
+  TextInputType? textInputType,
+  IconData? suffix,
+  void Function()? suffixPressed,
+}) =>
+    TextFormField(
+      autofocus: autofocus,
+      keyboardType: textInputType,
+      textInputAction: textInputAction,
+      textDirection: textdirection,
+      validator: validator,
+      obscureText: isPassword,
+      style: const TextStyle(color: Colors.black),
+      controller: controller,
+      decoration: InputDecoration(
+        suffixIcon: suffix != null
+            ? IconButton(
+          onPressed: suffixPressed,
+          icon: Icon(
+            suffix,
+          ),
+        )
+            : null,
         border: InputBorder.none,
         labelText: myhintText ?? '',
         labelStyle: const TextStyle(fontWeight: FontWeight.bold),
       ),
     );
 Mybutton(
-        {required BuildContext context,
-        required Function onPress,
-        required Widget title,
-        Color color = Colors.blue}) =>
+    {required BuildContext context,
+      required Function onPress,
+      required Widget title,
+      Color color = Colors.blue}) =>
     Container(
       width: double.infinity,
       height: MediaQuery.of(context).size.width * 0.12,
@@ -123,13 +175,13 @@ class DialogButton extends StatelessWidget {
 
 My_CustomAlertDialog(
     {Color? iconColor,
-    required BuildContext context,
-    required Function pressText,
-    required String pressTitle,
-    required Color pressColor,
-    required String bigTitle,
-    required String content,
-    IconData? icon}) {
+      required BuildContext context,
+      required Function pressText,
+      required String pressTitle,
+      required Color pressColor,
+      required String bigTitle,
+      required String content,
+      IconData? icon}) {
   ShapeBorder _defaultShape() {
     return RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10.0),
@@ -347,11 +399,11 @@ Builder buildDialogItemLogin(
 // ignore: missing_return
 CustomAlertDialogButtons(
     {required BuildContext context,
-    required String pdf,
-    required images,
-    required Function onTapPdf,
-    required Function onTapImages,
-    required Function onTapDelete}) {
+      required String pdf,
+      required images,
+      required Function onTapPdf,
+      required Function onTapImages,
+      required Function onTapDelete}) {
   ShapeBorder _defaultShape() {
     return RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10.0),
@@ -364,87 +416,87 @@ CustomAlertDialogButtons(
   showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-            backgroundColor: Colors.white,
-            shape: _defaultShape(),
-            insetPadding: EdgeInsets.all(8),
-            elevation: 10,
-            titlePadding: const EdgeInsets.all(0.0),
-            title: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
+        backgroundColor: Colors.white,
+        shape: _defaultShape(),
+        insetPadding: EdgeInsets.all(8),
+        elevation: 10,
+        titlePadding: const EdgeInsets.all(0.0),
+        title: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Text(mytranslate(context, "ChoosePicturefrom")),
+              SizedBox(
+                height: 10,
+              ),
+              Divider(
+                height: 1,
+                color: myAmber,
+              )
+            ],
+          ),
+        ),
+        contentPadding: EdgeInsets.all(8),
+        content: Row(
+          children: [
+            DialogButton(
+              child: Row(
                 children: [
-                  Text(mytranslate(context, "ChoosePicturefrom")),
-                  SizedBox(
-                    height: 10,
+                  Icon(
+                    Icons.picture_as_pdf,
+                    color: Colors.white,
                   ),
-                  Divider(
-                    height: 1,
-                    color: myAmber,
-                  )
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    pdf,
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
                 ],
               ),
+              onPressed: onTapPdf,
+              color: myAmber,
             ),
-            contentPadding: EdgeInsets.all(8),
-            content: Row(
-              children: [
-                DialogButton(
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.picture_as_pdf,
-                        color: Colors.white,
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        pdf,
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                      ),
-                    ],
+            DialogButton(
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.image_sharp,
+                    color: Colors.white,
                   ),
-                  onPressed: onTapPdf,
-                  color: myAmber,
-                ),
-                DialogButton(
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.image_sharp,
-                        color: Colors.white,
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        images,
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                      ),
-                    ],
+                  SizedBox(
+                    width: 8,
                   ),
-                  onPressed: onTapImages,
-                  color: myAmber,
-                ),
-                Spacer(),
-                DialogButton(
-                  child: const Icon(Icons.delete_forever),
-                  onPressed: onTapDelete,
-                  color: myAmber,
-                ),
-              ],
+                  Text(
+                    images,
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                ],
+              ),
+              onPressed: onTapImages,
+              color: myAmber,
             ),
-          ));
+            Spacer(),
+            DialogButton(
+              child: const Icon(Icons.delete_forever),
+              onPressed: onTapDelete,
+              color: myAmber,
+            ),
+          ],
+        ),
+      ));
 }
 
 CustomAlertDialog(
     {required Color iconColor,
-    required BuildContext context,
-    required Function pressText,
-    required String pressTitle,
-    required Color pressColor,
-    required String bigTitle,
-    required String content,
-    required IconData icon}) {
+      required BuildContext context,
+      required Function pressText,
+      required String pressTitle,
+      required Color pressColor,
+      required String bigTitle,
+      required String content,
+      required IconData icon}) {
   ShapeBorder _defaultShape() {
     return RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10.0),

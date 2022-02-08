@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fadein/flutter_fadein.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:helpy_app/Cubit/cubit.dart';
 
 import 'package:helpy_app/modules/User/cubit/cubit.dart';
 import 'package:helpy_app/modules/User/cubit/states.dart';
@@ -128,7 +129,12 @@ class _LoginIntroState extends State<LoginIntro> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.00),
-                child: My_TextFormFiled(
+                child: My_PasswordFormFiled(
+                  suffix: cons_Cubit.get(context).iconVisiblity,
+                  suffixPressed: () {
+                    cons_Cubit.get(context).changPasswordVisibilty();
+                  },
+                  isPassword: cons_Cubit.get(context).isPassword,
                   controller: passsController,
                   myhintText: mytranslate(context, "Password"),
                   validator: (String? s) {

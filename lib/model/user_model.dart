@@ -11,7 +11,7 @@ class LoginModel {
     stauts = json["statusCode"];
     error = json["error"];
     token = json["jwt"];
-    userClass = json["user"] != null ? UserStrapi.fromJson(json["user"]) : null;
+    userClass = json["user"] != null ? UserStrapi.fromJson(json["user"]) : userClass=UserStrapi.fromJson(json);
     message = json["message"] != null
         ? List<Datum>.from(json["message"].map((x) => Datum.fromJson(x)))
         : null;
@@ -498,7 +498,7 @@ class FilesIntro {
 
   int? id;
   String? fileName, price;
-  String? usersPermissionsUser;
+  int? usersPermissionsUser;
   dynamic publishedAt;
   DateTime? createdAt;
   DateTime? updatedAt;

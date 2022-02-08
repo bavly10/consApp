@@ -73,7 +73,12 @@ class _LoginUserState extends State<LoginUser> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.00),
-                  child: My_TextFormFiled(
+                  child: My_PasswordFormFiled(
+                    suffix: cons_Cubit.get(context).iconVisiblity,
+                    suffixPressed: () {
+                      cons_Cubit.get(context).changPasswordVisibilty();
+                    },
+                    isPassword: cons_Cubit.get(context).isPassword,
                     validator: (String? s) {
                       if (s!.isEmpty) return "Password is required";
                     },

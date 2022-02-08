@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/modules/User/login/main_login.dart';
 import 'package:helpy_app/modules/customer/cubit/cubit.dart';
 import 'package:helpy_app/modules/customer/cubit/state.dart';
@@ -202,17 +203,21 @@ class _RegisterCustomerState extends State<RegisterCustomer> {
       const  SizedBox(
         height: 15,
       ),
-      My_TextFormFiled(
-        validator:(String? s){
-          if(s!.isEmpty) {
-            return  "Password is required";
-          }
-          else if (s.length < 6) {
-            return "Too Short Number";
-          } else {return null;}
+      My_PasswordFormFiled(
+        suffix: cons_Cubit.get(context).iconVisiblity,
+        suffixPressed: () {
+          cons_Cubit.get(context).changPasswordVisibilty();
         },
-        maxLines: 1,
-        obscureText: true,
+        isPassword: cons_Cubit.get(context).isPassword,
+        validator: (String? s) {
+          if (s!.isEmpty) {
+            return "Password is required";
+          } else if (s.length < 6) {
+            return "Too Short Number";
+          } else {
+            return null;
+          }
+        },
         controller: passwordController,
         myhintText: mytranslate(context, "Password"),
       ),
