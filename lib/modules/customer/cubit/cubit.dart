@@ -136,6 +136,7 @@ class CustomerCubit extends Cubit<Customer_States> {
       emit(UpdateCustomerDataErrorState());
     });
   }
+  
   final picker = ImagePicker();
   var pickedFile;
   File? imagee;
