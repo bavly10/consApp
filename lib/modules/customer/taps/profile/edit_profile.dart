@@ -51,24 +51,28 @@ class EditProfile extends StatelessWidget {
           body: Form(
             key: formKey,
             child: ListView(
-              padding:const EdgeInsets.all(15),
+              padding: const EdgeInsets.all(15),
               reverse: true,
               shrinkWrap: true,
               children: [
                 Mybutton(
                   context: context,
-                  title:const Text(
+                  title: const Text(
                     "UPDATE",
                     style: TextStyle(color: Colors.white),
                   ),
                   onPress: () {
                     FocusScope.of(context).requestFocus(FocusNode());
-                    if (formKey.currentState!.validate()) {
-                      CustomerCubit.get(context).updateCustomerData(
-                          userName: nameController.text,
-                          phone: phoneController.text,
-                          id: cons_Cubit.get(context).customerID!);
-                    }
+                    // if (formKey.currentState!.validate()) {
+                    CustomerCubit.get(context).updateCustomerData(
+                        userName: nameController.text == ''
+                            ? model!.username
+                            : nameController.text,
+                        phone: phoneController.text == ''
+                            ? model!.phone
+                            : phoneController.text,
+                        id: cons_Cubit.get(context).customerID!);
+                    // }
                   },
                   color: HexColor('#C18F3A'),
                 ),
@@ -77,17 +81,8 @@ class EditProfile extends StatelessWidget {
                   type: TextInputType.phone,
                   hint: model?.phone,
                   validate: (value) =>
-                  value!.isEmpty
-                      ? 'Enter your phone'
-                      : validateMobile(value),
-                  onSubmit: (value) {
-                    FocusScope.of(context).requestFocus(FocusNode());
-                    if (formKey.currentState!.validate()) {
-                      CustomerCubit.get(context).updateCustomerData(
-                          userName: nameController.text,
-                          phone: phoneController.text,
-                          id: cons_Cubit.get(context).customerID!);}
-                  },
+                      regExp.hasMatch(value!) ? null : 'Enter Valid Name',
+                  onSubmit: (value) {},
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
@@ -125,11 +120,9 @@ class EditProfile extends StatelessWidget {
                   controller: nameController,
                   type: TextInputType.name,
                   hint: model!.username,
-                  validate: (value) => value!.isEmpty
-                      ? 'Enter Your Name'
-                      : (nameRegExp.hasMatch(value)
-                          ? null
-                          : 'Enter a Valid Name'),
+                  validate: (value) {
+                    nameRegExp.hasMatch(value!) ? null : 'Enter a Valid Name';
+                  },
                   onSubmit: (value) {},
                 ),
                 Padding(
@@ -137,7 +130,7 @@ class EditProfile extends StatelessWidget {
                       right: 10, bottom: 8, top: 8, left: 5),
                   child: Text(
                     mytranslate(context, "Name"),
-                    style:const TextStyle(fontSize: 14),
+                    style: const TextStyle(fontSize: 14),
                   ),
                 ),
                 const SizedBox(
@@ -176,7 +169,8 @@ class EditProfile extends StatelessWidget {
                           width: 20,
                           child: InkWell(
                             onTap: () {
-                              CustomerCubit.get(context).getImageBloc(ImageSource.gallery);
+                              CustomerCubit.get(context)
+                                  .getImageBloc(ImageSource.gallery);
                             },
                             child: const Align(
                               alignment: Alignment.center,

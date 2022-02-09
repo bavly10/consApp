@@ -27,65 +27,75 @@ class CustomerCubit extends Cubit<Customer_States> {
   final _auth = FirebaseAuth.instance;
   late UserCredential authres;
   late String customerImage;
-  register({required String username,required String  email,required String  password,required String  phone}) async{
+  register(
+      {required String username,
+      required String email,
+      required String password,
+      required String phone}) async {
     emit(RegisterLoadingState());
     late var response;
     final url = Uri.parse("$base_api/Customers");
-    Map<String, String> headrs = {
-      'Accept': 'application/json'
-    };
+    Map<String, String> headrs = {'Accept': 'application/json'};
     Map<String, dynamic> body = {
-      'username':username,
+      'username': username,
       'email': email,
       'password': password,
-      "phone":phone,
+      "phone": phone,
     };
     try {
-      authres=await _auth.createUserWithEmailAndPassword(email: email, password: password);
-      await FirebaseFirestore.instance.collection("customers").doc(authres.user!.uid).set({'username':username, 'email': email, "phone":phone, "userid":authres.user!.uid,}).then((value) async{
-        response= await http.post(url, headers: headrs, body: body);
+      authres = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      await FirebaseFirestore.instance
+          .collection("customers")
+          .doc(authres.user!.uid)
+          .set({
+        'username': username,
+        'email': email,
+        "phone": phone,
+        "userid": authres.user!.uid,
+      }).then((value) async {
+        response = await http.post(url, headers: headrs, body: body);
         if (response.statusCode == 200) {
-          var jdson=jsonDecode(response.body);
-          myid=jdson["id"];
+          var jdson = jsonDecode(response.body);
+          myid = jdson["id"];
           print(response.body);
           emit(RegisterSuccessState());
           return true;
-        }
-        else if(response.statusCode ==400){
-         emit(RegisterErrorState());
+        } else if (response.statusCode == 400) {
+          emit(RegisterErrorState());
           return false;
-        }
-        else{
+        } else {
           emit(RegisterFinalErrorState());
         }
       });
-    }on FirebaseException catch (y) {
+    } on FirebaseException catch (y) {
       emit(RegisterErrorFirebaseState());
       throw y;
-    }catch(e){
+    } catch (e) {
       emit(RegisterErrorXState());
     }
   }
 
   late String tokenCustomer;
-   String? myCustomerId;
-
+  String? myCustomerId;
 
   Future<void> signin(String email, String pass) async {
     emit(LoginLoadingState());
-    final url = Uri.parse("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAKbxexl8OzpCBcBj-_Gp5iyM_8mVcumYo");
+    final url = Uri.parse(
+        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAKbxexl8OzpCBcBj-_Gp5iyM_8mVcumYo");
     try {
-      final res = await http.post(url,body:json.encode({
-        'email': email,
-        'password': pass,
-        'returnSecureToken': true,
-      }));
-      final resdata=json.decode(res.body);
-      if(resdata['error'] != null){
+      final res = await http.post(url,
+          body: json.encode({
+            'email': email,
+            'password': pass,
+            'returnSecureToken': true,
+          }));
+      final resdata = json.decode(res.body);
+      if (resdata['error'] != null) {
         throw "${resdata['error']['message']}";
       }
-      tokenCustomer=resdata['idToken'];
-      myCustomerId=resdata['localId'];
+      tokenCustomer = resdata['idToken'];
+      myCustomerId = resdata['localId'];
       print("token is :$tokenCustomer");
       print("token is :$myCustomerId");
       CashHelper.putData("tokenCustomer", tokenCustomer);
@@ -98,19 +108,20 @@ class CustomerCubit extends Cubit<Customer_States> {
     }
   }
 
-
-
   CustomerModel? model;
-  Future<void> getCustomerData(myCustomerId) async{
+  Future<void> getCustomerData(myCustomerId) async {
     emit(CustomerLoadinggState());
-    await FirebaseFirestore.instance.collection("customers").doc(myCustomerId).get().then((value){
-      model=CustomerModel.fromJson(value.data()!);
+    await FirebaseFirestore.instance
+        .collection("customers")
+        .doc(myCustomerId)
+        .get()
+        .then((value) {
+      model = CustomerModel.fromJson(value.data()!);
       emit(CustomerSuccessState());
-    }).catchError((error){
+    }).catchError((error) {
       print(error.toString());
       emit(CustomerErrorState(error.toString()));
     });
-
   }
 
   int currentindex = 0;
@@ -125,17 +136,6 @@ class CustomerCubit extends Cubit<Customer_States> {
     emit(CustomerChangeState());
   }
 
-  updateCustomerData({String? userName, String? phone, required String id}) {
-    FirebaseFirestore.instance
-        .collection("customers")
-        .doc(id)
-        .update({'username': userName, 'phone': phone}).then((value) {
-      emit(UpdateCustomerDataSucessState());
-    }).catchError((onError) {
-      print(onError.toString());
-      emit(UpdateCustomerDataErrorState());
-    });
-  }
   final picker = ImagePicker();
   var pickedFile;
   File? imagee;
@@ -192,7 +192,11 @@ class CustomerCubit extends Cubit<Customer_States> {
     });
   }
 
-  Future<http.Response> updateCustomerStrapi({required String username, required String email, required String phone, dynamic id}) {
+  Future<http.Response> updateCustomerStrapi(
+      {required String username,
+      required String email,
+      required String phone,
+      dynamic id}) {
     return http.put(
       Uri.parse("$base_api/Customers/$id"),
       headers: <String, String>{'Content-Type': 'application/json'},
@@ -204,28 +208,36 @@ class CustomerCubit extends Cubit<Customer_States> {
     );
   }
 
-  Future addUserINChat(String userid,String username,String customerid) async {
+  Future addUserINChat(
+      String userid, String username, String customerid) async {
     emit(CustomerLoadingState());
-    await FirebaseFirestore.instance.collection("AllChat").doc(customerid+userid).set({
+    await FirebaseFirestore.instance
+        .collection("AllChat")
+        .doc(customerid + userid)
+        .set({
       "CustomerID": customerid,
       "SenderId": userid,
       "name": username,
-      "key":userid+customerid,
+      "key": userid + customerid,
       //"image":imguser,
-    }).then((value)async{
-      final userdata = await FirebaseFirestore.instance.collection('customers').doc(customerid).get();
-      await FirebaseFirestore.instance.collection("AllChat").doc(userid+customerid).set(
-          {
-            "myid": userid,
-            "senderid": customerid,
-            "name": userdata["username"],
-            "key":userid+customerid,
-            //  "image":userdata["imgurl"]
-          }).then((value) => null);
+    }).then((value) async {
+      final userdata = await FirebaseFirestore.instance
+          .collection('customers')
+          .doc(customerid)
+          .get();
+      await FirebaseFirestore.instance
+          .collection("AllChat")
+          .doc(userid + customerid)
+          .set({
+        "myid": userid,
+        "senderid": customerid,
+        "name": userdata["username"],
+        "key": userid + customerid,
+        //  "image":userdata["imgurl"]
+      }).then((value) => null);
       emit(CustomerCreateChatState());
     });
   }
-
 
   Future<http.Response> updatePassword(String newPassword, int? id) {
     return http.put(
@@ -256,5 +268,55 @@ class CustomerCubit extends Cubit<Customer_States> {
         emit(EmailCustomerisNotExitState());
       }
     }).catchError((onError) {});
+  } //////////////////////// Edit Customer profile////////////////////////////////
+
+  updateCustomerData({String? userName, String? phone, required String id}) {
+    FirebaseFirestore.instance.collection("customers").doc(id).update({
+      'username': userName ?? model!.username,
+      'phone': phone ?? model!.phone
+    }).then((value) {
+      getUser(userName, phone, model!.email);
+      //  editUser(name: userName!, phone: phone!, email: model!.email);
+      emit(UpdateCustomerDataSucessState());
+    }).catchError((onError) {
+      print(onError.toString());
+
+      emit(UpdateCustomerDataErrorState());
+    });
+  }
+
+  int? id;
+  Future<void> getUser(name, phone, email) async {
+    final url = Uri.parse("$base_api/Customers?_where[email]=$email");
+    final http.Response res = await http.get(url);
+    if (res.statusCode == 200) {
+      print(res.body.toString());
+      var user = jsonDecode(res.body);
+      for (var x in user) {
+        id = x['id'];
+      }
+      editUser(name: name, phone: phone, id: id);
+    }
+  }
+
+  void editUser(
+      {required String name, required String phone, dynamic id}) async {
+    final response = await http.put(
+        Uri.parse(
+          "$base_api/Customers/$id",
+        ),
+        headers: <String, String>{
+          'Context-Type': 'application/json;charset=UTF-8',
+        },
+        body: <String, String>{
+          'username': name,
+          'phone': phone,
+        });
+    if (response.statusCode == 200) {
+      print(response.reasonPhrase);
+    } else {
+      print(response.statusCode);
+      print(response.reasonPhrase);
+    }
   }
 }

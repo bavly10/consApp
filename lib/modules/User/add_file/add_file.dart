@@ -148,15 +148,13 @@ class CreateFile extends StatelessWidget {
                                               color: Colors.blueGrey),
                                         ),
                                       ),
-
-                                       Text(
-                                        result.files.single.name,
-                                        style: const TextStyle(
-                                            color: Colors.blueGrey)),
+                                      Text(result.files.single.name,
+                                          style: const TextStyle(
+                                              color: Colors.blueGrey)),
                                       Text(
                                         result.files.single.name,
-                                        style:
-                                            TextStyle(color: Colors.blueGrey),
+                                        style: const TextStyle(
+                                            color: Colors.blueGrey),
                                       ),
                                     ],
                                   ),
@@ -187,8 +185,11 @@ class CreateFile extends StatelessWidget {
                                               color: Colors.blueGrey),
                                         ),
                                       ),
-                                      Text(result.files.single.extension.toString(),
-                                        style: const TextStyle(color: Colors.blueGrey),
+                                      Text(
+                                        result.files.single.extension
+                                            .toString(),
+                                        style: const TextStyle(
+                                            color: Colors.blueGrey),
                                       ),
                                     ],
                                   ),

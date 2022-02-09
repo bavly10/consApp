@@ -248,6 +248,7 @@ class cons_Cubit extends Cubit<cons_States> {
   void changPasswordVisibilty() {
     isPassword = !isPassword;
     iconVisiblity =
-    isPassword ? Icons.visibility_off_outlined : Icons.visibility;
+        isPassword ? Icons.visibility : Icons.visibility_off_outlined;
+    emit(ChangePasswordVisibiltyState());
   }
 }
