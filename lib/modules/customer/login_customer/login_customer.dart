@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fadein/flutter_fadein.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:helpy_app/modules/User/cubit/cubit.dart';
-import 'package:helpy_app/modules/User/login/main_login.dart';
+
 
 import 'package:helpy_app/modules/customer/cubit/state.dart';
 import 'package:helpy_app/modules/customer/main.dart';
@@ -15,9 +15,7 @@ import 'package:helpy_app/shared/componotents.dart';
 import 'package:helpy_app/shared/error_compon.dart';
 import 'package:helpy_app/shared/localization/translate.dart';
 import 'package:helpy_app/shared/my_colors.dart';
-import 'package:helpy_app/shared/strings.dart';
-import 'package:http/http.dart';
-import 'package:helpy_app/Cubit/cubit.dart';
+
 
 class LoginUser extends StatefulWidget {
   @override
@@ -74,11 +72,11 @@ class _LoginUserState extends State<LoginUser> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.00),
                   child: My_PasswordFormFiled(
-                    suffix: cons_Cubit.get(context).iconVisiblity,
+                    suffix: UserCubit.get(context).iconVisiblity,
                     suffixPressed: () {
-                      cons_Cubit.get(context).changPasswordVisibilty();
+                      UserCubit.get(context).changPasswordVisibilty();
                     },
-                    isPassword: cons_Cubit.get(context).isPassword,
+                    isPassword: UserCubit.get(context).isPassword,
                     validator: (String? s) {
                       if (s!.isEmpty) return "Password is required";
                     },
@@ -148,7 +146,7 @@ class _LoginUserState extends State<LoginUser> {
                             hintText: "email",
                             onPressed: () {
                               Navigator.pop(context);
-                              UserCubit.get(context).getUser(
+                              UserCubit.get(context).sendEmail(
                                   "Customers", emailCheckController.text);
                               myToast(
                                   message: mytranslate(context, "Emailissent"));

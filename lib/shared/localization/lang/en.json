@@ -128,5 +128,6 @@
    "filez": "File Size :",
    "fileE": "File Extension :",
    "suessfully": "Uploading Sucessfully..",
-   "delete": "Deleted..."
+   "delete": "Deleted...",
+   "pdffile": "You Should to Choose a PDF File First"
 }

@@ -98,3 +98,4 @@ class UploadUserFileSueeeState extends cons_login_Register_States {}
 class UploadUserFileLoadingState extends cons_login_Register_States {}
 
 class UploadUserFileErrorState extends cons_login_Register_States {}
+class ChangePasswordVisibiltyState extends cons_login_Register_States {}

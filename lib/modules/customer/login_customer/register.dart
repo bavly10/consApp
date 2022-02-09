@@ -62,7 +62,7 @@ class _RegisterCustomerState extends State<RegisterCustomer> {
             pressTitle:mytranslate(context, "done"),
             pressColor:myAmber,
             icon: MdiIcons.checkCircleOutline,
-            pressText: () {
+            onPress: () {
             ///go To payment with sqflite data user
               navigateToFinish(context, Main_login());
             },);
@@ -162,7 +162,7 @@ class _RegisterCustomerState extends State<RegisterCustomer> {
                                   pressTitle:mytranslate(context, "done"),
                                   pressColor:myAmber,
                                   icon: MdiIcons.alert,
-                                  pressText: () {
+                                  onPress: () {
                                     Navigator.pop(context);
                                   },);
                               }
@@ -204,11 +204,7 @@ class _RegisterCustomerState extends State<RegisterCustomer> {
         height: 15,
       ),
       My_PasswordFormFiled(
-        suffix: cons_Cubit.get(context).iconVisiblity,
-        suffixPressed: () {
-          cons_Cubit.get(context).changPasswordVisibilty();
-        },
-        isPassword: cons_Cubit.get(context).isPassword,
+        isPassword: false,
         validator: (String? s) {
           if (s!.isEmpty) {
             return "Password is required";

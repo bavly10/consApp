@@ -34,7 +34,7 @@ class ChangePasswordUser extends StatelessWidget {
             context:context,
             bigTitle: mytranslate(context, "reviewemail"),
             content: mytranslate(context, "editpass"),
-            pressText: (){
+            onPress: (){
               Navigator.pop(context);
               CashHelper.removeData("userToken");
               navigateToFinish(context, Main_login());
@@ -67,7 +67,7 @@ class ChangePasswordUser extends StatelessWidget {
                     onPressed: () {
                       FocusScope.of(context).requestFocus(FocusNode());
                       if (formKey.currentState!.validate()) {
-                        UserCubit.get(context).sendEmailPassword("users",model!.userClass!.email,model.userClass!.id);
+                        UserCubit.get(context).goEmail("users",model!.userClass!.email,model.userClass!.id);
                       }
                     },
                     child: Text(

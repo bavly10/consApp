@@ -70,32 +70,11 @@ class cons_Cubit extends Cubit<cons_States> {
     emit(cons_ChangeIndexTabs());
   }
 
-  final picker = ImagePicker();
-  var pickedFile;
-  File? imagee;
-  Future getImageBloc(ImageSource src) async {
-    pickedFile = await picker.getImage(source: src, imageQuality: 50);
-    if (pickedFile != null) {
-      imagee = File(pickedFile.path);
-      emit(TakeImage_State());
-      print("image selected");
-    } else {
-      print("no image selected");
-    }
-  }
-
-  void DeleteImageBloc() {
-    imagee == null;
-    emit(cons_delete_image());
-    print("image Deleted");
-  }
-
-  int chose_list = 1;
-
   ///////
   List<Categories> mycat = [];
   List<Specailsts> myspec = [];
   List<AdsModel> myads = [];
+
   Future getCategories() async {
     emit(Cons_Loading_Cate());
     final url = Uri.parse("$base_api/Categories");
@@ -129,7 +108,6 @@ class cons_Cubit extends Cubit<cons_States> {
       print("error 500");
     }
   }
-
   Future getSpecailsts() async {
     myspec = [];
     final url = Uri.parse("$base_api/Specailsts");
@@ -243,11 +221,4 @@ class cons_Cubit extends Cubit<cons_States> {
     userID = CashHelper.getData("userId");
   }
 
-  IconData iconVisiblity = Icons.visibility;
-  bool isPassword = true;
-  void changPasswordVisibilty() {
-    isPassword = !isPassword;
-    iconVisiblity =
-    isPassword ? Icons.visibility_off_outlined : Icons.visibility;
-  }
 }

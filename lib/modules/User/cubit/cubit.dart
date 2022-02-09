@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:helpy_app/model/post.dart';
 
 import 'package:helpy_app/model/user_model.dart';
@@ -28,7 +29,14 @@ class UserCubit extends Cubit<cons_login_Register_States> {
   UserCubit() : super(consSignInUp_InitalState());
   static UserCubit get(context) => BlocProvider.of(context);
 
+  LoginModel? loginModel;
+  late var myid;
+  final _auth = FirebaseAuth.instance;
+  late UserCredential authres;
+  String? mycity,catSelect,specSelect;
+  int? cat_id,spec_id;
   int currentindex = 0;
+
   List screen = [
     const UserHome(),
     ChatsScreen(),
@@ -39,17 +47,25 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     currentindex = index;
     emit(UserChangeState());
   }
-
+///////////design Login Screen//////////
   bool visable = true;
   void changeDesign() {
     visable = false;
     emit(Cons_Change_Design());
   }
-
   void changeDesigns() {
     visable = true;
     emit(Cons_Change_Designs());
   }
+  IconData iconVisiblity = Icons.visibility;
+  bool isPassword = true;
+  void changPasswordVisibilty() {
+    isPassword = !isPassword;
+    iconVisiblity =
+    isPassword ? Icons.visibility : Icons.visibility_off_outlined;
+    emit(ChangePasswordVisibiltyState());
+  }
+////////////////////////////////////////
 
   ///dispose controllers
   @override
@@ -57,17 +73,12 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     return super.close();
   }
 
-  String? mycity;
-  String? catSelect;
-  String? specSelect;
-  int? cat_id;
-  int? spec_id;
 
+/////////register Method////
   void changeSelectCity(val) {
     mycity = val;
     emit(Cons_ChangeCity_Select());
   }
-
   void changeSelectCategory(val) {
     catSelect = val.title;
     cat_id = val.id;
@@ -75,7 +86,6 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     print(catSelect);
     emit(Cons_Change_Cat_Select());
   }
-
   void changeSelectSpec(val) {
     specSelect = val.specTitle;
     spec_id = val.id;
@@ -98,9 +108,9 @@ class UserCubit extends Cubit<cons_login_Register_States> {
 
   final picker = ImagePicker();
   final pickers = ImagePicker();
-  var pickedFile;
-  var pickedFils;
+  var pickedFile,pickedFils;
   File? imagee;
+
   Future getImageBloc(ImageSource src) async {
     pickedFile = await picker.pickImage(source: src, imageQuality: 50);
     if (pickedFile != null) {
@@ -111,16 +121,16 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       print("no image selected");
     }
   }
-
   deleteImageBlocLogin() {
     imagee = null;
     emit(DeleteImage_State());
     print("image Deleted");
   }
 
+
+
   FilePickerResult? result;
   var mediaType;
-
   void changeMedia(bool media) {
     if (media) {
       mediaType = MediaType('image', 'png');
@@ -130,11 +140,9 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       print(mediaType);
     }
   }
-
   int get myimagecount {
     return result!.files.length;
   }
-
   deleteImageBlocList() {
     result!.files.clear();
     result = null;
@@ -156,7 +164,6 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       emit(TakeImagess_State());
     }
   }
-
   void uploadImage(Uint8List imageBytes, id) async {
     Map<String, String> a = {
       "files": imagee!.path,
@@ -180,7 +187,6 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       print(value);
     });
   }
-
   void uploadImages(id) {
     result!.files.forEach((element) async {
       String url = base_api + "/upload";
@@ -207,10 +213,12 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     });
   }
 
-  LoginModel? loginModel;
-  late var myid;
-  final _auth = FirebaseAuth.instance;
-  late UserCredential authres;
+  late String error = "Email IsNot Exist";
+  bool? forgetpass;
+  String? myEmail;
+  int? forgetID;
+  late String tokenUser;
+
 
   register({String? username, email, password, phone, String? listImages, address, about}) async {
     emit(cons_Loading_Register());
@@ -275,58 +283,6 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     }
   }
 
-  late String error = "Email IsNot Exist";
-  bool? forgetpass;
-  String? myEmail;
-  int? forgetID;
-
-  Future<void> getUser(table, email) async {
-    final url = Uri.parse("$base_api/$table?_where[email]=$email");
-    final http.Response res = await http.get(url);
-    if (res.statusCode == 200) {
-      print(res.body.toString());
-      var user = jsonDecode(res.body);
-      for (var x in user) {
-        forgetID = x['id'];
-        myEmail = x['email'];
-        forgetpass = x['forgetpass'];
-      }
-      if (myEmail == email) {
-        sendEmailPassword(table, email, forgetID!);
-      } else {
-        return myToast(message: error);
-      }
-    } else {
-      print('no connect');
-    }
-  }
-
-  Future<void> sendEmailPassword(table, email, id) async {
-    FirebaseAuth.instance.sendPasswordResetEmail(email: email).then((value) {
-      updateForget(table: table, id: id, forget: true);
-      emit(LoginChangePassSucessState());
-    }).catchError((onError) {
-      emit(LoginChangePassSucessState());
-    });
-  }
-
-  Future<void> getUserLogin(email) async {
-    final url = Uri.parse("$base_api/users?_where[email]=$email");
-    final http.Response res = await http.get(url);
-    if (res.statusCode == 200) {
-      print(res.body.toString());
-      var user = jsonDecode(res.body);
-      for (var x in user) {
-        forgetID = x['id'];
-        forgetpass = x['forgetpass'];
-      }
-    } else {
-      print('no connect');
-    }
-  }
-
-  late String tokenUser;
-  ///////////////////////login/////////////
   login(String email, String password) {
     final url = Uri.parse("$base_api/auth/local");
     Map<String, String> headrs = {
@@ -358,45 +314,10 @@ class UserCubit extends Cubit<cons_login_Register_States> {
           loginModel = LoginModel.fromJson(jdsonn);
           emit(cons_Login_Error(loginModel!));
           // ignore: avoid_print
-          print(loginModel!.message!
-              .map((e) => e.messages!.map((e) => e.message.toString())));
+          print(loginModel!.message!.map((e) => e.messages!.map((e) => e.message.toString())));
         }
       }
     });
-  }
-
-  List<UserStrapi> mydeatilsuser = [];
-
-  Future<void> getUserDetails(id) async {
-    final url = Uri.parse("$base_api/users/$id");
-    final http.Response res = await http.get(url);
-    if (res.statusCode == 200) {
-      print(res.body.toString());
-      Map<String,dynamic> user = jsonDecode(res.body);
-      loginModel = LoginModel.fromJson(user);
-    } else {
-      print('no connect');
-    }
-  }
-  //////////////////////////////////////////////ForgetPass////////////
-
-  Future<http.Response> updatePassStrapi(String newPassword, int? id) {
-    return http.put(
-      Uri.parse("$base_api/Users/$id"),
-      headers: <String, String>{'Content-Type': 'application/json'},
-      body: jsonEncode(<String, String>{
-        'password': newPassword,
-      }),
-    );
-  }
-
-  Future<http.Response> updateForget(
-      {required String table, required int id, required bool forget}) {
-    return http.put(
-      Uri.parse("$base_api/$table/$id"),
-      headers: <String, String>{'Content-Type': 'application/json'},
-      body: jsonEncode(<String, bool>{'forgetpass': forget}),
-    );
   }
 
   ////////////Add Post ////////////////
@@ -433,8 +354,6 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       throw Exception('Failed to Add Post');
     }
   }
-
-  /////////uploadImagePost/////////////////
   void uploadPostImage(Uint8List imageBytes, id) async {
     Map<String, String> a = {
       "files": imagee!.path,
@@ -458,7 +377,72 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     });
   }
 
-  ////////////////file//////////
+////////////////////////strapi/////////////////
+  ///Search by Email
+  Future<void> getUserLogin(email) async {
+    final url = Uri.parse("$base_api/users?_where[email]=$email");
+    final http.Response res = await http.get(url);
+    if (res.statusCode == 200) {
+      print(res.body.toString());
+      var user = jsonDecode(res.body);
+      for (var x in user) {
+        forgetID = x['id'];
+        forgetpass = x['forgetpass'];
+      }
+    } else {
+      print('no connect');
+    }
+  }
+  ///Search by ID
+  Future<void> getUserDetails(id) async {
+    final url = Uri.parse("$base_api/users/$id");
+    final http.Response res = await http.get(url);
+    if (res.statusCode == 200) {
+      print(res.body.toString());
+      Map<String,dynamic> user = jsonDecode(res.body);
+      loginModel = LoginModel.fromJson(user);
+    } else {
+      print('no connect');
+    }
+  }
+
+  Future<void> sendEmail(table, email) async {
+    final url = Uri.parse("$base_api/$table?_where[email]=$email");
+    final http.Response res = await http.get(url);
+    if (res.statusCode == 200) {
+      print(res.body.toString());
+      var user = jsonDecode(res.body);
+      for (var x in user) {
+        forgetID = x['id'];
+        myEmail = x['email'];
+        forgetpass = x['forgetpass'];
+      }
+      if (myEmail == email) {
+        goEmail(table, email, forgetID!);
+      } else {
+        return myToast(message: error);
+      }
+    } else {
+      print('no connect');
+    }
+  }
+
+  Future<http.Response> updateForget({required String table, required int id, required bool forget}) {
+    return http.put(
+      Uri.parse("$base_api/$table/$id"),
+      headers: <String, String>{'Content-Type': 'application/json'},
+      body: jsonEncode(<String, bool>{'forgetpass': forget}),
+    );
+  }
+  Future<http.Response> updatePassStrapi(String newPassword, int? id) {
+    return http.put(
+      Uri.parse("$base_api/Users/$id"),
+      headers: <String, String>{'Content-Type': 'application/json'},
+      body: jsonEncode(<String, String>{
+        'password': newPassword,
+      }),
+    );
+  }
 
   Future<void> addFile(price, userid, path, name) async {
     emit(UploadUserFileLoadingState());
@@ -487,7 +471,6 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       emit(UploadUserFileErrorState());
     }
   }
-
   void uploadFilePdf(id) async {
     result!.files.forEach((element) {
       result!.files.forEach((element) async {
@@ -501,7 +484,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
           "field": "filepdf"
         };
         var stream =
-            http.ByteStream(DelegatingStream.typed(element.readStream!));
+        http.ByteStream(DelegatingStream.typed(element.readStream!));
         int? length = element.bytes!.length;
         var multipartFile = http.MultipartFile('files', stream, length,
             filename: basename(element.path!),
@@ -516,4 +499,14 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       });
     });
   }
+/////////////////////////firebase////////////////
+  Future<void> goEmail(table, email, id) async {
+    FirebaseAuth.instance.sendPasswordResetEmail(email: email).then((value) {
+      updateForget(table: table, id: id, forget: true);
+      emit(LoginChangePassSucessState());
+    }).catchError((onError) {
+      emit(LoginChangePassSucessState());
+    });
+  }
+
 }

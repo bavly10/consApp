@@ -7,9 +7,8 @@ import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/modules/User/cubit/cubit.dart';
 import 'package:helpy_app/modules/User/cubit/states.dart';
 
-import 'package:helpy_app/modules/User/login/main_login.dart';
 import 'package:helpy_app/modules/User/main.dart';
-import 'package:helpy_app/modules/User/post/add_post.dart';
+
 import 'package:helpy_app/modules/otp/otp_register.dart';
 import 'package:helpy_app/shared/compononet/custom_dialog.dart';
 import 'package:helpy_app/shared/componotents.dart';
@@ -81,7 +80,7 @@ class _LoginIntroState extends State<LoginIntro> {
               context: context,
               pressColor: myAmber,
               pressTitle: mytranslate(context, "done"),
-              pressText: () {
+              onPress: () {
                 Navigator.pop(context);
               },
             );
@@ -97,7 +96,7 @@ class _LoginIntroState extends State<LoginIntro> {
             context: context,
             pressColor: myAmber,
             pressTitle: mytranslate(context, "done"),
-            pressText: () {
+            onPress: () {
               Navigator.pop(context);
             },))).toString();
           myState = false;
@@ -130,11 +129,11 @@ class _LoginIntroState extends State<LoginIntro> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.00),
                 child: My_PasswordFormFiled(
-                  suffix: cons_Cubit.get(context).iconVisiblity,
+                  suffix: UserCubit.get(context).iconVisiblity,
                   suffixPressed: () {
-                    cons_Cubit.get(context).changPasswordVisibilty();
+                    UserCubit.get(context).changPasswordVisibilty();
                   },
-                  isPassword: cons_Cubit.get(context).isPassword,
+                  isPassword: UserCubit.get(context).isPassword,
                   controller: passsController,
                   myhintText: mytranslate(context, "Password"),
                   validator: (String? s) {
@@ -204,7 +203,7 @@ class _LoginIntroState extends State<LoginIntro> {
                               buttonText: "Send",
                               hintText: "email",
                               onPressed: () {
-                                UserCubit.get(context).getUser("users",emailController.text);
+                                UserCubit.get(context).sendEmail("users",emailController.text);
                                 Navigator.pop(context);
                               }));
                     },

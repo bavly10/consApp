@@ -3,13 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/modules/User/cubit/cubit.dart';
 import 'package:helpy_app/modules/User/cubit/states.dart';
+import 'package:helpy_app/modules/User/main.dart';
 import 'package:helpy_app/shared/componotents.dart';
 import 'package:helpy_app/shared/localization/translate.dart';
+import 'package:helpy_app/shared/my_colors.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class CreateFile extends StatelessWidget {
   CreateFile({Key? key}) : super(key: key);
   var textController = TextEditingController();
+  final GlobalKey<FormState> form = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<UserCubit, cons_login_Register_States>(
@@ -17,7 +20,16 @@ class CreateFile extends StatelessWidget {
         if (state is UploadUserFileLoadingState) {
           myToast(message: mytranslate(context, "loadimage"));
         } else if (state is UploadUserFileSueeeState) {
-          myToast(message: mytranslate(context, "suessfully"));
+          My_CustomAlertDialog(
+            pressTitle:mytranslate(context, "done"),
+            onPress: (){
+              navigateToFinish(context, UserMain());
+            },
+            content: mytranslate(context, "suessfully"),
+            context: context,
+            bigTitle: "MyCompany",
+            pressColor: myAmber,
+          );
         } else if (state is UploadUserFileErrorState) {
           myToast(message: mytranslate(context, "errorpass"));
         } else if (state is DeleteImages_State) {
@@ -77,20 +89,17 @@ class CreateFile extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * .50,
-                        child: TextFormField(
-                          maxLines: 1,
-                          controller: textController,
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: HexColor('#F7F7F7'),
-                            hintText: 'price...',
-                            hintStyle: const TextStyle(fontSize: 12),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide.none,
-                            ),
+                      Form(
+                        key: form,
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width * .50,
+                          child: My_TextFormFiled(
+                            textInputType: TextInputType.number,
+                            validator:(String? s){
+                              if(s!.isEmpty) return  "price is required";
+                            },
+                            controller: textController,
+                            myhintText: 'price...',
                           ),
                         ),
                       ),
@@ -148,15 +157,13 @@ class CreateFile extends StatelessWidget {
                                               color: Colors.blueGrey),
                                         ),
                                       ),
-
-                                       Text(
-                                        result.files.single.name,
-                                        style: const TextStyle(
-                                            color: Colors.blueGrey)),
+                                      Text(result.files.single.name,
+                                          style: const TextStyle(
+                                              color: Colors.blueGrey)),
                                       Text(
                                         result.files.single.name,
-                                        style:
-                                            TextStyle(color: Colors.blueGrey),
+                                        style: const TextStyle(
+                                            color: Colors.blueGrey),
                                       ),
                                     ],
                                   ),
@@ -187,8 +194,11 @@ class CreateFile extends StatelessWidget {
                                               color: Colors.blueGrey),
                                         ),
                                       ),
-                                      Text(result.files.single.extension.toString(),
-                                        style: const TextStyle(color: Colors.blueGrey),
+                                      Text(
+                                        result.files.single.extension
+                                            .toString(),
+                                        style: const TextStyle(
+                                            color: Colors.blueGrey),
                                       ),
                                     ],
                                   ),
@@ -211,12 +221,21 @@ class CreateFile extends StatelessWidget {
                   Mybutton(
                       context: context,
                       onPress: () {
-                        UserCubit.get(context).addFile(
-                          textController.text,
-                          cons_Cubit.get(context).userID.toString(),
-                          result!.files.first.path,
-                          result.files.first.name,
-                        );
+                        FocusScope.of(context).unfocus();
+                        if (form.currentState!.validate()) {
+                          if(result!=null)
+                          {
+                            UserCubit.get(context).addFile(
+                              textController.text,
+                              cons_Cubit.get(context).userID.toString(),
+                              result.files.first.path,
+                              result.files.first.name,
+                            );
+                          }
+                          else{
+                            return myToast(message: mytranslate(context, "pdffile"));
+                          }
+                        }
                       },
                       title: Text(
                         mytranslate(context, "uploadfile"),

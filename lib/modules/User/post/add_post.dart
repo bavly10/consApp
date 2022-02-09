@@ -18,11 +18,13 @@ class CreatePost extends StatelessWidget {
       listener: (context, state) {
         if (state is ConsAddPostUserSucessState) {
           myToast(message: mytranslate(context, "postdone"));
-        } else if (state is ConsAddPostUserErrorState) {
+        }
+        else if (state is ConsAddPostUserErrorState) {
           myToast(message: mytranslate(context, "postfailed"));
         }
       },
       builder: (context, state) {
+        final image=UserCubit.get(context).imagee;
         return Scaffold(
           appBar: AppBar(
             centerTitle: false,
@@ -61,11 +63,6 @@ class CreatePost extends StatelessWidget {
                             fontSize: 14,
                             color: Colors.grey[700]),
                       ),
-
-                      //  Icon(
-                      // Icons.add_a_photo_outlined,
-                      // color: HexColor('#C18F3A'),
-                      //  ),
                       Divider(
                         height: 1,
                         color: Colors.grey[400],
@@ -92,7 +89,7 @@ class CreatePost extends StatelessWidget {
                   ),
                 )),
                 //  if (SocialCubit.get(context).postImage != null)
-                if (UserCubit.get(context).imagee != null)
+                if (image != null)
                   Expanded(
                     child: Stack(
                       alignment: AlignmentDirectional.topEnd,
@@ -104,8 +101,7 @@ class CreatePost extends StatelessWidget {
                               image: DecorationImage(
                                   fit: BoxFit
                                       .cover, //borderRadius: BorderRadius.circular(4)
-                                  image: FileImage(
-                                      UserCubit.get(context).imagee!)),
+                                  image: FileImage(image)),
                               borderRadius: BorderRadius.circular(4)),
                         ),
                         IconButton(

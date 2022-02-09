@@ -1,4 +1,5 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/modules/User/cubit/cubit.dart';
 import 'package:helpy_app/shared/localization/translate.dart';
 import 'package:helpy_app/shared/my_colors.dart';
@@ -6,8 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
-void navigateTo(context, widget) =>
-    Navigator.push(context, MaterialPageRoute(builder: (context) => widget));
+void navigateTo(context, widget) => Navigator.push(context, MaterialPageRoute(builder: (context) => widget));
 void navigateToFinish(context, widget) => Navigator.pushReplacement(
     context, MaterialPageRoute(builder: (context) => widget));
 
@@ -95,12 +95,7 @@ My_PasswordFormFiled({
         labelStyle: const TextStyle(fontWeight: FontWeight.bold),
       ),
     );
-Mybutton(
-    {required BuildContext context,
-      required Function onPress,
-      required Widget title,
-      Color color = Colors.blue}) =>
-    Container(
+Mybutton({required BuildContext context, required Function onPress, required Widget title, Color color = Colors.blue}) => Container(
       width: double.infinity,
       height: MediaQuery.of(context).size.width * 0.12,
       decoration: BoxDecoration(
@@ -176,7 +171,7 @@ class DialogButton extends StatelessWidget {
 My_CustomAlertDialog(
     {Color? iconColor,
       required BuildContext context,
-      required Function pressText,
+      required Function onPress,
       required String pressTitle,
       required Color pressColor,
       required String bigTitle,
@@ -219,7 +214,7 @@ My_CustomAlertDialog(
           pressTitle,
           style: TextStyle(color: Colors.white, fontSize: 18),
         ),
-        onPressed: pressText,
+        onPressed: onPress,
         color: pressColor,
       ),
     ];
@@ -373,30 +368,6 @@ myCustomDialogERror(BuildContext context) {
       });
 }
 
-Builder buildDialogItemLogin(
-    BuildContext context, String text, IconData icon, ImageSource src) {
-  return Builder(
-    builder: (innerContext) => Container(
-      decoration: BoxDecoration(
-        gradient: mybuttonColor,
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: ListTile(
-        leading: Icon(icon, color: Colors.white),
-        title: Text(
-          text,
-          style: TextStyle(color: Colors.white),
-        ),
-        onTap: () {
-          UserCubit.get(context).getImageBloc(src);
-          Navigator.of(innerContext).pop();
-        },
-      ),
-    ),
-  );
-}
-
-// ignore: missing_return
 CustomAlertDialogButtons(
     {required BuildContext context,
       required String pdf,

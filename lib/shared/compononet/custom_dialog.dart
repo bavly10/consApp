@@ -36,11 +36,7 @@ class CustomTextFieldDialog extends StatelessWidget {
         ),
       ),
       content: My_PasswordFormFiled(
-        suffix: cons_Cubit.get(context).iconVisiblity,
-        suffixPressed: () {
-          cons_Cubit.get(context).changPasswordVisibilty();
-        },
-        isPassword: cons_Cubit.get(context).isPassword,
+        isPassword:false,
         controller: controller,
         myhintText: mytranslate(context, hintText),
         validator: (String? s) {

@@ -76,7 +76,7 @@ class _Register_introState extends State<Register_intro> {
             pressTitle:mytranslate(context, "done"),
             pressColor:myAmber,
             icon: MdiIcons.checkCircleOutline,
-            pressText: () {
+            onPress: () {
               navigateToFinish(context, Mainscreen());
             },);
         }
@@ -371,7 +371,7 @@ class _Register_introState extends State<Register_intro> {
                                     pressTitle:mytranslate(context, "done"),
                                     pressColor:myAmber,
                                     icon: MdiIcons.alert,
-                                    pressText: () {
+                                    onPress: () {
                                       Navigator.pop(context);
                                     },);
                                 }
@@ -443,11 +443,11 @@ class _Register_introState extends State<Register_intro> {
             height: 15,
           ),
           My_PasswordFormFiled(
-            suffix: cons_Cubit.get(context).iconVisiblity,
+            suffix: UserCubit.get(context).iconVisiblity,
             suffixPressed: () {
-              cons_Cubit.get(context).changPasswordVisibilty();
+              UserCubit.get(context).changPasswordVisibilty();
             },
-            isPassword: cons_Cubit.get(context).isPassword,
+            isPassword: UserCubit.get(context).isPassword,
             validator: (String? s) {
               if (s!.isEmpty) {
                 return "Password is required";

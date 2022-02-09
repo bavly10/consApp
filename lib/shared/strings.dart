@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:helpy_app/shared/shared_prefernces.dart';
 
-List<String> suaid=const [
+List<String> suaid = const [
   "Abhā",
   "Abqaiq",
   "Al-Baḥah",
@@ -28,8 +28,11 @@ List<String> suaid=const [
   "Riyadh",
   " Sakākā",
   "Tabūk",
-  "Yanbuʿ"];
+  "Yanbuʿ"
+];
 
 const kDefaultPadding = 20.0;
 final RegExp nameRegExp = RegExp('[a-zA-Z]');
+String pattern = r'(^(?:[+0]966)?[0-9]{10,12}$)';
+RegExp regExp = RegExp(pattern);
 //Color(0xFF1D1D35);
