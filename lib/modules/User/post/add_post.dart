@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/modules/User/cubit/cubit.dart';
 import 'package:helpy_app/modules/User/cubit/states.dart';
+import 'package:helpy_app/modules/User/main.dart';
 import 'package:helpy_app/shared/componotents.dart';
 import 'package:helpy_app/shared/localization/translate.dart';
+import 'package:helpy_app/shared/my_colors.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -17,14 +19,24 @@ class CreatePost extends StatelessWidget {
     return BlocConsumer<UserCubit, cons_login_Register_States>(
       listener: (context, state) {
         if (state is ConsAddPostUserSucessState) {
-          myToast(message: mytranslate(context, "postdone"));
-        }
-        else if (state is ConsAddPostUserErrorState) {
+          My_CustomAlertDialog(
+            pressTitle: mytranslate(context, "done"),
+            onPress: () {
+              navigateToFinish(context, UserMain());
+            },
+            content: mytranslate(context, "postdone"),
+            context: context,
+            bigTitle: "MyCompany",
+            pressColor: myAmber,
+          );
+
+          //  myToast(message: mytranslate(context, "postdone"));
+        } else if (state is ConsAddPostUserErrorState) {
           myToast(message: mytranslate(context, "postfailed"));
         }
       },
       builder: (context, state) {
-        final image=UserCubit.get(context).imagee;
+        final image = UserCubit.get(context).imagee;
         return Scaffold(
           appBar: AppBar(
             centerTitle: false,
@@ -70,7 +82,7 @@ class CreatePost extends StatelessWidget {
                     ],
                   ),
                 ),
-               const SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Expanded(
@@ -81,7 +93,7 @@ class CreatePost extends StatelessWidget {
                     filled: true,
                     fillColor: HexColor('#F7F7F7'),
                     hintText: mytranslate(context, "decribe"),
-                    hintStyle:const TextStyle(fontSize: 12),
+                    hintStyle: const TextStyle(fontSize: 12),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide.none,
@@ -120,11 +132,13 @@ class CreatePost extends StatelessWidget {
                     context: context,
                     onPress: () {
                       UserCubit.get(context).AddPost(
-                          textController.text, DateTime.now().toString(), cons_Cubit.get(context).userID);
+                          textController.text,
+                          DateTime.now().toString(),
+                          cons_Cubit.get(context).userID);
                     },
                     title: Text(
                       mytranslate(context, "posts"),
-                      style:const TextStyle(fontSize: 14, color: Colors.white),
+                      style: const TextStyle(fontSize: 14, color: Colors.white),
                     ),
                     color: HexColor('#C18F3A'))
               ],
