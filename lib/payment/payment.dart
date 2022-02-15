@@ -38,23 +38,14 @@ class PaymentsTest extends StatelessWidget {
                 ),
               ),
               onLoadStop: (InAppWebViewController controller, url) async {
-                await controller
-                    .evaluateJavascript(
-                        source: "document.documentElement.innerText")
+                await controller.evaluateJavascript(source: "document.documentElement.innerText")
                     .then((value) {
                   if (value.toString().contains("Transaction not completed") ||
                       value.toString().contains("لم تكتمل المعاملة")) {
-                    scrollController
-                        .jumpTo(scrollController.position.minScrollExtent);
-                    navigateToFinish(context, PaymentError(cubit: cubit));
-
-                    navigateToFinish(context, PaymentError(cubit: cubit));
-                  } else if (value
-                          .toString()
-                          .contains("Transaction successful") ||
+                    navigateToFinish(context, PaymentError(cubit: cubit,mytext: value,));
+                  } else if (
+                  value.toString().contains("Transaction successful") ||
                       value.toString().contains("معاملة ناجحة")) {
-                    scrollController
-                        .jumpTo(scrollController.position.minScrollExtent);
                     navigateToFinish(context, ChatsScreen());
                   } else {
                     null;

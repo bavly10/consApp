@@ -3,27 +3,35 @@ import 'package:helpy_app/model/user_model.dart';
 import 'package:helpy_app/modules/User_screen/introducer.dart';
 import 'package:helpy_app/shared/componotents.dart';
 import 'package:helpy_app/shared/localization/translate.dart';
+import 'package:helpy_app/shared/my_colors.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class PaymentError extends StatelessWidget {
   final UserStrapi cubit;
-  const PaymentError({Key? key, required this.cubit}) : super(key: key);
+  final dynamic mytext;
+  const PaymentError({Key? key, required this.cubit,this.mytext}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: HexColor('#F7F7F7'),
-      body: Stack(
-        fit: StackFit.expand,
+      backgroundColor:  HexColor('#eff1f3'),
+      body: Column(
         children: [
-          Image.asset(
-            "assets/15_Payment Error.png",
-            fit: BoxFit.cover,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset(
+              "assets/15_Payment Error.png",
+             fit: BoxFit.cover,
+             height: MediaQuery.of(context).size.height*0.50,
+             width: double.infinity,
+            ),
           ),
-          Positioned(
-            bottom: MediaQuery.of(context).size.height * 0.15,
-            left: MediaQuery.of(context).size.width * 0.3,
-            right: MediaQuery.of(context).size.width * 0.3,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(child: Text(mytext,style:  const TextStyle(fontSize:18.0,color: Colors.blueGrey),textAlign: TextAlign.center,)),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
             child: Container(
               decoration: BoxDecoration(
                 boxShadow: [
@@ -47,7 +55,7 @@ class PaymentError extends StatelessWidget {
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
