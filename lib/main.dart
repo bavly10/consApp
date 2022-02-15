@@ -8,6 +8,7 @@ import 'package:helpy_app/modules/User/cubit/cubit.dart';
 import 'package:helpy_app/modules/Splash_screen/animation_Splash/main.dart';
 import 'package:helpy_app/Cubit/states.dart';
 import 'package:helpy_app/modules/customer/cubit/cubit.dart';
+import 'package:helpy_app/payment/pay_errors/pay_errors.dart';
 
 import 'package:helpy_app/shared/localization/set_localization.dart';
 import 'package:flutter/material.dart';
