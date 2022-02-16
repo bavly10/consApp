@@ -11,7 +11,9 @@ class LoginModel {
     stauts = json["statusCode"];
     error = json["error"];
     token = json["jwt"];
-    userClass = json["user"] != null ? UserStrapi.fromJson(json["user"]) : userClass=UserStrapi.fromJson(json);
+    userClass = json["user"] != null
+        ? UserStrapi.fromJson(json["user"])
+        : userClass = UserStrapi.fromJson(json);
     message = json["message"] != null
         ? List<Datum>.from(json["message"].map((x) => Datum.fromJson(x)))
         : null;
@@ -84,7 +86,8 @@ class UserStrapi {
       this.about,
       this.posts,
       this.filesIntros,
-      this.forgetpass});
+      this.forgetpass,
+      required this.introPrice});
 
   late int? id;
   late String username;
@@ -107,10 +110,12 @@ class UserStrapi {
   List<Img_user>? introImg;
   List<Post_user>? posts;
   List<FilesIntro>? filesIntros;
+  double introPrice;
 
   factory UserStrapi.fromJson(Map<String, dynamic> json) => UserStrapi(
         id: json["id"],
         username: json["username"],
+        introPrice: json["introPrice"],
         email: json["email"],
         about: json["about"],
         provider: json["provider"],
@@ -143,6 +148,7 @@ class UserStrapi {
         "id": id,
         "username": username,
         "email": email,
+        "introPrice": introPrice,
         "provider": provider,
         "blocked": blocked,
         "role": role!.toJson(),
