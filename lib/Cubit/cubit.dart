@@ -108,6 +108,7 @@ class cons_Cubit extends Cubit<cons_States> {
       print("error 500");
     }
   }
+
   Future getSpecailsts() async {
     myspec = [];
     final url = Uri.parse("$base_api/Specailsts");
@@ -188,20 +189,18 @@ class cons_Cubit extends Cubit<cons_States> {
         final pro = myads.indexWhere((element) => element.id == item['id']);
         if (pro >= 0) {
           myads[pro] = (AdsModel(
-              id: item['id'],
-              username: item['username'],
-              description: item['description'],
-              profileImage: AdsImage.fromJson(item['profileImage']),
-              contentImage: AdsImage.fromJson(item['contentImage'])));
+            id: item['id'],
+            username: item['username'],
+            profileImage: AdsImage.fromJson(item['profileImage']),
+          ));
           emit(Cons_noNewData_Ads());
           print("no data new");
         } else {
           myads.add(AdsModel(
-              id: item['id'],
-              username: item['username'],
-              description: item['description'],
-              profileImage: AdsImage.fromJson(item['profileImage']),
-              contentImage: AdsImage.fromJson(item['contentImage'])));
+            id: item['id'],
+            username: item['username'],
+            profileImage: AdsImage.fromJson(item['profileImage']),
+          ));
         }
       }
       emit(Cons_Success_Ads());
@@ -220,5 +219,4 @@ class cons_Cubit extends Cubit<cons_States> {
     userToken = CashHelper.getData("userToken");
     userID = CashHelper.getData("userId");
   }
-
 }

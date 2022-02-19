@@ -65,6 +65,7 @@ dependencies:
   slide_popup_dialog_null_safety: ^1.0.0
   percent_indicator: ^3.4.0
   flutter_inappwebview: ^5.3.2
+  flutter_staggered_grid_view:
 dev_dependencies:
   flutter_test:
     sdk: flutter

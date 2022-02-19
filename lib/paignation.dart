@@ -14,8 +14,7 @@ class TestPagination extends StatefulWidget {
 }
 
 class _TestPaginationState extends State<TestPagination> {
-
-  int pagnitation=4;
+  int pagnitation = 4;
   List<String> items = [];
   bool loading = false, allloaded = false;
   final ScrollController _scrollController = ScrollController();
@@ -24,29 +23,32 @@ class _TestPaginationState extends State<TestPagination> {
     super.initState();
     mockFetch();
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent && !loading)
-      {
+      if (_scrollController.position.pixels >=
+              _scrollController.position.maxScrollExtent &&
+          !loading) {
         print("new Data Loading");
         getMoreData();
         mockFetch();
       }
     });
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
     _scrollController.dispose();
   }
+
   String imgurl = base_api;
-  List<Categories>cubit=[];
+  List<Categories> cubit = [];
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<cons_Cubit,cons_States>(
-      builder: (ctx,state){
+    return BlocBuilder<cons_Cubit, cons_States>(
+      builder: (ctx, state) {
         return Scaffold(
           appBar: AppBar(
-            title: Text(
+            title: const Text(
               "Pagination",
               style: TextStyle(color: Colors.black),
             ),
@@ -63,44 +65,71 @@ class _TestPaginationState extends State<TestPagination> {
                         itemBuilder: (context, index) {
                           if (index < cubit.length) {
                             return Card(
-                                elevation: 8,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 3,
-                                        child:CachedNetworkImage(
-                                          width: double.infinity,
-                                          height: 250,
-                                          imageUrl:imgurl+cubit[index].catImg.url!,
-                                          placeholder: (context, url) => SpinKitCircle(color: Colors.green,),
-                                          errorWidget: (context, url, error) => Icon(Icons.error),
+                              elevation: 8,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 3,
+                                      child: CachedNetworkImage(
+                                        width: double.infinity,
+                                        height: 250,
+                                        imageUrl:
+                                            imgurl + cubit[index].catImg.url!,
+                                        placeholder: (context, url) =>
+                                            SpinKitCircle(
+                                          color: Colors.green,
                                         ),
+                                        errorWidget: (context, url, error) =>
+                                            Icon(Icons.error),
                                       ),
-                                      const SizedBox(width: 15,),
-                                      Expanded(
-                                        flex: 5,
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            const  Icon(Icons.verified,color:Colors.blue,size: 20,),
-                                            const SizedBox(height: 8,),
-                                            Text(cubit[index].title,style: TextStyle(fontSize: 14,color:Colors.blue)),
-                                            const SizedBox(height: 8,),
-                                            Row(children: [
-                                              Icon(Icons.place_rounded,color: myAmber,),
-                                              const SizedBox(width: 8,),
-                                              const  Text("الشارقه")
-                                            ],)
-                                          ],
-                                        ),
+                                    ),
+                                    const SizedBox(
+                                      width: 15,
+                                    ),
+                                    Expanded(
+                                      flex: 5,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Icon(
+                                            Icons.verified,
+                                            color: Colors.blue,
+                                            size: 20,
+                                          ),
+                                          const SizedBox(
+                                            height: 8,
+                                          ),
+                                          Text(cubit[index].title,
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.blue)),
+                                          const SizedBox(
+                                            height: 8,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.place_rounded,
+                                                color: myAmber,
+                                              ),
+                                              const SizedBox(
+                                                width: 8,
+                                              ),
+                                              const Text("الشارقه")
+                                            ],
+                                          )
+                                        ],
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-                              );
-                          } return  const Text("No More Data");
+                              ),
+                            );
+                          }
+                          return const Text("No More Data");
                         },
                         itemCount: cubit.length + (allloaded ? 1 : 0)),
                     if (loading) ...[
@@ -111,7 +140,9 @@ class _TestPaginationState extends State<TestPagination> {
                           width: constraint.maxWidth,
                           height: 80,
                           child: const Center(
-                            child: CircularProgressIndicator(color: Colors.green,),
+                            child: CircularProgressIndicator(
+                              color: Colors.green,
+                            ),
                           ),
                         ),
                       )
@@ -119,7 +150,7 @@ class _TestPaginationState extends State<TestPagination> {
                   ],
                 );
               } else {
-                return  const Center(
+                return const Center(
                   child: CircularProgressIndicator(
                     color: Colors.amber,
                   ),
@@ -140,19 +171,23 @@ class _TestPaginationState extends State<TestPagination> {
       loading = true;
     });
     await Future.delayed(Duration(milliseconds: 500));
-    List <Categories>cubitt =cons_Cubit.get(context).mycat.length >=15
+    List<Categories> cubitt = cons_Cubit.get(context).mycat.length >= 15
         ? []
-        : List.generate(4, (index) => cons_Cubit.get(context).mycat[index],);
+        : List.generate(
+            4,
+            (index) => cons_Cubit.get(context).mycat[index],
+          );
     if (cubitt.isNotEmpty) {
-    cubit.addAll(cubitt);
+      cubit.addAll(cubitt);
     }
     setState(() {
       loading = false;
     });
   }
-  void getMoreData(){
+
+  void getMoreData() {
     setState(() {
-      pagnitation+2;
+      pagnitation + 2;
     });
   }
 }

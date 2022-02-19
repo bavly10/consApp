@@ -296,7 +296,7 @@ class Introducer extends StatelessWidget {
                 width: 5,
               ),
               Text(
-                '${cubit.introPrice}',
+                '${cubit.introPrice} SR',
                 style: const TextStyle(color: Colors.white, fontSize: 18),
               ),
             ],

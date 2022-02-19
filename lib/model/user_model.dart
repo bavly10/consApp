@@ -110,7 +110,7 @@ class UserStrapi {
   List<Img_user>? introImg;
   List<Post_user>? posts;
   List<FilesIntro>? filesIntros;
-  double introPrice;
+  dynamic introPrice;
 
   factory UserStrapi.fromJson(Map<String, dynamic> json) => UserStrapi(
         id: json["id"],
