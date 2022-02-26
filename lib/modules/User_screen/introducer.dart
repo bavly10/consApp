@@ -128,7 +128,7 @@ class Introducer extends StatelessWidget {
                         autoPlay: true,
                         scrollDirection: Axis.horizontal)),
                 Positioned(
-                  top: 140,
+                  top: MediaQuery.of(context).size.height * .20,
                   child: Align(
                     alignment: AlignmentDirectional.bottomCenter,
                     child: cubit.introLogo == null

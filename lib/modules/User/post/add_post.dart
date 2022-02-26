@@ -12,6 +12,7 @@ import 'package:image_picker/image_picker.dart';
 
 class CreatePost extends StatelessWidget {
   var textController = TextEditingController();
+  final GlobalKey<FormState> form = GlobalKey();
   CreatePost({Key? key}) : super(key: key);
 
   @override
@@ -58,90 +59,99 @@ class CreatePost extends StatelessWidget {
               ),
             ],
           ),
-          body: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 5, bottom: 5),
-                  child: Row(
-                    children: [
-                      Text(
-                        mytranslate(context, "detail"),
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                            color: Colors.grey[700]),
-                      ),
-                      Divider(
-                        height: 1,
-                        color: Colors.grey[400],
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Expanded(
-                    child: TextFormField(
-                  maxLines: 8,
-                  controller: textController,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: HexColor('#F7F7F7'),
-                    hintText: mytranslate(context, "decribe"),
-                    hintStyle: const TextStyle(fontSize: 12),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                )),
-                //  if (SocialCubit.get(context).postImage != null)
-                if (image != null)
-                  Expanded(
-                    child: Stack(
-                      alignment: AlignmentDirectional.topEnd,
+          body: Form(
+            key: form,
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5, bottom: 5),
+                    child: Row(
                       children: [
-                        Container(
-                          height: 200,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  fit: BoxFit
-                                      .cover, //borderRadius: BorderRadius.circular(4)
-                                  image: FileImage(image)),
-                              borderRadius: BorderRadius.circular(4)),
+                        Text(
+                          mytranslate(context, "detail"),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                              color: Colors.grey[700]),
                         ),
-                        IconButton(
-                            onPressed: () {
-                              UserCubit.get(context).deleteImageBlocLogin();
-                            },
-                            icon: Icon(
-                              Icons.cancel,
-                              color: HexColor('#C18F3A'),
-                              size: 20,
-                            )),
+                        Divider(
+                          height: 1,
+                          color: Colors.grey[400],
+                        )
                       ],
                     ),
                   ),
-                Mybutton(
-                    context: context,
-                    onPress: () {
-                      UserCubit.get(context).AddPost(
-                          textController.text,
-                          DateTime.now().toString(),
-                          cons_Cubit.get(context).userID);
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Expanded(
+                      child: TextFormField(
+                    maxLines: 8,
+                    validator: (String? s) {
+                      if (s!.isEmpty) return "Post is required";
                     },
-                    title: Text(
-                      mytranslate(context, "posts"),
-                      style: const TextStyle(fontSize: 14, color: Colors.white),
+                    controller: textController,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: HexColor('#F7F7F7'),
+                      hintText: mytranslate(context, "decribe"),
+                      hintStyle: const TextStyle(fontSize: 12),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide.none,
+                      ),
                     ),
-                    color: HexColor('#C18F3A'))
-              ],
+                  )),
+                  //  if (SocialCubit.get(context).postImage != null)
+                  if (image != null)
+                    Expanded(
+                      child: Stack(
+                        alignment: AlignmentDirectional.topEnd,
+                        children: [
+                          Container(
+                            height: 200,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    fit: BoxFit
+                                        .cover, //borderRadius: BorderRadius.circular(4)
+                                    image: FileImage(image)),
+                                borderRadius: BorderRadius.circular(4)),
+                          ),
+                          IconButton(
+                              onPressed: () {
+                                UserCubit.get(context).deleteImageBlocLogin();
+                              },
+                              icon: Icon(
+                                Icons.cancel,
+                                color: HexColor('#C18F3A'),
+                                size: 20,
+                              )),
+                        ],
+                      ),
+                    ),
+                  Mybutton(
+                      context: context,
+                      onPress: () {
+                        if (form.currentState!.validate()) {
+                          UserCubit.get(context).AddPost(
+                              textController.text,
+                              DateTime.now().toString(),
+                              cons_Cubit.get(context).userID);
+                        }
+                      },
+                      title: Text(
+                        mytranslate(context, "posts"),
+                        style:
+                            const TextStyle(fontSize: 14, color: Colors.white),
+                      ),
+                      color: HexColor('#C18F3A'))
+                ],
+              ),
             ),
           ),
         );

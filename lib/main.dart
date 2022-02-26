@@ -2,8 +2,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:helpy_app/Cubit/my_observer.dart';
 import 'package:helpy_app/Cubit/cubit.dart';
+import 'package:helpy_app/model/user_model.dart';
 import 'package:helpy_app/modules/MainScreen/ads.dart';
+import 'package:helpy_app/modules/User/login/screren/register.dart';
 import 'package:helpy_app/modules/User/post/add_post.dart';
+import 'package:helpy_app/modules/User_screen/introducer.dart';
 import 'package:helpy_app/modules/customer/Chat/chats_screen.dart';
 import 'package:helpy_app/modules/User/cubit/cubit.dart';
 import 'package:helpy_app/modules/Splash_screen/animation_Splash/main.dart';
@@ -32,6 +35,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  UserStrapi? cubit;
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
@@ -94,7 +98,8 @@ class MyApp extends StatelessWidget {
               primarySwatch: Colors.amber,
             ),
             themeMode: ThemeMode.light,
-            home: Animation_Splash(),
+            home: Register_intro(
+                'nada21.ali2021@gmail.com'), // Animation_Splash(),
             builder: EasyLoading.init(),
           );
         },
