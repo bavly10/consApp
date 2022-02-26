@@ -556,3 +556,7 @@ CustomAlertDialog(
 myToast({required String message}) => EasyLoading.showToast(message,
     toastPosition: EasyLoadingToastPosition.bottom,
     duration: const Duration(seconds: 6));
+
+String secureEmail({String? email}) {
+  return email!.replaceAll(RegExp(r'(?<=.{2}).(?=.*@)'),'*');
+}

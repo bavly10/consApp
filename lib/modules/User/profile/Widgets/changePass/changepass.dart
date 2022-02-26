@@ -80,7 +80,7 @@ class ChangePasswordUser extends StatelessWidget {
                     ),
                   ),
                 ),
-                Text("${model!.userClass!.email}",style: TextStyle(color: myAmber,fontWeight: FontWeight.bold,fontSize: 20.0),),
+                Text(secureEmail(email:model!.userClass!.email),style: TextStyle(color: myAmber,fontWeight: FontWeight.bold,fontSize: 20.0),),
                const SizedBox(
                   height: 10,
                 ),

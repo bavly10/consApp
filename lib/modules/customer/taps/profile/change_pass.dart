@@ -1,22 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helpy_app/Cubit/cubit.dart';
-import 'package:helpy_app/modules/User/cubit/cubit.dart';
-import 'package:helpy_app/modules/User/cubit/states.dart';
 import 'package:helpy_app/modules/customer/cubit/cubit.dart';
 import 'package:helpy_app/modules/customer/cubit/state.dart';
 import 'package:helpy_app/modules/customer/taps/profile/profile.dart';
 import 'package:helpy_app/shared/componotents.dart';
-import 'package:helpy_app/shared/error_compon.dart';
 import 'package:helpy_app/shared/localization/translate.dart';
-import 'package:helpy_app/shared/strings.dart';
+import 'package:helpy_app/shared/my_colors.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class ChangePassword extends StatelessWidget {
   ChangePassword({Key? key}) : super(key: key);
   final formKey = GlobalKey<FormState>();
-  var emailController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<CustomerCubit, Customer_States>(
@@ -33,6 +28,8 @@ class ChangePassword extends StatelessWidget {
         myToast(message: mytranslate(context, "nomoreData"));
       }
     }, builder: (context, state) {
+      var model = CustomerCubit.get(context).model;
+      String textEmail = model!.email;
       return Scaffold(
           appBar: AppBar(
             title: Text(
@@ -56,7 +53,7 @@ class ChangePassword extends StatelessWidget {
                   onPressed: () {
                     FocusScope.of(context).requestFocus(FocusNode());
                     if (formKey.currentState!.validate()) {
-                      CustomerCubit.get(context).changePassword(emailController.text, cons_Cubit.get(context).customerID);
+                      CustomerCubit.get(context).changePassword(textEmail, cons_Cubit.get(context).customerID);
                     }
                   },
                   child: Text(
@@ -68,19 +65,12 @@ class ChangePassword extends StatelessWidget {
                     ),
                   ),
                 ),
-                My_TextFormFiled(
-                  controller: emailController,
-                  textInputType: TextInputType.emailAddress,
-                  myhintText: mytranslate(context, "email"),
-                  validator: (value) => value!.isEmpty
-                      ? 'Enter Your Email'
-                      : (validateEmail(value)),
-                ),
-                SizedBox(
+                Text(secureEmail(email: textEmail),style: TextStyle(color: myAmber,fontWeight: FontWeight.bold,fontSize: 20.0),),
+                const SizedBox(
                   height: 10,
                 ),
                 Text(mytranslate(context, "passtext")),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Image(

@@ -130,5 +130,9 @@
    "suessfully": "Uploading Sucessfully..",
    "delete": "Deleted...",
    "pdffile": "You Should to Choose a PDF File First",
-   "back": "BACK"
+   "back": "BACK",
+   "ok": "OK",
+   "warning": "WARNING",
+   "please": "Please Accept !!",
+   "privacy": "Privacy Policy"
 }

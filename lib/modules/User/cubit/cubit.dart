@@ -33,8 +33,8 @@ class UserCubit extends Cubit<cons_login_Register_States> {
   late var myid;
   final _auth = FirebaseAuth.instance;
   late UserCredential authres;
-  String? mycity,catSelect,specSelect;
-  int? cat_id,spec_id;
+  String? mycity, catSelect, specSelect;
+  int? cat_id, spec_id;
   int currentindex = 0;
 
   List screen = [
@@ -47,22 +47,25 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     currentindex = index;
     emit(UserChangeState());
   }
+
 ///////////design Login Screen//////////
   bool visable = true;
   void changeDesign() {
     visable = false;
     emit(Cons_Change_Design());
   }
+
   void changeDesigns() {
     visable = true;
     emit(Cons_Change_Designs());
   }
+
   IconData iconVisiblity = Icons.visibility;
   bool isPassword = true;
   void changPasswordVisibilty() {
     isPassword = !isPassword;
     iconVisiblity =
-    isPassword ? Icons.visibility : Icons.visibility_off_outlined;
+        isPassword ? Icons.visibility : Icons.visibility_off_outlined;
     emit(ChangePasswordVisibiltyState());
   }
 ////////////////////////////////////////
@@ -73,12 +76,12 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     return super.close();
   }
 
-
 /////////register Method////
   void changeSelectCity(val) {
     mycity = val;
     emit(Cons_ChangeCity_Select());
   }
+
   void changeSelectCategory(val) {
     catSelect = val.title;
     cat_id = val.id;
@@ -86,6 +89,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     print(catSelect);
     emit(Cons_Change_Cat_Select());
   }
+
   void changeSelectSpec(val) {
     specSelect = val.specTitle;
     spec_id = val.id;
@@ -108,7 +112,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
 
   final picker = ImagePicker();
   final pickers = ImagePicker();
-  var pickedFile,pickedFils;
+  var pickedFile, pickedFils;
   File? imagee;
 
   Future getImageBloc(ImageSource src) async {
@@ -121,13 +125,12 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       print("no image selected");
     }
   }
+
   deleteImageBlocLogin() {
     imagee = null;
     emit(DeleteImage_State());
     print("image Deleted");
   }
-
-
 
   FilePickerResult? result;
   var mediaType;
@@ -140,9 +143,11 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       print(mediaType);
     }
   }
+
   int get myimagecount {
     return result!.files.length;
   }
+
   deleteImageBlocList() {
     result!.files.clear();
     result = null;
@@ -164,6 +169,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       emit(TakeImagess_State());
     }
   }
+
   void uploadImage(Uint8List imageBytes, id) async {
     Map<String, String> a = {
       "files": imagee!.path,
@@ -187,6 +193,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       print(value);
     });
   }
+
   void uploadImages(id) {
     result!.files.forEach((element) async {
       String url = base_api + "/upload";
@@ -219,8 +226,14 @@ class UserCubit extends Cubit<cons_login_Register_States> {
   int? forgetID;
   late String tokenUser;
 
-
-  register({String? username, email, password, phone, String? listImages, address, about}) async {
+  register(
+      {String? username,
+      email,
+      password,
+      phone,
+      String? listImages,
+      address,
+      about}) async {
     emit(cons_Loading_Register());
     late var response;
     final url = Uri.parse("$base_api/auth/local/register");
@@ -298,8 +311,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
         emit(cons_getuser_login());
       } else {
         var response = await http.post(url, headers: headrs, body: body);
-        if (response.statusCode == 200)
-        {
+        if (response.statusCode == 200) {
           var jdson = jsonDecode(response.body);
           loginModel = LoginModel.fromJson(jdson);
           print(body);
@@ -314,7 +326,8 @@ class UserCubit extends Cubit<cons_login_Register_States> {
           loginModel = LoginModel.fromJson(jdsonn);
           emit(cons_Login_Error(loginModel!));
           // ignore: avoid_print
-          print(loginModel!.message!.map((e) => e.messages!.map((e) => e.message.toString())));
+          print(loginModel!.message!
+              .map((e) => e.messages!.map((e) => e.message.toString())));
         }
       }
     });
@@ -354,6 +367,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       throw Exception('Failed to Add Post');
     }
   }
+
   void uploadPostImage(Uint8List imageBytes, id) async {
     Map<String, String> a = {
       "files": imagee!.path,
@@ -393,13 +407,14 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       print('no connect');
     }
   }
+
   ///Search by ID
   Future<void> getUserDetails(id) async {
     final url = Uri.parse("$base_api/users/$id");
     final http.Response res = await http.get(url);
     if (res.statusCode == 200) {
       print(res.body.toString());
-      Map<String,dynamic> user = jsonDecode(res.body);
+      Map<String, dynamic> user = jsonDecode(res.body);
       loginModel = LoginModel.fromJson(user);
     } else {
       print('no connect');
@@ -427,13 +442,15 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     }
   }
 
-  Future<http.Response> updateForget({required String table, required int id, required bool forget}) {
+  Future<http.Response> updateForget(
+      {required String table, required int id, required bool forget}) {
     return http.put(
       Uri.parse("$base_api/$table/$id"),
       headers: <String, String>{'Content-Type': 'application/json'},
       body: jsonEncode(<String, bool>{'forgetpass': forget}),
     );
   }
+
   Future<http.Response> updatePassStrapi(String newPassword, int? id) {
     return http.put(
       Uri.parse("$base_api/Users/$id"),
@@ -471,6 +488,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       emit(UploadUserFileErrorState());
     }
   }
+
   void uploadFilePdf(id) async {
     result!.files.forEach((element) {
       result!.files.forEach((element) async {
@@ -484,7 +502,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
           "field": "filepdf"
         };
         var stream =
-        http.ByteStream(DelegatingStream.typed(element.readStream!));
+            http.ByteStream(DelegatingStream.typed(element.readStream!));
         int? length = element.bytes!.length;
         var multipartFile = http.MultipartFile('files', stream, length,
             filename: basename(element.path!),
@@ -499,6 +517,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       });
     });
   }
+
 /////////////////////////firebase////////////////
   Future<void> goEmail(table, email, id) async {
     FirebaseAuth.instance.sendPasswordResetEmail(email: email).then((value) {
@@ -509,4 +528,17 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     });
   }
 
+  String privacyLabel = 'Privacy Policy';
+  bool isChecked = false;
+  void changeChecked(bool v) {
+    isChecked = !isChecked;
+    emit(ChangeCheckedState());
+    if (isChecked) {
+      privacyLabel = 'Privacy Policy (Accepted)';
+      emit(AcceptPrivacyState());
+    } else {
+      privacyLabel = 'Privacy Policy';
+      emit(DontAcceptPrivacyState());
+    }
+  }
 }
