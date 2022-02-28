@@ -54,7 +54,8 @@ class MainCustomer extends StatelessWidget {
                 onTap: cubit.changeIndex,
                 iconData0: MdiIcons.home,
                 iconData1: MdiIcons.chat,
-                iconData2: MdiIcons.cog,
+                iconData3: MdiIcons.cog,
+                iconData2: MdiIcons.paletteAdvanced,
               ),
             ),
           );

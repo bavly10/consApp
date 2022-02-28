@@ -27,8 +27,9 @@ class _MainscreenState extends State<Mainscreen> {
         final cubit = cons_Cubit.get(context);
         List<String> titles = [
           mytranslate(context, "chose_cat"),
-          mytranslate(context, "ads"),
-          mytranslate(context, "setting"),
+          mytranslate(context, "Ads"),
+          mytranslate(context, "AboutUs"),
+        mytranslate(context, "login"),
         ];
         return Scaffold(
           bottomNavigationBar:MyNavigationBar(
@@ -37,10 +38,11 @@ class _MainscreenState extends State<Mainscreen> {
             onTap:cubit.changeIndex,
             iconData0:MdiIcons.home,
             iconData1: Icons.add_comment_sharp,
-            iconData2: Icons.settings,
+            iconData3: MdiIcons.paletteAdvanced,
+            iconData2: MdiIcons.information,
           ),
           appBar: AppBar(
-            leading: Icon(MdiIcons.magnify,size: 30,color: myAmber,),
+            iconTheme: const IconThemeData(opacity: 0),
             title: Text(titles[cubit.currentindex],style: TextStyle(color: myAmber),),
           ),
           body:cubit.screen[cubit.currentindex],

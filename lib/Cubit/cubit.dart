@@ -6,7 +6,7 @@ import 'package:helpy_app/Cubit/states.dart';
 import 'package:helpy_app/model/ads.dart';
 import 'package:helpy_app/model/categories_model.dart';
 import 'package:helpy_app/model/specailsts_model.dart';
-import 'package:helpy_app/modules/MainScreen/home.dart';
+import 'package:helpy_app/modules/MainScreen/aboutus.dart';
 import 'package:helpy_app/modules/MainScreen/ads.dart';
 import 'package:helpy_app/modules/MainScreen/home_services.dart';
 import 'package:helpy_app/modules/User/login/main_login.dart';
@@ -63,6 +63,7 @@ class cons_Cubit extends Cubit<cons_States> {
   List<Widget> screen = [
     const HomeServices(),
     AdsScreen(),
+    const AboutUs(),
     Main_login(),
   ];
 

@@ -8,12 +8,12 @@ class LoginModel {
   List<Datum>? data;
 
   LoginModel.fromJson(Map<String, dynamic> json) {
+    token = json["jwt"];
+    userClass=json["user"] != null ? UserStrapi.fromJson(json["user"]): userClass = UserStrapi.fromJson(json);
+  }
+  LoginModel.xJson(Map<String, dynamic> json) {
     stauts = json["statusCode"];
     error = json["error"];
-    token = json["jwt"];
-    userClass = json["user"] != null
-        ? UserStrapi.fromJson(json["user"])
-        : userClass = UserStrapi.fromJson(json);
     message = json["message"] != null
         ? List<Datum>.from(json["message"].map((x) => Datum.fromJson(x)))
         : null;
@@ -21,6 +21,7 @@ class LoginModel {
         ? List<Datum>.from(json["data"].map((x) => Datum.fromJson(x)))
         : null;
   }
+
 }
 
 class Datum {

@@ -122,7 +122,7 @@ String? validateMobile(String value) {
 Widget noPostFound(context){
   return Column(
     children: [
-      Image(image:const ExactAssetImage("assets/email.png"),height: MediaQuery.of(context).size.height*.30,width: double.infinity,),
+      Image(image:const ExactAssetImage("assets/email.png"),height: MediaQuery.of(context).size.height*.25,width: double.infinity,),
       Text(mytranslate(context, "noData"),style:const TextStyle(color: Colors.black,fontSize: 24,fontWeight: FontWeight.bold),),
     ],
   );

@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:helpy_app/model/customer_model.dart';
+import 'package:helpy_app/modules/MainScreen/ads.dart';
 import 'package:helpy_app/modules/customer/Chat/chats_screen.dart';
 import 'package:helpy_app/modules/customer/cubit/state.dart';
 import 'package:helpy_app/model/user_model.dart';
@@ -40,6 +41,7 @@ class CustomerCubit extends Cubit<Customer_States> {
   List<Widget> screen = [
     const CustomerCategory(),
     ChatsScreen(),
+     AdsScreen(),
     const ProfileScreen(),
   ];
 

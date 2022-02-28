@@ -277,8 +277,6 @@ class Introducer extends StatelessWidget {
                   .getCustomerData(cons_Cubit.get(context).customerID)
                   .then((value) async {
                 var model = CustomerCubit.get(context).model;
-
-                ///payment method
                 await ConsCubitIntro.get(context).getPay(
                     user: cubit.username,
                     name: model!.username,

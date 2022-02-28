@@ -9,8 +9,7 @@ import 'package:hexcolor/hexcolor.dart';
 class CustomCatogriesStack extends StatelessWidget {
   final Categories category;
   final String imgurl = base_api;
-  const CustomCatogriesStack({Key? key, required this.category})
-      : super(key: key);
+  const CustomCatogriesStack({Key? key, required this.category}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +24,7 @@ class CustomCatogriesStack extends StatelessWidget {
           children: [
             Container(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * .14,
+              height: MediaQuery.of(context).size.height * .17,
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.all(Radius.circular(15)),
                 color: const Color(0xff7c94b6),

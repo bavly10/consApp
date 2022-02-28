@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:helpy_app/model/post.dart';
 
 import 'package:helpy_app/model/user_model.dart';
+import 'package:helpy_app/modules/MainScreen/ads.dart';
 import 'package:helpy_app/modules/User/cubit/states.dart';
 import 'package:helpy_app/modules/User/home_screen/user_main.dart';
 import 'package:helpy_app/modules/User/profile/profile.dart';
@@ -40,6 +41,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
   List screen = [
     const UserHome(),
     ChatsScreen(),
+    AdsScreen(),
     const UserProfileScreen(),
   ];
 
@@ -323,7 +325,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
           return true;
         } else if (response.statusCode == 400) {
           var jdsonn = jsonDecode(response.body);
-          loginModel = LoginModel.fromJson(jdsonn);
+          loginModel = LoginModel.xJson(jdsonn);
           emit(cons_Login_Error(loginModel!));
           // ignore: avoid_print
           print(loginModel!.message!
