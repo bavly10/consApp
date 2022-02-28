@@ -4,6 +4,7 @@ import 'package:helpy_app/Cubit/my_observer.dart';
 import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/model/user_model.dart';
 import 'package:helpy_app/modules/MainScreen/ads.dart';
+import 'package:helpy_app/modules/MainScreen/home_services.dart';
 import 'package:helpy_app/modules/User/login/screren/register.dart';
 import 'package:helpy_app/modules/User/post/add_post.dart';
 import 'package:helpy_app/modules/User_screen/introducer.dart';
@@ -98,7 +99,7 @@ class MyApp extends StatelessWidget {
               primarySwatch: Colors.amber,
             ),
             themeMode: ThemeMode.light,
-            home:Animation_Splash(), // Animation_Splash(),
+            home: Animation_Splash(), // HomeServices(),  // Animation_Splash(),
             builder: EasyLoading.init(),
           );
         },

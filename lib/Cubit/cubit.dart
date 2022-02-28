@@ -8,6 +8,7 @@ import 'package:helpy_app/model/categories_model.dart';
 import 'package:helpy_app/model/specailsts_model.dart';
 import 'package:helpy_app/modules/MainScreen/home.dart';
 import 'package:helpy_app/modules/MainScreen/ads.dart';
+import 'package:helpy_app/modules/MainScreen/home_services.dart';
 import 'package:helpy_app/modules/User/login/main_login.dart';
 
 import 'package:helpy_app/shared/network.dart';
@@ -60,7 +61,7 @@ class cons_Cubit extends Cubit<cons_States> {
 
   int currentindex = 0;
   List<Widget> screen = [
-    Home(),
+    const HomeServices(),
     AdsScreen(),
     Main_login(),
   ];

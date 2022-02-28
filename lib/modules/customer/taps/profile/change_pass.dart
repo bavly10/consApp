@@ -53,7 +53,8 @@ class ChangePassword extends StatelessWidget {
                   onPressed: () {
                     FocusScope.of(context).requestFocus(FocusNode());
                     if (formKey.currentState!.validate()) {
-                      CustomerCubit.get(context).changePassword(textEmail, cons_Cubit.get(context).customerID);
+                      CustomerCubit.get(context).changePassword(
+                          textEmail, cons_Cubit.get(context).customerID);
                     }
                   },
                   child: Text(
@@ -65,7 +66,13 @@ class ChangePassword extends StatelessWidget {
                     ),
                   ),
                 ),
-                Text(secureEmail(email: textEmail),style: TextStyle(color: myAmber,fontWeight: FontWeight.bold,fontSize: 20.0),),
+                Text(
+                  secretEmail(textEmail),
+                  style: TextStyle(
+                      color: myAmber,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20.0),
+                ),
                 const SizedBox(
                   height: 10,
                 ),

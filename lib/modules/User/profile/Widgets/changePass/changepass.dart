@@ -31,15 +31,17 @@ class ChangePasswordUser extends StatelessWidget {
         listener: (context, state) {
       if (state is LoginChangePassSucessState) {
         My_CustomAlertDialog(
-            context:context,
+            context: context,
             bigTitle: mytranslate(context, "reviewemail"),
             content: mytranslate(context, "editpass"),
-            onPress: (){
+            onPress: () {
               Navigator.pop(context);
               CashHelper.removeData("userToken");
               navigateToFinish(context, Main_login());
             },
-            pressTitle:mytranslate(context, "logout"), icon: Icons.add, pressColor: myAmber);
+            pressTitle: mytranslate(context, "logout"),
+            icon: Icons.add,
+            pressColor: myAmber);
       }
     }, builder: (context, state) {
       return Scaffold(
@@ -67,7 +69,8 @@ class ChangePasswordUser extends StatelessWidget {
                     onPressed: () {
                       FocusScope.of(context).requestFocus(FocusNode());
                       if (formKey.currentState!.validate()) {
-                        UserCubit.get(context).goEmail("users",model!.userClass!.email,model.userClass!.id);
+                        UserCubit.get(context).goEmail("users",
+                            model!.userClass!.email, model.userClass!.id);
                       }
                     },
                     child: Text(
@@ -80,18 +83,28 @@ class ChangePasswordUser extends StatelessWidget {
                     ),
                   ),
                 ),
-                Text(secureEmail(email:model!.userClass!.email),style: TextStyle(color: myAmber,fontWeight: FontWeight.bold,fontSize: 20.0),),
-               const SizedBox(
+                Text(
+                  secretEmail(model!.userClass!.email!),
+                  style: TextStyle(
+                      color: myAmber,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20.0),
+                ),
+                const SizedBox(
                   height: 10,
                 ),
                 Text(mytranslate(context, "passtext")),
-                const SizedBox(height: 10,),
+                const SizedBox(
+                  height: 10,
+                ),
                 Image(
                   image: const ExactAssetImage("assets/pass.png"),
                   height: MediaQuery.of(context).size.height * .30,
                   width: double.infinity,
                 ),
-                const SizedBox(height: 20,),
+                const SizedBox(
+                  height: 20,
+                ),
               ],
             ),
           ));

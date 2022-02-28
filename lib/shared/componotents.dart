@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
-void navigateTo(context, widget) => Navigator.push(context, MaterialPageRoute(builder: (context) => widget));
+void navigateTo(context, widget) =>
+    Navigator.push(context, MaterialPageRoute(builder: (context) => widget));
 void navigateToFinish(context, widget) => Navigator.pushReplacement(
     context, MaterialPageRoute(builder: (context) => widget));
 
@@ -42,11 +43,11 @@ My_TextFormFiled({
       decoration: InputDecoration(
         suffixIcon: suffix != null
             ? IconButton(
-          onPressed: suffixPressed,
-          icon: Icon(
-            suffix,
-          ),
-        )
+                onPressed: suffixPressed,
+                icon: Icon(
+                  suffix,
+                ),
+              )
             : null,
         border: InputBorder.none,
         labelText: myhintText ?? '',
@@ -84,18 +85,23 @@ My_PasswordFormFiled({
       decoration: InputDecoration(
         suffixIcon: suffix != null
             ? IconButton(
-          onPressed: suffixPressed,
-          icon: Icon(
-            suffix,
-          ),
-        )
+                onPressed: suffixPressed,
+                icon: Icon(
+                  suffix,
+                ),
+              )
             : null,
         border: InputBorder.none,
         labelText: myhintText ?? '',
         labelStyle: const TextStyle(fontWeight: FontWeight.bold),
       ),
     );
-Mybutton({required BuildContext context, required Function onPress, required Widget title, Color color = Colors.blue}) => Container(
+Mybutton(
+        {required BuildContext context,
+        required Function onPress,
+        required Widget title,
+        Color color = Colors.blue}) =>
+    Container(
       width: double.infinity,
       height: MediaQuery.of(context).size.width * 0.12,
       decoration: BoxDecoration(
@@ -170,13 +176,13 @@ class DialogButton extends StatelessWidget {
 
 My_CustomAlertDialog(
     {Color? iconColor,
-      required BuildContext context,
-      required Function onPress,
-      required String pressTitle,
-      required Color pressColor,
-      required String bigTitle,
-      required String content,
-      IconData? icon}) {
+    required BuildContext context,
+    required Function onPress,
+    required String pressTitle,
+    required Color pressColor,
+    required String bigTitle,
+    required String content,
+    IconData? icon}) {
   ShapeBorder _defaultShape() {
     return RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10.0),
@@ -370,11 +376,11 @@ myCustomDialogERror(BuildContext context) {
 
 CustomAlertDialogButtons(
     {required BuildContext context,
-      required String pdf,
-      required images,
-      required Function onTapPdf,
-      required Function onTapImages,
-      required Function onTapDelete}) {
+    required String pdf,
+    required images,
+    required Function onTapPdf,
+    required Function onTapImages,
+    required Function onTapDelete}) {
   ShapeBorder _defaultShape() {
     return RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10.0),
@@ -387,87 +393,87 @@ CustomAlertDialogButtons(
   showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: Colors.white,
-        shape: _defaultShape(),
-        insetPadding: EdgeInsets.all(8),
-        elevation: 10,
-        titlePadding: const EdgeInsets.all(0.0),
-        title: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Text(mytranslate(context, "ChoosePicturefrom")),
-              SizedBox(
-                height: 10,
-              ),
-              Divider(
-                height: 1,
-                color: myAmber,
-              )
-            ],
-          ),
-        ),
-        contentPadding: EdgeInsets.all(8),
-        content: Row(
-          children: [
-            DialogButton(
-              child: Row(
+            backgroundColor: Colors.white,
+            shape: _defaultShape(),
+            insetPadding: EdgeInsets.all(8),
+            elevation: 10,
+            titlePadding: const EdgeInsets.all(0.0),
+            title: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
                 children: [
-                  Icon(
-                    Icons.picture_as_pdf,
-                    color: Colors.white,
-                  ),
+                  Text(mytranslate(context, "ChoosePicturefrom")),
                   SizedBox(
-                    width: 8,
+                    height: 10,
                   ),
-                  Text(
-                    pdf,
-                    style: TextStyle(color: Colors.white, fontSize: 18),
-                  ),
+                  Divider(
+                    height: 1,
+                    color: myAmber,
+                  )
                 ],
               ),
-              onPressed: onTapPdf,
-              color: myAmber,
             ),
-            DialogButton(
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.image_sharp,
-                    color: Colors.white,
+            contentPadding: EdgeInsets.all(8),
+            content: Row(
+              children: [
+                DialogButton(
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.picture_as_pdf,
+                        color: Colors.white,
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        pdf,
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+                    ],
                   ),
-                  SizedBox(
-                    width: 8,
+                  onPressed: onTapPdf,
+                  color: myAmber,
+                ),
+                DialogButton(
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.image_sharp,
+                        color: Colors.white,
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        images,
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+                    ],
                   ),
-                  Text(
-                    images,
-                    style: TextStyle(color: Colors.white, fontSize: 18),
-                  ),
-                ],
-              ),
-              onPressed: onTapImages,
-              color: myAmber,
+                  onPressed: onTapImages,
+                  color: myAmber,
+                ),
+                Spacer(),
+                DialogButton(
+                  child: const Icon(Icons.delete_forever),
+                  onPressed: onTapDelete,
+                  color: myAmber,
+                ),
+              ],
             ),
-            Spacer(),
-            DialogButton(
-              child: const Icon(Icons.delete_forever),
-              onPressed: onTapDelete,
-              color: myAmber,
-            ),
-          ],
-        ),
-      ));
+          ));
 }
 
 CustomAlertDialog(
     {required Color iconColor,
-      required BuildContext context,
-      required Function pressText,
-      required String pressTitle,
-      required Color pressColor,
-      required String bigTitle,
-      required String content,
-      required IconData icon}) {
+    required BuildContext context,
+    required Function pressText,
+    required String pressTitle,
+    required Color pressColor,
+    required String bigTitle,
+    required String content,
+    required IconData icon}) {
   ShapeBorder _defaultShape() {
     return RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10.0),
@@ -558,5 +564,11 @@ myToast({required String message}) => EasyLoading.showToast(message,
     duration: const Duration(seconds: 6));
 
 String secureEmail({String? email}) {
-  return email!.replaceAll(RegExp(r'(?<=.{2}).(?=.*@)'),'*');
+  return email!.replaceAll(RegExp(r'(?<=.{2}).(?=.*@)'), '*');
+}
+
+String secretEmail(String email) {
+  String secretPart = email.substring(2, email.indexOf('@') - 1);
+  String star = secretPart.replaceAll(RegExp(r'.'), '*');
+  return email.replaceAll(secretPart, star);
 }
