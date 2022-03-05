@@ -50,26 +50,9 @@ class _LoginIntroState extends State<LoginIntro> {
         if (state is cons_Loading_login) {
           myState = true;
         }
-        else if (state is cons_getuser_login ){
-          {
-            showDialog(context: context,
-          builder: (context) => CustomTextFieldDialog(
-                    controller: newPasswordController,
-                    title: "EnterPass",
-                    buttonText: "Send",
-                    hintText: "Password",
-                    onPressed: () {
-                      Navigator.pop(context);
-                      UserCubit.get(context).updatePassStrapi(newPasswordController.text, UserCubit.get(context).forgetID);
-                      UserCubit.get(context).updateForget(table: "users",id:  UserCubit.get(context).forgetID!,forget: false);
-                      myToast(message: mytranslate(context, "sucesspass"),);
-                      navigateToFinish(context, UserMain());
-                    }));
-            myState = false;
-          }
-        }
         else if (state is cons_Login_Scusess) {
-           if (state.loginModel.userClass!.confirmed == true) {
+           // ignore: unrelated_type_equality_checks
+           if (state.confirmed == true) {
            navigateTo(context, UserMain());
           // navigateTo(context,CreatePost());
           } else {
@@ -85,24 +68,6 @@ class _LoginIntroState extends State<LoginIntro> {
               },
             );
           }
-          myState = false;
-        }
-        else if (state is cons_Login_Error) {
-          state.loginModel.message!
-              .map((e) => e.messages!.map((e) => My_CustomAlertDialog(
-            icon: Icons.warning_rounded,
-            bigTitle: mytranslate(context, "dialogRegistertitle"),
-            content: e.message.toString(),
-            context: context,
-            pressColor: myAmber,
-            pressTitle: mytranslate(context, "done"),
-            onPress: () {
-              Navigator.pop(context);
-            },))).toString();
-          myState = false;
-        }
-        else if (state is LoginChangePassSucessState) {
-          myToast(message: (mytranslate(context, "Emailissent")));
           myState = false;
         }
       },
@@ -151,7 +116,29 @@ class _LoginIntroState extends State<LoginIntro> {
                       onPress: () async {
                         if (formState.currentState != null && formState.currentState!.validate()) {
                           FocusScope.of(context).unfocus();
-                          await UserCubit.get(context).login(emailsController.text, passsController.text);
+                          try{
+                            await UserCubit.get(context).login(emailsController.text, passsController.text);
+                          }catch (error) {
+                            var errormsg = mytranslate(context, "errorlogin");
+                            print('error:${error.toString()}');
+                            if (error.toString().contains('INVALID_EMAIL')) {
+                              errormsg = "this is not a Valid Email";
+                            } else if (error
+                                .toString()
+                                .contains('INVALID_PASSWORD')) {
+                              errormsg = "Incorrect Password";
+                            } else if (error
+                                .toString()
+                                .contains('WEAK_PASSWORD')) {
+                              errormsg = "Password Is to weak";
+                            } else if (error
+                                .toString()
+                                .contains('EMAIL_NOT_FOUND')) {
+                              errormsg = "This Email is Not Found";
+                            }
+                            myToast(message: errormsg);
+                            myState=false;
+                          }
                         }
                       },
                       title: myState

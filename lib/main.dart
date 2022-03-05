@@ -50,8 +50,7 @@ class MyApp extends StatelessWidget {
               ..getAds()),
         BlocProvider(create: (context) => ConsCubitIntro()),
         BlocProvider(
-            create: (context) => CustomerCubit()
-              ..getCustomerData(cons_Cubit.get(context).customerID)),
+            create: (context) => CustomerCubit()..getCustomerData(cons_Cubit.get(context).customerID)),
         BlocProvider(create: (context) => UserCubit()),
       ],
       child: BlocBuilder<cons_Cubit, cons_States>(

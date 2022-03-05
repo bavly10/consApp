@@ -39,13 +39,6 @@ class Main_login extends StatelessWidget {
                     const SizedBox(
                       height: 20,
                     ),
-                    Text(
-                      mytranslate(context, "login"),
-                      style:const TextStyle(fontSize: 22,fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

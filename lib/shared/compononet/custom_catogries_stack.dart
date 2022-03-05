@@ -31,7 +31,7 @@ class CustomCatogriesStack extends StatelessWidget {
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   colorFilter: ColorFilter.mode(
-                      Colors.black.withOpacity(0.5), BlendMode.dstATop),
+                      Colors.black.withOpacity(0.6), BlendMode.dstATop),
                   image: NetworkImage(
                     base_api + category.catImg.url!,
                   ),
@@ -43,7 +43,7 @@ class CustomCatogriesStack extends StatelessWidget {
               style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: 18),
+                  fontSize: 20),
             )
           ],
         ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helpy_app/model/customer_model.dart';
+import 'package:helpy_app/modules/MainScreen/main_screen.dart';
 import 'package:helpy_app/modules/User/login/main_login.dart';
 import 'package:helpy_app/modules/customer/cubit/cubit.dart';
 import 'package:helpy_app/modules/customer/cubit/state.dart';
@@ -40,7 +41,7 @@ class MainCustomer extends StatelessWidget {
                   onPressed: () {
                     CashHelper.removeData("tokenCustomer");
                     CashHelper.removeData("cust_id");
-                    navigateToFinish(context, Main_login());
+                    navigateToFinish(context, Mainscreen());
                   },
                   icon: Icon(
                     Icons.logout,

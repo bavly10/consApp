@@ -226,16 +226,8 @@ class UserCubit extends Cubit<cons_login_Register_States> {
   bool? forgetpass;
   String? myEmail;
   int? forgetID;
-  late String tokenUser;
 
-  register(
-      {String? username,
-      email,
-      password,
-      phone,
-      String? listImages,
-      address,
-      about}) async {
+  register({String? username, email, password, phone, String? listImages, address, about}) async {
     emit(cons_Loading_Register());
     late var response;
     final url = Uri.parse("$base_api/auth/local/register");
@@ -298,41 +290,28 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     }
   }
 
-  login(String email, String password) {
-    final url = Uri.parse("$base_api/auth/local");
-    Map<String, String> headrs = {
-      'Accept': 'application/json',
-    };
-    Map<String, String> body = {
-      'identifier': email,
-      'password': password,
-    };
+  Future<void> login(String email, String password) async{
     emit(cons_Loading_login());
-    getUserLogin(email).then((value) async {
-      if (forgetpass == true) {
-        emit(cons_getuser_login());
-      } else {
-        var response = await http.post(url, headers: headrs, body: body);
-        if (response.statusCode == 200) {
-          var jdson = jsonDecode(response.body);
-          loginModel = LoginModel.fromJson(jdson);
-          print(body);
-          tokenUser = loginModel!.token!;
-          int? useriD = loginModel!.userClass!.id;
-          CashHelper.putData("userToken", tokenUser);
-          CashHelper.putData("userId", useriD);
-          emit(cons_Login_Scusess(loginModel!));
-          return true;
-        } else if (response.statusCode == 400) {
-          var jdsonn = jsonDecode(response.body);
-          loginModel = LoginModel.xJson(jdsonn);
-          emit(cons_Login_Error(loginModel!));
-          // ignore: avoid_print
-          print(loginModel!.message!
-              .map((e) => e.messages!.map((e) => e.message.toString())));
-        }
+    final url = Uri.parse(
+        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAKbxexl8OzpCBcBj-_Gp5iyM_8mVcumYo");
+    try {
+      final res = await http.post(url, body: json.encode({
+            'email': email,
+            'password': password,
+            'returnSecureToken': true,
+          }));
+      final resdata = json.decode(res.body);
+      if (resdata['error'] != null) {
+        throw "${resdata['error']['message']}";
       }
-    });
+     var tokenuser = resdata['idToken'];
+      CashHelper.putData("userToken", tokenuser);
+      getUserLogin(email);
+      emit(cons_user_Scusess());
+    } catch (e) {
+      emit(cons_user_error());
+      throw e;
+    }
   }
 
   ////////////Add Post ////////////////
@@ -396,20 +375,23 @@ class UserCubit extends Cubit<cons_login_Register_States> {
 ////////////////////////strapi/////////////////
   ///Search by Email
   Future<void> getUserLogin(email) async {
+    var userid;
+    var confirmed;
     final url = Uri.parse("$base_api/users?_where[email]=$email");
     final http.Response res = await http.get(url);
     if (res.statusCode == 200) {
       print(res.body.toString());
-      var user = jsonDecode(res.body);
-      for (var x in user) {
-        forgetID = x['id'];
-        forgetpass = x['forgetpass'];
+      var resp = jsonDecode(res.body);
+      for (var x in resp){
+        userid=x["id"];
+        confirmed=x["Confirmed"];
       }
+      CashHelper.putData("userId", userid);
+      emit(cons_Login_Scusess(confirmed!));
     } else {
       print('no connect');
     }
   }
-
   ///Search by ID
   Future<void> getUserDetails(id) async {
     final url = Uri.parse("$base_api/users/$id");
@@ -418,6 +400,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       print(res.body.toString());
       Map<String, dynamic> user = jsonDecode(res.body);
       loginModel = LoginModel.fromJson(user);
+      emit(cons_getuser_login());
     } else {
       print('no connect');
     }
@@ -442,25 +425,6 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     } else {
       print('no connect');
     }
-  }
-
-  Future<http.Response> updateForget(
-      {required String table, required int id, required bool forget}) {
-    return http.put(
-      Uri.parse("$base_api/$table/$id"),
-      headers: <String, String>{'Content-Type': 'application/json'},
-      body: jsonEncode(<String, bool>{'forgetpass': forget}),
-    );
-  }
-
-  Future<http.Response> updatePassStrapi(String newPassword, int? id) {
-    return http.put(
-      Uri.parse("$base_api/Users/$id"),
-      headers: <String, String>{'Content-Type': 'application/json'},
-      body: jsonEncode(<String, String>{
-        'password': newPassword,
-      }),
-    );
   }
 
   Future<void> addFile(price, userid, path, name) async {
@@ -523,7 +487,6 @@ class UserCubit extends Cubit<cons_login_Register_States> {
 /////////////////////////firebase////////////////
   Future<void> goEmail(table, email, id) async {
     FirebaseAuth.instance.sendPasswordResetEmail(email: email).then((value) {
-      updateForget(table: table, id: id, forget: true);
       emit(LoginChangePassSucessState());
     }).catchError((onError) {
       emit(LoginChangePassSucessState());
@@ -543,4 +506,5 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       emit(DontAcceptPrivacyState());
     }
   }
+
 }

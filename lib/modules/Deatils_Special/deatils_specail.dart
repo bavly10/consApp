@@ -44,7 +44,6 @@ class _IntroducerSpecialState extends State<IntroducerSpecial> {
     scrollController.dispose();
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ConsCubitIntro,cons_StatesIntro>(
@@ -107,6 +106,7 @@ class _IntroducerSpecialState extends State<IntroducerSpecial> {
                       return  Stack(
                         children: [
                           ListView(
+                            physics: BouncingScrollPhysics(),
                             children: cubit.map((e) => Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: GestureDetector(

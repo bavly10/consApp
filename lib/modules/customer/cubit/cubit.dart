@@ -146,7 +146,7 @@ class CustomerCubit extends Cubit<Customer_States> {
 
 //////strapi////////////
 
-  Future<void> getUser(name, phone, email) async {
+  Future<void> getCustomer(name, phone, email) async {
     final url = Uri.parse("$base_api/Customers?_where[email]=$email");
     final http.Response res = await http.get(url);
     if (res.statusCode == 200) {
@@ -249,7 +249,7 @@ class CustomerCubit extends Cubit<Customer_States> {
       'username': userName ?? model!.username,
       'phone': phone ?? model!.phone
     }).then((value) {
-      getUser(userName, phone, model!.email);
+      getCustomer(userName, phone, model!.email);
       //  editUser(name: userName!, phone: phone!, email: model!.email);
       emit(UpdateCustomerDataSucessState());
     }).catchError((onError) {

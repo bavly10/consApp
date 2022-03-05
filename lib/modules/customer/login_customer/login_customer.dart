@@ -96,8 +96,7 @@ class _LoginUserState extends State<LoginUser> {
                             FocusScope.of(context).unfocus();
                             try {
                               await CustomerCubit.get(context)
-                                  .signin(
-                                      emailController.text, passController.text)
+                                  .signin(emailController.text, passController.text)
                                   .then((value) {
                                 navigateTo(context, MainCustomer());
                               });

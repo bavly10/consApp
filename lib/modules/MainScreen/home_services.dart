@@ -20,6 +20,7 @@ class HomeServices extends StatelessWidget {
               ),
             )
           : ListView.builder(
+        physics: const BouncingScrollPhysics(),
               itemCount: listCat.length,
               itemBuilder: (context, index) {
                 return CustomCatogriesStack(category: listCat[index]);

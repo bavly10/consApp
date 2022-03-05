@@ -1,5 +1,6 @@
 import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/Cubit/states.dart';
+import 'package:helpy_app/model/lang.dart';
 import 'package:helpy_app/shared/compononet/design_category.dart';
 import 'package:helpy_app/shared/compononet/bootm_navigation_bar.dart';
 import 'package:helpy_app/shared/componotents.dart';
@@ -38,12 +39,35 @@ class _MainscreenState extends State<Mainscreen> {
             onTap:cubit.changeIndex,
             iconData0:MdiIcons.home,
             iconData1: Icons.add_comment_sharp,
-            iconData3: MdiIcons.paletteAdvanced,
-            iconData2: MdiIcons.information,
+            iconData2: MdiIcons.adjust,
+            iconData3: MdiIcons.login,
           ),
           appBar: AppBar(
             iconTheme: const IconThemeData(opacity: 0),
             title: Text(titles[cubit.currentindex],style: TextStyle(color: myAmber),),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0,right: 8.0),
+                child: DropdownButton(
+                  onChanged: (lang) {
+                    cubit.changeLang(lang, context);
+                  },
+                  items: lanugage.lang_list.map<DropdownMenuItem<lanugage>>((lang) =>
+                      DropdownMenuItem(
+                        value: lang,
+                        child: Row(
+                          children: [
+                            Text(lang.flag!),
+                            const SizedBox(width: 10,),
+                            Text(lang.name!)
+                          ],
+                        ),
+                      )).toList(),
+                  underline:const SizedBox(),
+                    icon:Icon(Icons.language,color: myAmber,size: 30.0,) ,
+                ),
+              ),
+            ],
           ),
           body:cubit.screen[cubit.currentindex],
         );

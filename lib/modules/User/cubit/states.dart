@@ -47,9 +47,15 @@ class cons_getuser_login extends cons_login_Register_States {}
 
 class cons_getuser_logindone extends cons_login_Register_States {}
 
+class cons_user_Scusess extends cons_login_Register_States {
+
+}
+class cons_user_error extends cons_login_Register_States {
+
+}
 class cons_Login_Scusess extends cons_login_Register_States {
-  final LoginModel loginModel;
-  cons_Login_Scusess(this.loginModel);
+  final bool confirmed;
+  cons_Login_Scusess(this.confirmed);
 }
 
 class cons_Login_Error extends cons_login_Register_States {

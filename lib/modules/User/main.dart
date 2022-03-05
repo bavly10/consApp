@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/model/customer_model.dart';
 import 'package:helpy_app/model/user_model.dart';
+import 'package:helpy_app/modules/MainScreen/main_screen.dart';
 import 'package:helpy_app/modules/User/cubit/cubit.dart';
 import 'package:helpy_app/modules/User/cubit/states.dart';
 import 'package:helpy_app/modules/User/login/main_login.dart';
@@ -47,7 +48,8 @@ class UserMain extends StatelessWidget {
                   IconButton(
                       onPressed: () {
                         CashHelper.removeData("userToken");
-                        navigateToFinish(context, Main_login());
+                        CashHelper.removeData("userId");
+                        navigateToFinish(context, Mainscreen());
                       },
                       icon: Icon(
                         Icons.logout,
