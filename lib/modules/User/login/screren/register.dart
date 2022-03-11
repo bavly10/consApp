@@ -8,6 +8,7 @@ import 'package:helpy_app/modules/MainScreen/main_screen.dart';
 import 'package:helpy_app/layout/layout.dart';
 import 'package:helpy_app/model/categories_model.dart';
 import 'package:helpy_app/model/specailsts_model.dart';
+import 'package:helpy_app/shared/compononet/custom_clippath.dart';
 import 'package:helpy_app/shared/compononet/custom_privacy_dialog.dart';
 import 'package:helpy_app/shared/compononet/custom_switch.dart';
 
@@ -433,7 +434,9 @@ class _Register_introState extends State<Register_intro> {
                           showDialog(
                               context: context,
                               builder: (context) {
-                                return const CustomPrivacyDialog(mytext:"con built the Consolutios app as a Commercial app This SERVICE is provided by con and is intended for This page is used to inform visitors regarding our policies with the collection use and disclosure of Personal Information if anyone decided to use our Service If you choose to use our Service, then you agree to the collection and use of information in relation to this policy. The Personal Information that we collect is used for providing and improving the Service. We will not use or share your information with anyone except as described in this Privacy Policy  The terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, which are accessible at Consolutios unless otherwise defined in this Privacy PolicyInformation Collection and UseFor a better experience, while using our Service, we may require you to provide us with certain personally identifiable information, including but not limited to con. The information that we request will be retained by us and used as described in this privacy policy The app does use third-party services that may collect information used to identify you Link to the privacy policy of third-party service providers used by the app Google Play Services Log Data We want to inform you that whenever you use our Service, in a case of an error in the app we collect data and information (through third-party products) on your phone called Log Data. This Log Data may include information such as your device Internet Protocol (“IP”) address, device name, operating system version, the configuration of the app when utilizing our Service, the time and date of your use of the Service, and other statistics Cookies Cookies are files with a small amount of data that are commonly used as anonymous unique identifiers. These are sent to your browser from the websites that you visit and are stored on your device's internal memory This Service does not use these cookies explicitly. However, the app may use third-party code and libraries that use “cookies” to collect information and improve their services. You have the option to either accept or refuse these cookies and know when a cookie is being sent to your device. If you choose to refuse our cookies, you may not be able to use some portions of this Service Service Providers We may employ third-party companies and individuals due to the following reasons To facilitate our Service To provide the Service on our behalf",
+                                return CustomClipPath(
+                                  myText:
+                                      "con built the Consolutios app as a Commercial app This SERVICE is provided by con and is intended for This page is used to inform visitors regarding our policies with the collection use and disclosure of Personal Information if anyone decided to use our Service If you choose to use our Service, then you agree to the collection and use of information in relation to this policy. The Personal Information that we collect is used for providing and improving the Service. We will not use or share your information with anyone except as described in this Privacy Policy  The terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, which are accessible at Consolutios unless otherwise defined in this Privacy PolicyInformation Collection and UseFor a better experience, while using our Service, we may require you to provide us with certain personally identifiable information, including but not limited to con. The information that we request will be retained by us and used as described in this privacy policy The app does use third-party services that may collect information used to identify you Link to the privacy policy of third-party service providers used by the app Google Play Services Log Data We want to inform you that whenever you use our Service, in a case of an error in the app we collect data and information (through third-party products) on your phone called Log Data. This Log Data may include information such as your device Internet Protocol (“IP”) address, device name, operating system version, the configuration of the app when utilizing our Service, the time and date of your use of the Service, and other statistics Cookies Cookies are files with a small amount of data that are commonly used as anonymous unique identifiers. These are sent to your browser from the websites that you visit and are stored on your device's internal memory This Service does not use these cookies explicitly. However, the app may use third-party code and libraries that use “cookies” to collect information and improve their services. You have the option to either accept or refuse these cookies and know when a cookie is being sent to your device. If you choose to refuse our cookies, you may not be able to use some portions of this Service Service Providers We may employ third-party companies and individuals due to the following reasons To facilitate our Service To provide the Service on our behalf",
                                 );
                               });
                         }),
@@ -480,10 +483,12 @@ class _Register_introState extends State<Register_intro> {
                                     print(e);
                                   }
                                 } else {
-                                  myToast(message: "Please Complete All Fields");
+                                  myToast(
+                                      message: "Please Complete All Fields");
                                 }
                               } else {
-                                myToast(message: "Please Press ok about privacy");
+                                myToast(
+                                    message: "Please Press ok about privacy");
                                 print('please press ok about privacy');
                               }
                             }

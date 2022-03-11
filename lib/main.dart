@@ -13,6 +13,7 @@ import 'package:helpy_app/modules/User/cubit/cubit.dart';
 import 'package:helpy_app/modules/Splash_screen/animation_Splash/main.dart';
 import 'package:helpy_app/Cubit/states.dart';
 import 'package:helpy_app/modules/customer/cubit/cubit.dart';
+import 'package:helpy_app/modules/onBoarding/onBoarding_screen.dart';
 import 'package:helpy_app/payment/pay_errors/pay_errors.dart';
 
 import 'package:helpy_app/shared/localization/set_localization.dart';
@@ -50,7 +51,8 @@ class MyApp extends StatelessWidget {
               ..getAds()),
         BlocProvider(create: (context) => ConsCubitIntro()),
         BlocProvider(
-            create: (context) => CustomerCubit()..getCustomerData(cons_Cubit.get(context).customerID)),
+            create: (context) => CustomerCubit()
+              ..getCustomerData(cons_Cubit.get(context).customerID)),
         BlocProvider(create: (context) => UserCubit()),
       ],
       child: BlocBuilder<cons_Cubit, cons_States>(
@@ -98,7 +100,8 @@ class MyApp extends StatelessWidget {
               primarySwatch: Colors.amber,
             ),
             themeMode: ThemeMode.light,
-            home: Animation_Splash(), // HomeServices(),  // Animation_Splash(),
+            home: Animation_Splash(),
+            //// HomeServices(),  // Animation_Splash(),
             builder: EasyLoading.init(),
           );
         },

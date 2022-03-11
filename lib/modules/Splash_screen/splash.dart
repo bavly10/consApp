@@ -5,8 +5,10 @@ import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/modules/MainScreen/main_screen.dart';
 import 'package:helpy_app/modules/User/main.dart';
 import 'package:helpy_app/modules/customer/main.dart';
+import 'package:helpy_app/modules/onBoarding/onBoarding_screen.dart';
 import 'package:helpy_app/shared/componotents.dart';
 import 'package:helpy_app/shared/my_colors.dart';
+import 'package:helpy_app/shared/shared_prefernces.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -18,18 +20,31 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(
-        const Duration(seconds: 4), () => {
-              if (cons_Cubit.get(context).customerToken == null && cons_Cubit.get(context).userToken == null)
+        const Duration(seconds: 4),
+        () => {
+              if (CashHelper.getData('onBoarding') != null)
                 {
-                  navigateToFinish(context, Mainscreen(),)
+                  navigateToFinish(
+                    context,
+                    OnBoardingScreen(),
+                  )
                 }
+              else if (cons_Cubit.get(context).customerToken == null &&
+                  cons_Cubit.get(context).userToken == null)
+                {navigateToFinish(context, Mainscreen())}
               else if (cons_Cubit.get(context).customerToken != null)
                 {
-                  navigateToFinish(context, MainCustomer(),)
+                  navigateToFinish(
+                    context,
+                    MainCustomer(),
+                  )
                 }
               else
                 {
-                  navigateToFinish(context, UserMain(),)
+                  navigateToFinish(
+                    context,
+                    UserMain(),
+                  )
                 }
             });
   }
