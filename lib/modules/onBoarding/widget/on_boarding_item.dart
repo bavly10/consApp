@@ -27,7 +27,7 @@ class onBoardingItem extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 20,
+          height:MediaQuery.of(context).size.height * 0.10,
         ),
         Text(
           onBoardingModel.title,

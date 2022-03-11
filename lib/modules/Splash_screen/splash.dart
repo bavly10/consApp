@@ -22,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(
         const Duration(seconds: 4),
         () => {
-              if (CashHelper.getData('onBoarding') != null)
+              if (CashHelper.getData('onBoarding') == null)
                 {
                   navigateToFinish(
                     context,

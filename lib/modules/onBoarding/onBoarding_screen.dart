@@ -53,35 +53,33 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: myAmber,
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-          Expanded(
-            child: PageView.builder(
-                onPageChanged: (value) {
-                  if (value == onBoardingmodel.length - 1) {
-                    setState(() {
-                      isLast = true;
-                    });
-                    debugPrint('isLast');
-                  } else {
-                    print('is not last');
-                    setState(() {
-                      isLast = false;
-                    });
-                  }
-                },
-                itemCount: onBoardingmodel.length,
-                controller: boardController,
-                itemBuilder: (context, index) {
-                  return onBoardingItem(
-                      onBoardingModel: onBoardingmodel[index]);
-                }),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          Row(
+      body: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+        Expanded(
+          child: PageView.builder(
+              onPageChanged: (value) {
+                if (value == onBoardingmodel.length - 1) {
+                  setState(() {
+                    isLast = true;
+                  });
+                } else {
+                  setState(() {
+                    isLast = false;
+                  });
+                }
+              },
+              itemCount: onBoardingmodel.length,
+              controller: boardController,
+              itemBuilder: (context, index) {
+                return onBoardingItem(
+                    onBoardingModel: onBoardingmodel[index]);
+              }),
+        ),
+        const SizedBox(
+          height: 30,
+        ),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
             children: [
               SmoothPageIndicator(
                 effect: ExpandingDotsEffect(
@@ -124,11 +122,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       })
             ],
           ),
-          const SizedBox(
-            height: 24,
-          ),
-        ]),
-      ),
+        ),
+      ]),
     );
   }
 }
