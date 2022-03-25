@@ -15,12 +15,7 @@ class NewChat extends StatelessWidget {
         itemCount: chatsData.length,
         itemBuilder: (context, index) => ChatCard(
           chat: chatsData[index],
-          press: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => MessagesScreen(),
-            ),
-          ),
+          press: (){}
         ),
       ),
     );

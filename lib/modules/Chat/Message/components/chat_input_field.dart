@@ -4,10 +4,8 @@ import 'package:helpy_app/shared/my_colors.dart';
 
 
 class ChatInputField extends StatelessWidget {
-  const ChatInputField({
-    Key? key,
-  }) : super(key: key);
 
+   TextEditingController cont=TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -41,15 +39,6 @@ class ChatInputField extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Icon(
-                      Icons.sentiment_satisfied_alt_outlined,
-                      color: Theme.of(context)
-                          .textTheme
-                          .bodyText1!
-                          .color!
-                          .withOpacity(0.64),
-                    ),
-                    const SizedBox(width: kDefaultPadding / 4),
                     const Expanded(
                       child: TextField(
                         decoration: InputDecoration(

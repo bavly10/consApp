@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -24,6 +25,8 @@ import 'package:helpy_app/shared/strings.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:slide_popup_dialog_null_safety/slide_popup_dialog.dart'
 as slideDialog;
+
+import '../customer/Chat/chats_screen.dart';
 
 class Introducer extends StatelessWidget {
   final int id;
@@ -273,18 +276,19 @@ class Introducer extends StatelessWidget {
                   child: MySlideDialog(
                       cubit.username, mytranslate(context, "connect")));
             } else {
-              CustomerCubit.get(context)
-                  .getCustomerData(cons_Cubit.get(context).customerID)
-                  .then((value) async {
-                var model = CustomerCubit.get(context).model;
-                await ConsCubitIntro.get(context).getPay(
-                    user: cubit.username,
-                    name: model!.username,
-                    email: model.email,
-                    phone: model.phone,
-                    amount: 30);
-              });
-              // await CustomerCubit.get(context).addUserINChat(cubit.id.toString(), cubit.username,customerID!);
+              addchat(context,cubit.id.toString(),cubit.username);
+              navigateToFinish(context, ChatsScreen());
+              // CustomerCubit.get(context)
+              //     .getCustomerData(cons_Cubit.get(context).customerID)
+              //     .then((value) async {
+              //   var model = CustomerCubit.get(context).model;
+              //   await ConsCubitIntro.get(context).getPay(
+              //       user: cubit.username,
+              //       name: model!.username,
+              //       email: model.email,
+              //       phone: model.phone,
+              //       amount: 30);
+              // });
             }
           },
           label: Row(
@@ -303,5 +307,25 @@ class Introducer extends StatelessWidget {
         ),
       );
     });
+  }
+  addchat(context,userid,username)async{
+    cons_Cubit.get(context).getMyShared();
+    var x=cons_Cubit.get(context).customerID;
+    await FirebaseFirestore.instance.collection("AllChat").doc(x!+userid).set({
+      "myid": cons_Cubit.get(context).customerID,
+      "senderid": userid,
+      "name": username,
+      "key":userid+cons_Cubit.get(context).customerID,
+    }).then((value) => null);
+    final userdata = await FirebaseFirestore.instance.collection('customers').doc(cons_Cubit.get(context).customerID).get();
+    await FirebaseFirestore.instance.collection("AllChat").doc(userid+x).set(
+        {
+          "myid": userid,
+          "senderid": x,
+          "name": userdata["username"],
+          "key":userid+x,
+          "image":userdata["image"]
+        }).then((value) => null);
+    myToast(message: "تم اضافه الي قائمه الاصدقاء");
   }
 }

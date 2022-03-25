@@ -141,6 +141,8 @@ class _IntroducerSpecialState extends State<IntroducerSpecial> {
                                                 children: [
                                                   Text(e.username,style:const TextStyle(fontSize: 18,color: Colors.black,fontWeight: FontWeight.bold),),
                                                   Icon(Icons.verified,color: e.typeIntroducer=="Company"?Colors.blue:Colors.green,size: 20,),
+                                                  const Spacer(),
+                                                  const Icon(Icons.report,color: Colors.grey,)
                                                 ],
                                               ),
                                               const SizedBox(height: 8,),
@@ -149,7 +151,7 @@ class _IntroducerSpecialState extends State<IntroducerSpecial> {
                                               Row(children: [
                                                 Icon(Icons.place_rounded,color: myAmber,),
                                                 const SizedBox(width: 8,),
-                                                const  Text("الشارقه")
+                                                 Text(e.address!)
                                               ],)
                                             ],
                                           ),

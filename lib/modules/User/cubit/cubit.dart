@@ -305,7 +305,9 @@ class UserCubit extends Cubit<cons_login_Register_States> {
         throw "${resdata['error']['message']}";
       }
      var tokenuser = resdata['idToken'];
+     var userId = resdata['localId'];
       CashHelper.putData("userToken", tokenuser);
+      CashHelper.putData("userFBId", userId);
       getUserLogin(email);
       emit(cons_user_Scusess());
     } catch (e) {

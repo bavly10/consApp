@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:helpy_app/Cubit/cubit.dart';
 
 import 'package:helpy_app/modules/Deatils_Special/cubit/cubit.dart';
 import 'package:helpy_app/modules/Deatils_Special/cubit/states.dart';
@@ -15,6 +17,7 @@ class PaymentsTest extends StatelessWidget {
   ScrollController scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
+    cons_Cubit.get(context).getMyShared();
     final cubit = ConsCubitIntro.get(context).findbyid(id);
     return BlocBuilder<ConsCubitIntro, cons_StatesIntro>(builder: (ctx, state) {
       return Scaffold(
@@ -46,6 +49,7 @@ class PaymentsTest extends StatelessWidget {
                   } else if (
                   value.toString().contains("Transaction successful") ||
                       value.toString().contains("معاملة ناجحة")) {
+                    addchat(context,cubit.id.toString(),cubit.username);
                     navigateToFinish(context, ChatsScreen());
                   } else {
                     null;
@@ -57,5 +61,23 @@ class PaymentsTest extends StatelessWidget {
         ),
       );
     });
+  }
+  addchat(context,userid,username)async{
+    String? custId=cons_Cubit.get(context).customerID;
+    await FirebaseFirestore.instance.collection("AllChat").doc(custId!+userid).set({
+      "myid": cons_Cubit.get(context).customerID,
+      "senderid": userid,
+      "name": username,
+      "key":userid+cons_Cubit.get(context).customerID,
+    }).then((value) => null);
+    final userdata = await FirebaseFirestore.instance.collection('customers').doc(cons_Cubit.get(context).customerID).get();
+    await FirebaseFirestore.instance.collection("AllChat").doc(userid+custId).set({
+          "myid": userid,
+          "senderid": custId,
+          "name": userdata["username"],
+          "key":userid+custId,
+          "image":userdata["image"]
+        }).then((value) =>  myToast(message: "تم اضافه الي قائمه الاصدقاء"));
+
   }
 }

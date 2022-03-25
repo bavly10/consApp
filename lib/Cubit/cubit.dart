@@ -216,11 +216,13 @@ class cons_Cubit extends Cubit<cons_States> {
   String? customerToken;
   String? customerID;
   String? userToken;
+  String? userFBID;
   int? userID;
   void getMyShared() {
     customerToken = CashHelper.getData("tokenCustomer");
     customerID = CashHelper.getData("cust_id");
     userToken = CashHelper.getData("userToken");
     userID = CashHelper.getData("userId");
+    userFBID = CashHelper.getData("userFBId");
   }
 }
