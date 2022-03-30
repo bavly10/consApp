@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:helpy_app/model/complian.dart';
 import 'package:helpy_app/model/customer_model.dart';
 import 'package:helpy_app/modules/MainScreen/ads.dart';
 import 'package:helpy_app/modules/customer/Chat/chats_screen.dart';
@@ -37,6 +38,7 @@ class CustomerCubit extends Cubit<Customer_States> {
   File? imagee;
   CustomerModel? model;
   int? id;
+  int? xmyId;
 
   List<Widget> screen = [
     const CustomerCategory(),
@@ -137,6 +139,7 @@ class CustomerCubit extends Cubit<Customer_States> {
       CashHelper.putData("tokenCustomer", tokenCustomer);
       CashHelper.putData("cust_id", myCustomerId);
       getCustomerData(myCustomerId);
+      getCustomerStrapi(email);
       emit(LoginSuccessState());
     } catch (e) {
       emit(LoginErrorState());
@@ -146,7 +149,7 @@ class CustomerCubit extends Cubit<Customer_States> {
 
 //////strapi////////////
 
-  Future<void> getCustomer(name, phone, email) async {
+  Future<void> getCustomerForEdit(name, phone, email) async {
     final url = Uri.parse("$base_api/Customers?_where[email]=$email");
     final http.Response res = await http.get(url);
     if (res.statusCode == 200) {
@@ -156,6 +159,18 @@ class CustomerCubit extends Cubit<Customer_States> {
         id = x['id'];
       }
       editUser(name: name, phone: phone, id: id);
+    }
+  }
+  Future<void> getCustomerStrapi(email) async {
+    final url = Uri.parse("$base_api/Customers?_where[email]=$email");
+    final http.Response res = await http.get(url);
+    if (res.statusCode == 200) {
+      print(res.body.toString());
+      var user = jsonDecode(res.body);
+      for (var x in user) {
+        xmyId = x['id'];
+      }
+      CashHelper.putData("customer_idStrapi", xmyId);
     }
   }
   void editUser({required String name, required String phone, dynamic id}) async {
@@ -249,7 +264,7 @@ class CustomerCubit extends Cubit<Customer_States> {
       'username': userName ?? model!.username,
       'phone': phone ?? model!.phone
     }).then((value) {
-      getCustomer(userName, phone, model!.email);
+      getCustomerForEdit(userName, phone, model!.email);
       //  editUser(name: userName!, phone: phone!, email: model!.email);
       emit(UpdateCustomerDataSucessState());
     }).catchError((onError) {
@@ -287,5 +302,33 @@ class CustomerCubit extends Cubit<Customer_States> {
       }).then((value) => null);
       emit(CustomerCreateChatState());
     });
+  }
+
+  ComplianModel? complianModel;
+  Future<ComplianModel?> addComplian(
+      String subject, String details, int userid,int customerid) async {
+    emit(AddUserComplianLoadingState());
+    final response = await http.post(
+      Uri.parse("$base_api/Complians"),
+      headers: <String, String>{
+        'Content-Type': 'application/json ',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'subject': subject,
+        'details': details,
+        'users_id': userid,
+        'customerid': customerid,
+      }),
+    );
+    if (response.statusCode == 200) {
+      complianModel = ComplianModel.fromJson(jsonDecode(response.body));
+      // var jdson = jsonDecode(response.body);
+      emit(AddUserComplianSueeeState());
+    } else if (response.statusCode == 500) {
+    } else {
+      print(response.body.toString());
+      emit(AddUserComplianErrorState());
+      throw Exception('Failed to Add Complain');
+    }
   }
 }

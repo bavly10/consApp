@@ -17,6 +17,7 @@ class _newTestState extends State<newTest> {
   String? senderid,username;
   @override
   Widget build(BuildContext context) {
+    cons_Cubit.get(context).getMyShared();
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       body: StreamBuilder(

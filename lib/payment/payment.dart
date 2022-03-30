@@ -68,16 +68,17 @@ class PaymentsTest extends StatelessWidget {
       "myid": cons_Cubit.get(context).customerID,
       "senderid": userid,
       "name": username,
-      "key":userid+cons_Cubit.get(context).customerID,
+      "key":userid+custId,
+      "time":Timestamp.now(),
     }).then((value) => null);
-    final userdata = await FirebaseFirestore.instance.collection('customers').doc(cons_Cubit.get(context).customerID).get();
+    final userdata = await FirebaseFirestore.instance.collection('customers').doc(custId).get();
     await FirebaseFirestore.instance.collection("AllChat").doc(userid+custId).set({
           "myid": userid,
           "senderid": custId,
           "name": userdata["username"],
           "key":userid+custId,
-          "image":userdata["image"]
+          "image":userdata["image"],
+           "time":Timestamp.now(),
         }).then((value) =>  myToast(message: "تم اضافه الي قائمه الاصدقاء"));
-
   }
 }

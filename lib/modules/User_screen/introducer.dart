@@ -276,19 +276,17 @@ class Introducer extends StatelessWidget {
                   child: MySlideDialog(
                       cubit.username, mytranslate(context, "connect")));
             } else {
-              addchat(context,cubit.id.toString(),cubit.username);
-              navigateToFinish(context, ChatsScreen());
-              // CustomerCubit.get(context)
-              //     .getCustomerData(cons_Cubit.get(context).customerID)
-              //     .then((value) async {
-              //   var model = CustomerCubit.get(context).model;
-              //   await ConsCubitIntro.get(context).getPay(
-              //       user: cubit.username,
-              //       name: model!.username,
-              //       email: model.email,
-              //       phone: model.phone,
-              //       amount: 30);
-              // });
+              CustomerCubit.get(context)
+                  .getCustomerData(cons_Cubit.get(context).customerID)
+                  .then((value) async {
+                var model = CustomerCubit.get(context).model;
+                await ConsCubitIntro.get(context).getPay(
+                    user: cubit.username,
+                    name: model!.username,
+                    email: model.email,
+                    phone: model.phone,
+                    amount: 30);
+              });
             }
           },
           label: Row(
@@ -312,12 +310,12 @@ class Introducer extends StatelessWidget {
     cons_Cubit.get(context).getMyShared();
     var x=cons_Cubit.get(context).customerID;
     await FirebaseFirestore.instance.collection("AllChat").doc(x!+userid).set({
-      "myid": cons_Cubit.get(context).customerID,
+      "myid": x,
       "senderid": userid,
       "name": username,
       "key":userid+cons_Cubit.get(context).customerID,
     }).then((value) => null);
-    final userdata = await FirebaseFirestore.instance.collection('customers').doc(cons_Cubit.get(context).customerID).get();
+    final userdata = await FirebaseFirestore.instance.collection('customers').doc(x).get();
     await FirebaseFirestore.instance.collection("AllChat").doc(userid+x).set(
         {
           "myid": userid,

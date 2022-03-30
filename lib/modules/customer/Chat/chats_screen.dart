@@ -52,7 +52,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
               ),
             ),
           ],
-          body: const TabBarView(
+          body:TabBarView(
             physics:  NeverScrollableScrollPhysics(),
             children: [
               newTest(),

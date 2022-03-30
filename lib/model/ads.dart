@@ -4,51 +4,52 @@
 
 import 'dart:convert';
 
-List<AdsModel> adsFromJson(String str) =>
-    List<AdsModel>.from(json.decode(str).map((x) => AdsModel.fromJson(x)));
+List<Ads> adsFromJson(String str) => List<Ads>.from(json.decode(str).map((x) => Ads.fromJson(x)));
 
-String adsToJson(List<AdsModel> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String adsToJson(List<Ads> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class AdsModel {
-  AdsModel({
+class Ads {
+  Ads({
     required this.id,
-    required this.username,
-    this.publishedAt,
-    this.createdAt,
-    this.updatedAt,
+     this.publishedAt,
+     this.createdAt,
+     this.updatedAt,
+    required this.premium,
+    required this.userName,
     required this.profileImage,
   });
 
   int id;
-  String username;
-  late String description;
   DateTime? publishedAt;
   DateTime? createdAt;
   DateTime? updatedAt;
-  late AdsImage profileImage;
+  bool premium;
+  UserName userName;
+  ProfileImage profileImage;
 
-  factory AdsModel.fromJson(Map<String, dynamic> json) => AdsModel(
-        id: json["id"],
-        username: json["username"],
-        publishedAt: DateTime.parse(json["published_at"]),
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-        profileImage: AdsImage.fromJson(json["profileImage"]),
-      );
+  factory Ads.fromJson(Map<String, dynamic> json) => Ads(
+    id: json["id"],
+    publishedAt: DateTime.parse(json["published_at"]),
+    createdAt: DateTime.parse(json["created_at"]),
+    updatedAt: DateTime.parse(json["updated_at"]),
+    premium: json["premium"],
+    userName: UserName.fromJson(json["user_name"]),
+    profileImage: ProfileImage.fromJson(json["profileImage"]),
+  );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "username": username,
-        "published_at": publishedAt!.toIso8601String(),
-        "created_at": createdAt!.toIso8601String(),
-        "updated_at": updatedAt!.toIso8601String(),
-        "profileImage": profileImage.toJson(),
-      };
+    "id": id,
+    "published_at": publishedAt!.toIso8601String(),
+    "created_at": createdAt!.toIso8601String(),
+    "updated_at": updatedAt!.toIso8601String(),
+    "premium": premium,
+    "user_name": userName.toJson(),
+    "profileImage": profileImage.toJson(),
+  };
 }
 
-class AdsImage {
-  AdsImage({
+class ProfileImage {
+  ProfileImage({
     this.id,
     this.name,
     this.alternativeText,
@@ -57,6 +58,7 @@ class AdsImage {
     this.height,
     this.formats,
     this.hash,
+    this.ext,
     this.mime,
     this.size,
     this.url,
@@ -75,7 +77,8 @@ class AdsImage {
   int? height;
   Formats? formats;
   String? hash;
-  String? mime;
+  Ext? ext;
+  Mime? mime;
   double? size;
   String? url;
   dynamic? previewUrl;
@@ -84,64 +87,83 @@ class AdsImage {
   DateTime? createdAt;
   DateTime? updatedAt;
 
-  factory AdsImage.fromJson(Map<String, dynamic> json) => AdsImage(
-        id: json["id"],
-        name: json["name"],
-        alternativeText:
-            json["alternativeText"] == null ? null : json["alternativeText"],
-        caption: json["caption"] == null ? null : json["caption"],
-        width: json["width"],
-        height: json["height"],
-        formats: Formats.fromJson(json["formats"]),
-        hash: json["hash"],
-        mime: json["mime"],
-        size: json["size"].toDouble(),
-        url: json["url"],
-        previewUrl: json["previewUrl"],
-        provider: json["provider"],
-        providerMetadata: json["provider_metadata"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-      );
+  factory ProfileImage.fromJson(Map<String, dynamic> json) => ProfileImage(
+    id: json["id"],
+    name: json["name"],
+    alternativeText: json["alternativeText"] == null ? null : json["alternativeText"],
+    caption: json["caption"] == null ? null : json["caption"],
+    width: json["width"],
+    height: json["height"],
+    formats: json["formats"]==null?null:Formats.fromJson(json["formats"]),
+    hash: json["hash"],
+    ext: extValues.map![json["ext"]],
+    mime: mimeValues.map![json["mime"]],
+    size: json["size"]==null?null:json["size"].toDouble(),
+    url: json["url"],
+    previewUrl: json["previewUrl"],
+    provider: json["provider"],
+    providerMetadata: json["provider_metadata"],
+    createdAt:json["created_at"]==null?null: DateTime.parse(json["created_at"]),
+    updatedAt: json["updated_at"]==null?null:DateTime.parse(json["updated_at"]),
+  );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "alternativeText": alternativeText == null ? null : alternativeText,
-        "caption": caption == null ? null : caption,
-        "width": width,
-        "height": height,
-        "formats": formats!.toJson(),
-        "hash": hash,
-        "mime": mime,
-        "size": size,
-        "url": url,
-        "previewUrl": previewUrl,
-        "provider": provider,
-        "provider_metadata": providerMetadata,
-        "created_at": createdAt!.toIso8601String(),
-        "updated_at": updatedAt!.toIso8601String(),
-      };
+    "id": id,
+    "name": name,
+    "alternativeText": alternativeText == null ? null : alternativeText,
+    "caption": caption == null ? null : caption,
+    "width": width,
+    "height": height,
+    "formats": formats!.toJson(),
+    "hash": hash,
+    "ext": extValues.reverse[ext],
+    "mime": mimeValues.reverse[mime],
+    "size": size,
+    "url": url,
+    "previewUrl": previewUrl,
+    "provider": provider,
+    "provider_metadata": providerMetadata,
+    "created_at": createdAt!.toIso8601String(),
+    "updated_at": updatedAt!.toIso8601String(),
+  };
 }
+
+enum Ext { JPG }
+
+final extValues = EnumValues({
+  ".jpg": Ext.JPG
+});
 
 class Formats {
   Formats({
     this.thumbnail,
+    this.large,
+    this.medium,
+    this.small,
   });
 
-  Thumbnail? thumbnail;
+  Medium? thumbnail;
+  Medium? large;
+  Medium? medium;
+  Medium? small;
 
   factory Formats.fromJson(Map<String, dynamic> json) => Formats(
-        thumbnail: Thumbnail.fromJson(json["thumbnail"]),
-      );
+    thumbnail: Medium.fromJson(json["thumbnail"]),
+    large: json["large"] == null ? null : Medium.fromJson(json["large"]),
+    medium: Medium.fromJson(json["medium"]),
+    small: Medium.fromJson(json["small"]),
+  );
 
   Map<String, dynamic> toJson() => {
-        "thumbnail": thumbnail!.toJson(),
-      };
+    "thumbnail": thumbnail!.toJson(),
+    "large": large == null ? null : large!.toJson(),
+    "medium": medium!.toJson(),
+    "small": small!.toJson(),
+  };
 }
 
-class Thumbnail {
-  Thumbnail({
+class Medium {
+  Medium({
     this.name,
     this.hash,
     this.ext,
@@ -155,35 +177,149 @@ class Thumbnail {
 
   String? name;
   String? hash;
-  String? ext;
-  String? mime;
+  Ext? ext;
+  Mime? mime;
   int? width;
   int? height;
   double? size;
   dynamic? path;
   String? url;
 
-  factory Thumbnail.fromJson(Map<String, dynamic> json) => Thumbnail(
-        name: json["name"],
-        hash: json["hash"],
-        ext: json["ext"],
-        mime: json["mime"],
-        width: json["width"],
-        height: json["height"],
-        size: json["size"].toDouble(),
-        path: json["path"],
-        url: json["url"],
-      );
+  factory Medium.fromJson(Map<String, dynamic> json) => Medium(
+    name: json["name"],
+    hash: json["hash"],
+    ext: extValues.map![json["ext"]],
+    mime: mimeValues.map![json["mime"]],
+    width: json["width"],
+    height: json["height"],
+    size: json["size"].toDouble(),
+    path: json["path"],
+    url: json["url"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "name": name,
-        "hash": hash,
-        "mime": mime,
-        "ext": ext,
-        "width": width,
-        "height": height,
-        "size": size,
-        "path": path,
-        "url": url,
-      };
+    "name": name,
+    "hash": hash,
+    "ext": extValues.reverse[ext],
+    "mime": mimeValues.reverse[mime],
+    "width": width,
+    "height": height,
+    "size": size,
+    "path": path,
+    "url": url,
+  };
+}
+
+enum Mime { IMAGE_JPG, IMAGE_JPEG }
+
+final mimeValues = EnumValues({
+  "image/jpeg": Mime.IMAGE_JPEG,
+  "image/jpg": Mime.IMAGE_JPG
+});
+
+class UserName {
+  UserName({
+    this.id,
+    this.username,
+    this.email,
+    this.provider,
+    this.blocked,
+    this.role,
+    this.createdAt,
+    this.updatedAt,
+    this.categories,
+    this.specailst,
+    this.typeIntroducer,
+    this.phone,
+    this.confirmed,
+    this.city,
+    this.address,
+    this.about,
+    this.forgetpass,
+    this.introPrice,
+    this.introLogo,
+    this.introImg,
+  });
+
+  int? id;
+  String? username;
+  String? email;
+  String? provider;
+  bool? blocked;
+  int? role;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  int? categories;
+  int? specailst;
+  String? typeIntroducer;
+  String? phone;
+  bool? confirmed;
+  String? city;
+  String? address;
+  String? about;
+  bool? forgetpass;
+  int? introPrice;
+  ProfileImage? introLogo;
+  List<ProfileImage>? introImg;
+
+  factory UserName.fromJson(Map<String, dynamic> json) => UserName(
+    id: json["id"],
+    username: json["username"],
+    email: json["email"],
+    provider: json["provider"],
+    blocked: json["blocked"],
+    role: json["role"],
+    createdAt: DateTime.parse(json["created_at"]),
+    updatedAt: DateTime.parse(json["updated_at"]),
+    categories: json["categories"],
+    specailst: json["specailst"],
+    typeIntroducer: json["type_introducer"],
+    phone: json["phone"],
+    confirmed: json["Confirmed"],
+    city: json["city"],
+    address: json["address"],
+    about: json["about"],
+    forgetpass: json["forgetpass"],
+    introPrice: json["introPrice"],
+    introLogo: json["intro_logo"] != null
+        ? ProfileImage.fromJson(json["intro_logo"])
+        : null,
+    introImg: List<ProfileImage>.from(
+        json["intro_img"].map((x) => ProfileImage.fromJson(x))),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "username": username,
+    "email": email,
+    "provider": provider,
+    "blocked": blocked,
+    "role": role,
+    "created_at": createdAt!.toIso8601String(),
+    "updated_at": updatedAt!.toIso8601String(),
+    "categories": categories,
+    "specailst": specailst,
+    "type_introducer": typeIntroducer,
+    "phone": phone,
+    "Confirmed": confirmed,
+    "city": city,
+    "address": address,
+    "about": about,
+    "forgetpass": forgetpass,
+    "introPrice": introPrice,
+    "intro_logo": introLogo!.toJson(),
+    "intro_img": List<dynamic>.from(introImg!.map((x) => x.toJson())),
+  };
+}
+
+class EnumValues<T> {
+  Map<String, T>? map;
+  Map<T, String>? reverseMap;
+
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    reverseMap ??= map!.map((k, v) => MapEntry(v, k));
+    return reverseMap!;
+  }
 }

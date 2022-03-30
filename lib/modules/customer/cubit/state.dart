@@ -71,3 +71,8 @@ class EmailCustomerisNotExitState extends Customer_States {}
 class CustomerPasswordIsChangeState extends Customer_States {}
 
 class CustomerPasswordIsNotChange extends Customer_States {}
+class AddUserComplianSueeeState extends Customer_States {}
+
+class AddUserComplianErrorState extends Customer_States {}
+
+class AddUserComplianLoadingState extends Customer_States {}

@@ -137,5 +137,12 @@
    "privacy": "Privacy Policy",
    "Ads": "Ads",
    "AboutUs": "About us",
-   "getstarted": "SKip.."
+   "getstarted": "SKip..",
+   "start": "START",
+   "sentcomp": "complain is Sent",
+   "failedcomp": "Failed ...",
+   "report": "Report",
+   "to": "To :",
+   "sub": "Subject....",
+   "surely": "Surely"
 }

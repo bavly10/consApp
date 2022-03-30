@@ -41,6 +41,7 @@ class MainCustomer extends StatelessWidget {
                   onPressed: () {
                     CashHelper.removeData("tokenCustomer");
                     CashHelper.removeData("cust_id");
+                    CashHelper.removeData("customerIDStrapi");
                     navigateToFinish(context, Mainscreen());
                   },
                   icon: Icon(

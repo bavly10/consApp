@@ -6,6 +6,7 @@ import 'package:helpy_app/Cubit/states.dart';
 import 'package:helpy_app/model/ads.dart';
 import 'package:helpy_app/model/categories_model.dart';
 import 'package:helpy_app/model/specailsts_model.dart';
+import 'package:helpy_app/model/user_model.dart';
 import 'package:helpy_app/modules/MainScreen/aboutus.dart';
 import 'package:helpy_app/modules/MainScreen/ads.dart';
 import 'package:helpy_app/modules/MainScreen/home_services.dart';
@@ -77,7 +78,7 @@ class cons_Cubit extends Cubit<cons_States> {
   ///////
   List<Categories> mycat = [];
   List<Specailsts> myspec = [];
-  List<AdsModel> myads = [];
+  List<Ads> myads = [];
 
   Future getCategories() async {
     emit(Cons_Loading_Cate());
@@ -192,18 +193,20 @@ class cons_Cubit extends Cubit<cons_States> {
       for (var item in ads) {
         final pro = myads.indexWhere((element) => element.id == item['id']);
         if (pro >= 0) {
-          myads[pro] = (AdsModel(
+          myads[pro] = (Ads(
             id: item['id'],
-            username: item['username'],
-            profileImage: AdsImage.fromJson(item['profileImage']),
+            userName: UserName.fromJson(item['user_name']),
+            profileImage: ProfileImage.fromJson(item['profileImage']),
+            premium: item['premium'],
           ));
           emit(Cons_noNewData_Ads());
           print("no data new");
         } else {
-          myads.add(AdsModel(
+          myads.add(Ads(
             id: item['id'],
-            username: item['username'],
-            profileImage: AdsImage.fromJson(item['profileImage']),
+            userName: UserName.fromJson(item['user_name']),
+            profileImage: ProfileImage.fromJson(item['profileImage']),
+            premium: item['premium'],
           ));
         }
       }
@@ -218,11 +221,13 @@ class cons_Cubit extends Cubit<cons_States> {
   String? userToken;
   String? userFBID;
   int? userID;
+  int? customerIDStrapi;
   void getMyShared() {
     customerToken = CashHelper.getData("tokenCustomer");
     customerID = CashHelper.getData("cust_id");
     userToken = CashHelper.getData("userToken");
     userID = CashHelper.getData("userId");
     userFBID = CashHelper.getData("userFBId");
+    customerIDStrapi = CashHelper.getData("customer_idStrapi");
   }
 }

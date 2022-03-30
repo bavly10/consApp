@@ -1,20 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:helpy_app/modules/Chat/Message/Message_screen.dart';
-import 'package:helpy_app/modules/Chat/components/chat_card.dart';
+import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/shared/my_colors.dart';
 import 'package:helpy_app/shared/strings.dart';
 
 class OldChat extends StatelessWidget {
-  const OldChat({Key? key}) : super(key: key);
-
+  String? ahmed;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: mygrey,
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection("users").snapshots(),
+        stream: FirebaseFirestore.instance.collection("AllChat").where("myid",isEqualTo: cons_Cubit.get(context).customerID!).where("time",isGreaterThan:ahmed).snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return  Text('Error: ${snapshot.error}');

@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/modules/Deatils_Special/cubit/cubit.dart';
 import 'package:helpy_app/modules/Deatils_Special/cubit/states.dart';
 import 'package:helpy_app/modules/User_screen/introducer.dart';
+import 'package:helpy_app/modules/complian/complian_screen.dart';
 import 'package:helpy_app/shared/componotents.dart';
 import 'package:helpy_app/shared/error_compon.dart';
 import 'package:helpy_app/shared/localization/translate.dart';
@@ -142,7 +144,14 @@ class _IntroducerSpecialState extends State<IntroducerSpecial> {
                                                   Text(e.username,style:const TextStyle(fontSize: 18,color: Colors.black,fontWeight: FontWeight.bold),),
                                                   Icon(Icons.verified,color: e.typeIntroducer=="Company"?Colors.blue:Colors.green,size: 20,),
                                                   const Spacer(),
-                                                  const Icon(Icons.report,color: Colors.grey,)
+                                                  InkWell(onTap: (){
+                                                    cons_Cubit.get(context).getMyShared();
+                                                    cons_Cubit.get(context).customerIDStrapi==null?
+                                                        myToast(message: "You should to be login")
+                                                        : navigateTo(context, ComplianScreen(
+                                                          user: e,
+                                                        ));
+                                                  },child: const Icon(Icons.report,color: Colors.grey,))
                                                 ],
                                               ),
                                               const SizedBox(height: 8,),

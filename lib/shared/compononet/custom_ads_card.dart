@@ -4,7 +4,7 @@ import 'package:helpy_app/shared/network.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class CustomAdsCard extends StatelessWidget {
-  final AdsModel ads;
+  final Ads ads;
   String imgurl = base_api;
   CustomAdsCard({Key? key, required this.ads}) : super(key: key);
 
@@ -14,7 +14,7 @@ class CustomAdsCard extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: Container(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * .50,
+        height: MediaQuery.of(context).size.height * .25,
         decoration: BoxDecoration(
             // gradient: Gradient[Colors.amber,Colors.accents],
             border: Border.all(color: HexColor('#C18F3A'), width: 5),
@@ -35,7 +35,7 @@ class CustomAdsCard extends StatelessWidget {
               fit: BoxFit.cover,
             ),
             Text(
-              ads.username,
+              ads.userName.username!,
               style: TextStyle(
                   color: HexColor('#C18F3A'),
                   fontWeight: FontWeight.bold,

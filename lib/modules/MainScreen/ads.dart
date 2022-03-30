@@ -40,7 +40,7 @@ class AdsScreen extends StatelessWidget {
                 ),
               ),
               Container(
-                  height: MediaQuery.of(context).size.height * .30,
+                  height: MediaQuery.of(context).size.height * .40,
                   width: MediaQuery.of(context).size.width,
                   child: MasonryGridView.count(
                     itemCount: listAsd.length,
