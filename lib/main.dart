@@ -3,18 +3,10 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:helpy_app/Cubit/my_observer.dart';
 import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/model/user_model.dart';
-import 'package:helpy_app/modules/MainScreen/ads.dart';
-import 'package:helpy_app/modules/MainScreen/home_services.dart';
-import 'package:helpy_app/modules/User/login/screren/register.dart';
-import 'package:helpy_app/modules/User/post/add_post.dart';
-import 'package:helpy_app/modules/User_screen/introducer.dart';
-import 'package:helpy_app/modules/customer/Chat/chats_screen.dart';
 import 'package:helpy_app/modules/User/cubit/cubit.dart';
 import 'package:helpy_app/modules/Splash_screen/animation_Splash/main.dart';
 import 'package:helpy_app/Cubit/states.dart';
 import 'package:helpy_app/modules/customer/cubit/cubit.dart';
-import 'package:helpy_app/modules/onBoarding/onBoarding_screen.dart';
-import 'package:helpy_app/payment/pay_errors/pay_errors.dart';
 
 import 'package:helpy_app/shared/localization/set_localization.dart';
 import 'package:flutter/material.dart';
@@ -23,10 +15,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:helpy_app/shared/my_colors.dart';
 import 'package:helpy_app/shared/shared_prefernces.dart';
-import 'package:helpy_app/shared/strings.dart';
-
 import 'modules/Deatils_Special/cubit/cubit.dart';
-import 'modules/customer/taps/customer_category.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,15 +33,9 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-            create: (context) => cons_Cubit()
-              ..checkInternetConnectivity()
-              ..getCategories()
-              ..getSpecailsts()
-              ..getAds()),
+            create: (context) => cons_Cubit()..checkInternetConnectivity()..getCategories()..getSpecailsts()..getAds()),
         BlocProvider(create: (context) => ConsCubitIntro()),
-        BlocProvider(
-            create: (context) => CustomerCubit()
-              ..getCustomerData(cons_Cubit.get(context).customerID)),
+        BlocProvider(create: (context) => CustomerCubit()..getCustomerData(cons_Cubit.get(context).customerID)),
         BlocProvider(create: (context) => UserCubit()),
       ],
       child: BlocBuilder<cons_Cubit, cons_States>(

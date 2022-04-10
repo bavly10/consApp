@@ -5,7 +5,10 @@ import 'package:helpy_app/shared/localization/translate.dart';
 import 'package:helpy_app/shared/my_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:helpy_app/shared/shared_prefernces.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../modules/MainScreen/main_screen.dart';
 
 void navigateTo(context, widget) =>
     Navigator.push(context, MaterialPageRoute(builder: (context) => widget));
@@ -572,3 +575,8 @@ String secretEmail(String email) {
   String star = secretPart.replaceAll(RegExp(r'.'), '*');
   return email.replaceAll(secretPart, star);
 }
+  void submitData(context) {
+    CashHelper.putData('onBoarding', false).then((value) {
+      navigateToFinish(context, Mainscreen());
+    });
+  }

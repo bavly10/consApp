@@ -1,20 +1,18 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/Cubit/states.dart';
 
 import 'package:helpy_app/shared/compononet/custom_ads_card.dart';
-import 'package:helpy_app/shared/compononet/custom_card_mainCustomer.dart';
 import 'package:helpy_app/shared/componotents.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:helpy_app/shared/localization/translate.dart';
+
 
 class AdsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var listAsd = cons_Cubit.get(context).myads;
+    var listAsd2 = cons_Cubit.get(context).myads2;
+
     return BlocConsumer<cons_Cubit, cons_States>(
       listener: (context, state) {
         if (state is Cons_noNewData_Ads) {
@@ -39,18 +37,24 @@ class AdsScreen extends StatelessWidget {
                       childCount: listAsd.length),
                 ),
               ),
-              Container(
-                  height: MediaQuery.of(context).size.height * .40,
-                  width: MediaQuery.of(context).size.width,
-                  child: MasonryGridView.count(
-                    itemCount: listAsd.length,
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 4,
-                    crossAxisSpacing: 4,
-                    itemBuilder: (context, index) {
-                      return CustomAdsCard(ads: listAsd[index]);
+              SizedBox(
+                height: MediaQuery.of(context).size.height * .40,
+                width: MediaQuery.of(context).size.width,
+                child: GridView.custom(
+                  //  shrinkWrap: true,
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 300,
+                    mainAxisSpacing: 2,
+                    crossAxisSpacing: 2,
+                  ),
+                  childrenDelegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                      return CustomAdsCard(ads: listAsd2[index]);
                     },
-                  )),
+                    childCount: listAsd2.length,
+                  ),
+                ),
+              )
             ],
           ),
         );

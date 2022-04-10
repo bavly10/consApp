@@ -79,7 +79,7 @@ class cons_Cubit extends Cubit<cons_States> {
   List<Categories> mycat = [];
   List<Specailsts> myspec = [];
   List<Ads> myads = [];
-
+  List<Ads> myads2 = [];
   Future getCategories() async {
     emit(Cons_Loading_Cate());
     final url = Uri.parse("$base_api/Categories");
@@ -183,8 +183,9 @@ class cons_Cubit extends Cubit<cons_States> {
     await connection.close();
   }
 
+
+
   Future<void> getAds() async {
-    ///pagination
     emit(Cons_Loading_Ads());
     final url = Uri.parse("$base_api/Ads");
     final http.Response res = await http.get(url);
@@ -192,22 +193,43 @@ class cons_Cubit extends Cubit<cons_States> {
     if (res.statusCode == 200) {
       for (var item in ads) {
         final pro = myads.indexWhere((element) => element.id == item['id']);
-        if (pro >= 0) {
-          myads[pro] = (Ads(
-            id: item['id'],
-            userName: UserName.fromJson(item['user_name']),
-            profileImage: ProfileImage.fromJson(item['profileImage']),
-            premium: item['premium'],
-          ));
-          emit(Cons_noNewData_Ads());
-          print("no data new");
-        } else {
-          myads.add(Ads(
-            id: item['id'],
-            userName: UserName.fromJson(item['user_name']),
-            profileImage: ProfileImage.fromJson(item['profileImage']),
-            premium: item['premium'],
-          ));
+        if (item['premium'] == true) {
+          if (pro >= 0) {
+            myads[pro] = (Ads(
+              id: item['id'],
+              userName: UserName.fromJson(item['user_name']),
+              profileImage: ProfileImage.fromJson(item['profileImage']),
+              premium: item['premium'],
+            ));
+            emit(Cons_noNewData_Ads());
+            print("no data new");
+          } else {
+            myads.add(Ads(
+              id: item['id'],
+              userName: UserName.fromJson(item['user_name']),
+              profileImage: ProfileImage.fromJson(item['profileImage']),
+              premium: item['premium'],
+            ));
+          }
+        } else if (item['premium'] == false) {
+          final pros = myads2.indexWhere((element) => element.id == item['id']);
+          if (pros >= 0) {
+            myads2[pros] = (Ads(
+              id: item['id'],
+              userName: UserName.fromJson(item['user_name']),
+              profileImage: ProfileImage.fromJson(item['profileImage']),
+              premium: item['premium'],
+            ));
+            emit(Cons_noNewData_Ads());
+            print("no data new");
+          } else {
+            myads2.add(Ads(
+              id: item['id'],
+              userName: UserName.fromJson(item['user_name']),
+              profileImage: ProfileImage.fromJson(item['profileImage']),
+              premium: item['premium'],
+            ));
+          }
         }
       }
       emit(Cons_Success_Ads());
@@ -222,6 +244,7 @@ class cons_Cubit extends Cubit<cons_States> {
   String? userFBID;
   int? userID;
   int? customerIDStrapi;
+
   void getMyShared() {
     customerToken = CashHelper.getData("tokenCustomer");
     customerID = CashHelper.getData("cust_id");
@@ -230,4 +253,5 @@ class cons_Cubit extends Cubit<cons_States> {
     userFBID = CashHelper.getData("userFBId");
     customerIDStrapi = CashHelper.getData("customer_idStrapi");
   }
+
 }

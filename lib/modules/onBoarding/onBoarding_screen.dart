@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:helpy_app/modules/MainScreen/main_screen.dart';
 import 'package:helpy_app/modules/onBoarding/widget/on_boarding_item.dart';
+import 'package:helpy_app/modules/onBoarding/widget/ripple_button.dart';
 import 'package:helpy_app/shared/compononet/custom_clip_slider.dart';
 import 'package:helpy_app/shared/componotents.dart';
 import 'package:helpy_app/shared/localization/translate.dart';
@@ -42,12 +43,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         body: 'عيش تجربة فريدةي ',
         image: 'assets/b3.png'),
   ];
-  void submitData() {
-    CashHelper.putData('onBoarding', false).then((value) {
-      debugPrint('hello');
-      navigateToFinish(context, Mainscreen());
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,8 +65,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               itemCount: onBoardingmodel.length,
               controller: boardController,
               itemBuilder: (context, index) {
-                return onBoardingItem(
-                    onBoardingModel: onBoardingmodel[index]);
+                return onBoardingItem(onBoardingModel: onBoardingmodel[index]);
               }),
         ),
         const SizedBox(
@@ -92,23 +86,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               ),
               const Spacer(),
               isLast
-                  ? TextButton(
-                      child: Text(
-                        'Start',
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            wordSpacing: 2,
-                            letterSpacing: 2,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Cairo'),
-                      ),
-                      onPressed: () {
-                        submitData();
-                      })
+                  ? const RipplesAnimation()
                   : TextButton(
                       child: Text(
-                        'Skip',
+                        mytranslate(context, "getstarted"),
                         style: const TextStyle(
                             color: Colors.white,
                             fontSize: 15,
@@ -118,7 +99,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             fontFamily: 'Cairo'),
                       ),
                       onPressed: () {
-                        submitData();
+                        submitData(context);
                       })
             ],
           ),
