@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:helpy_app/Cubit/cubit.dart';
+import 'package:helpy_app/model/lang.dart';
 import 'package:helpy_app/modules/User/login/main_login.dart';
 import 'package:helpy_app/modules/customer/cubit/cubit.dart';
 import 'package:helpy_app/modules/customer/cubit/state.dart';
@@ -11,6 +13,7 @@ import 'package:helpy_app/modules/customer/taps/profile/edit_profile.dart';
 import 'package:helpy_app/modules/customer/taps/profile/edit_profile/widgets/custom_list_tile.dart';
 import 'package:helpy_app/shared/componotents.dart';
 import 'package:helpy_app/shared/localization/translate.dart';
+import 'package:helpy_app/shared/my_colors.dart';
 import 'package:helpy_app/shared/shared_prefernces.dart';
 import 'package:hexcolor/hexcolor.dart';
 
@@ -24,6 +27,7 @@ class ProfileScreen extends StatelessWidget {
       builder: (context, state) {
         var model = CustomerCubit.get(context).model;
         var cusImage = CustomerCubit.get(context).model?.image;
+        final cubit = cons_Cubit.get(context);
         return Directionality(
           textDirection: TextDirection.rtl,
           child: Scaffold(
@@ -85,6 +89,43 @@ class ProfileScreen extends StatelessWidget {
                         onTap: () {
                           navigateTo(context, ChangePassword());
                         },
+                      )),
+                  Padding(
+                      padding: const EdgeInsets.only(
+                          bottom: 8, top: 5, right: 16, left: 12),
+                      child: DropdownButton(
+                        isExpanded: true,
+                        onChanged: (lang) {
+                          cubit.changeLang(lang, context);
+                        },
+
+                        hint: Text(
+                          mytranslate(context, "lang"),
+                          style: const TextStyle(
+                              color: Colors.black87, fontSize: 15),
+                        ),
+                        // value: lanugage.lang_list[0],
+                        items: lanugage.lang_list
+                            .map<DropdownMenuItem<lanugage>>(
+                                (lang) => DropdownMenuItem(
+                              value: lang,
+                              child: Row(
+                                children: [
+                                  Text(lang.flag!),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(lang.name!)
+                                ],
+                              ),
+                            ))
+                            .toList(),
+                        underline: const SizedBox(),
+                        icon: Icon(
+                          Icons.keyboard_arrow_down_rounded,
+                          color: myAmber,
+                          size: 30.0,
+                        ),
                       )),
                   Padding(
                     padding: const EdgeInsets.only(right: 13, left: 15),

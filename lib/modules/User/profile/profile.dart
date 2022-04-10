@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helpy_app/Cubit/cubit.dart';
+import 'package:helpy_app/model/lang.dart';
+import 'package:helpy_app/modules/Deatils_Special/cubit/cubit.dart';
 import 'package:helpy_app/modules/User/add_file/add_file.dart';
 
 import 'package:helpy_app/modules/User/cubit/cubit.dart';
@@ -9,9 +11,12 @@ import 'package:helpy_app/modules/User/login/main_login.dart';
 import 'package:helpy_app/modules/User/profile/Widgets/changePass/changepass.dart';
 import 'package:helpy_app/modules/User/profile/Widgets/user_rate/user_rate_screen.dart';
 import 'package:helpy_app/modules/User/profile/Widgets/wallet/wallet_screen.dart';
+import 'package:helpy_app/modules/User_screen/introducer.dart';
 
 import 'package:helpy_app/modules/customer/taps/profile/edit_profile/widgets/custom_list_tile.dart';
 import 'package:helpy_app/shared/componotents.dart';
+import 'package:helpy_app/shared/localization/translate.dart';
+import 'package:helpy_app/shared/my_colors.dart';
 import 'package:helpy_app/shared/shared_prefernces.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
@@ -23,6 +28,7 @@ class UserProfileScreen extends StatelessWidget {
     return BlocBuilder<UserCubit, cons_login_Register_States>(
       builder: (context, state) {
         final model = UserCubit.get(context).loginModel;
+        final cubit = cons_Cubit.get(context);
         cons_Cubit.get(context).getMyShared();
         return Scaffold(
           body: SingleChildScrollView(
@@ -68,7 +74,6 @@ class UserProfileScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-
                 const SizedBox(
                   height: 20,
                 ),
@@ -103,6 +108,19 @@ class UserProfileScreen extends StatelessWidget {
                       },
                     )),
                 Padding(
+                    padding: const EdgeInsets.only(
+                      right: 5,
+                      bottom: 8,
+                      top: 5,
+                    ),
+                    child: CustomListTile(
+                      textTitle: "editProfile",
+                      trailingIcon: Icons.arrow_forward_ios_rounded,
+                      onTap: () {
+                        navigateTo(context, Introducer(320));
+                      },
+                    )),
+                Padding(
                   padding: const EdgeInsets.only(right: 13, left: 15),
                   child: Container(
                     height: 1,
@@ -110,7 +128,6 @@ class UserProfileScreen extends StatelessWidget {
                     color: Colors.grey[100],
                   ),
                 ),
-
                 Padding(
                     padding: const EdgeInsets.only(
                       right: 5,
@@ -136,6 +153,42 @@ class UserProfileScreen extends StatelessWidget {
                       onTap: () {
                         navigateTo(context, CreateFile());
                       },
+                    )),
+                Padding(
+                    padding: const EdgeInsets.only(
+                        bottom: 8, top: 5, right: 16, left: 12),
+                    child: DropdownButton(
+                      isExpanded: true,
+                      onChanged: (lang) {
+                        cubit.changeLang(lang, context);
+                      },
+                      hint: Text(
+                        mytranslate(context, "lang"),
+                        style: const TextStyle(
+                            color: Colors.black87, fontSize: 15),
+                      ),
+                      // value: lanugage.lang_list[0],
+                      items: lanugage.lang_list
+                          .map<DropdownMenuItem<lanugage>>(
+                              (lang) => DropdownMenuItem(
+                            value: lang,
+                            child: Row(
+                              children: [
+                                Text(lang.flag!),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Text(lang.name!)
+                              ],
+                            ),
+                          ))
+                          .toList(),
+                      underline: const SizedBox(),
+                      icon: Icon(
+                        Icons.keyboard_arrow_down_rounded,
+                        color: myAmber,
+                        size: 30.0,
+                      ),
                     )),
                 Padding(
                     padding: const EdgeInsets.only(

@@ -160,7 +160,7 @@ class _IntroducerSpecialState extends State<IntroducerSpecial> {
                                               Row(children: [
                                                 Icon(Icons.place_rounded,color: myAmber,),
                                                 const SizedBox(width: 8,),
-                                                 Text(e.address!)
+                                                 Text(e.address??"Error")
                                               ],)
                                             ],
                                           ),
