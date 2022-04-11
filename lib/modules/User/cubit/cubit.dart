@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -205,7 +206,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
         "files": element.path!,
         "ref": "user",
         "refId": "$id",
-        "field": "intro_img",
+        "field": "certificate",
         "source": "users-permissions"
       };
       var stream = http.ByteStream(DelegatingStream.typed(element.readStream!));
@@ -227,7 +228,15 @@ class UserCubit extends Cubit<cons_login_Register_States> {
   String? myEmail;
   int? forgetID;
 
-  register({String? username, email, password, phone, String? listImages, address, about}) async {
+  register(
+      {String? username,
+      email,
+      password,
+      phone,
+      String? listImages,
+      address,
+      about,
+      dynamic price}) async {
     emit(cons_Loading_Register());
     late var response;
     final url = Uri.parse("$base_api/auth/local/register");
@@ -239,10 +248,11 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       "phone": phone,
       "city": mycity,
       "address": address,
+      "introPrice": price,
       "about": about,
       "type_introducer": myType,
       "Confirmed": false.toString(),
-      "intro_img": listImages,
+      "certificate": listImages,
       //"intro_logo":imagee.path,
       "categories": cat_id.toString(),
       "specailst": spec_id.toString(),
@@ -290,12 +300,13 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     }
   }
 
-  Future<void> login(String email, String password) async{
+  Future<void> login(String email, String password) async {
     emit(cons_Loading_login());
     final url = Uri.parse(
         "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAKbxexl8OzpCBcBj-_Gp5iyM_8mVcumYo");
     try {
-      final res = await http.post(url, body: json.encode({
+      final res = await http.post(url,
+          body: json.encode({
             'email': email,
             'password': password,
             'returnSecureToken': true,
@@ -304,8 +315,8 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       if (resdata['error'] != null) {
         throw "${resdata['error']['message']}";
       }
-     var tokenuser = resdata['idToken'];
-     var userId = resdata['localId'];
+      var tokenuser = resdata['idToken'];
+      var userId = resdata['localId'];
       CashHelper.putData("userToken", tokenuser);
       CashHelper.putData("userFBId", userId);
       getUserLogin(email);
@@ -384,9 +395,9 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     if (res.statusCode == 200) {
       print(res.body.toString());
       var resp = jsonDecode(res.body);
-      for (var x in resp){
-        userid=x["id"];
-        confirmed=x["Confirmed"];
+      for (var x in resp) {
+        userid = x["id"];
+        confirmed = x["Confirmed"];
       }
       CashHelper.putData("userId", userid);
       emit(cons_Login_Scusess(confirmed!));
@@ -394,6 +405,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       print('no connect');
     }
   }
+
   ///Search by ID
   Future<void> getUserDetails(id) async {
     final url = Uri.parse("$base_api/users/$id");
@@ -508,5 +520,4 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       emit(DontAcceptPrivacyState());
     }
   }
-
 }

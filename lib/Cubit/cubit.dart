@@ -135,7 +135,7 @@ class cons_Cubit extends Cubit<cons_States> {
     } on FormatException catch (e) {
       emit(Cons_Error_Special(e.toString()));
     } catch (error) {
-      throw error;
+      rethrow;
     }
   }
 
@@ -182,8 +182,6 @@ class cons_Cubit extends Cubit<cons_States> {
     var connection = PersistentConnection(smtpServer);
     await connection.close();
   }
-
-
 
   Future<void> getAds() async {
     emit(Cons_Loading_Ads());
@@ -253,5 +251,4 @@ class cons_Cubit extends Cubit<cons_States> {
     userFBID = CashHelper.getData("userFBId");
     customerIDStrapi = CashHelper.getData("customer_idStrapi");
   }
-
 }

@@ -9,7 +9,9 @@ class LoginModel {
 
   LoginModel.fromJson(Map<String, dynamic> json) {
     token = json["jwt"];
-    userClass=json["user"] != null ? UserStrapi.fromJson(json["user"]): userClass = UserStrapi.fromJson(json);
+    userClass = json["user"] != null
+        ? UserStrapi.fromJson(json["user"])
+        : userClass = UserStrapi.fromJson(json);
   }
   LoginModel.xJson(Map<String, dynamic> json) {
     stauts = json["statusCode"];
@@ -21,7 +23,6 @@ class LoginModel {
         ? List<Datum>.from(json["data"].map((x) => Datum.fromJson(x)))
         : null;
   }
-
 }
 
 class Datum {
@@ -84,6 +85,7 @@ class UserStrapi {
       this.address,
       this.introLogo,
       this.introImg,
+      this.certificate,
       this.about,
       this.posts,
       this.filesIntros,
@@ -109,6 +111,7 @@ class UserStrapi {
   bool? forgetpass;
   Img_user? introLogo;
   List<Img_user>? introImg;
+  List<Img_user>? certificate;
   List<Post_user>? posts;
   List<FilesIntro>? filesIntros;
   dynamic introPrice;
@@ -125,7 +128,9 @@ class UserStrapi {
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
         categories: Categories_user.fromJson(json["categories"]),
-        specailst: Specailst_user.fromJson(json["specailst"]),
+        specailst: json["specailst"] == null
+            ? null
+            : Specailst_user.fromJson(json["specailst"]),
         typeIntroducer: json["type_introducer"],
         phone: json["phone"],
         confirmed: json["Confirmed"],
@@ -137,6 +142,8 @@ class UserStrapi {
             : null,
         introImg: List<Img_user>.from(
             json["intro_img"].map((x) => Img_user.fromJson(x))),
+        certificate: List<Img_user>.from(
+            json["certificate"].map((x) => Img_user.fromJson(x))),
         posts: List<Post_user>.from(
             json["posts"].map((x) => Post_user.fromJson(x))),
         filesIntros: json["filesusers"] == null
@@ -166,6 +173,7 @@ class UserStrapi {
         "address": address,
         "intro_logo": introLogo,
         "intro_img": List<dynamic>.from(introImg!.map((x) => x.toJson())),
+        "certificate": List<dynamic>.from(certificate!.map((x) => x.toJson())),
         "posts": List<dynamic>.from(posts!.map((x) => x.toJson())),
         "filesusers": List<dynamic>.from(filesIntros!.map((x) => x.toJson())),
       };
@@ -313,7 +321,7 @@ class Formats {
 
   factory Formats.fromJson(Map<String, dynamic> json) => Formats(
         thumbnail: Medium.fromJson(json["thumbnail"]),
-        medium: Medium.fromJson(json["medium"]),
+        medium: json["medium"] == null ? null : Medium.fromJson(json["medium"]),
         small: Medium.fromJson(json["small"]),
         large: json["large"] == null ? null : Medium.fromJson(json["large"]),
       );

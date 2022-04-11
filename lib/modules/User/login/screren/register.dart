@@ -33,6 +33,7 @@ class Register_intro extends StatefulWidget {
 
 class _Register_introState extends State<Register_intro> {
   TextEditingController nameController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController aboutController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -44,6 +45,7 @@ class _Register_introState extends State<Register_intro> {
   @override
   void initState() {
     nameController = TextEditingController();
+    priceController = TextEditingController();
     emailController = TextEditingController();
     addressController = TextEditingController();
     passwordController = TextEditingController();
@@ -55,6 +57,7 @@ class _Register_introState extends State<Register_intro> {
   @override
   void dispose() {
     nameController.dispose();
+    priceController.dispose();
     emailController.dispose();
     passwordController.dispose();
     phoneController.dispose();
@@ -457,6 +460,7 @@ class _Register_introState extends State<Register_intro> {
                                           address: addressController.text,
                                           email: widget.email,
                                           username: nameController.text,
+                                          price: priceController.text,
                                           password: passwordController.text,
                                           phone: phoneController.text,
                                           about: aboutController.text,
@@ -575,6 +579,13 @@ class _Register_introState extends State<Register_intro> {
           const SizedBox(
             height: 15,
           ),
+          My_TextFormFiled(
+              validator: (String? s) {
+                if (s!.isEmpty) return "price is required";
+              },
+              controller: priceController,
+              myhintText: "price",
+              textInputType: TextInputType.number),
           My_TextFormFiled(
             textInputType: TextInputType.number,
             validator: (String? s) {
