@@ -584,7 +584,7 @@ class _Register_introState extends State<Register_intro> {
                 if (s!.isEmpty) return "price is required";
               },
               controller: priceController,
-              myhintText: "price",
+              myhintText: mytranslate(context, "price"),
               textInputType: TextInputType.number),
           My_TextFormFiled(
             textInputType: TextInputType.number,
