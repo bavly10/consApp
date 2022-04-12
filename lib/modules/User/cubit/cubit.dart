@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -205,7 +206,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
         "files": element.path!,
         "ref": "user",
         "refId": "$id",
-        "field": "intro_img",
+        "field": "certificate",
         "source": "users-permissions"
       };
       var stream = http.ByteStream(DelegatingStream.typed(element.readStream!));
@@ -221,11 +222,36 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       });
     });
   }
+  void uploadImagesx(id) async{
+    for( var element in result!.files){
+      String url = base_api + "/upload";
+      var uri = Uri.parse(url);
+      var request = http.MultipartRequest("POST", uri);
+      Map<String, String> a = {
+        "files": element.path!,
+        "ref": "user",
+        "refId": "$id",
+        "field": "certificate",
+        "source": "users-permissions"
+      };
+      var stream = http.ByteStream(DelegatingStream.typed(element.readStream!));
+      int? length = element.bytes!.length;
+      var multipartFile = http.MultipartFile('files', stream, length, filename: basename(element.path!), contentType: mediaType);
+      request.fields.addAll(a);
+      request.files.add(multipartFile);
+      final response = await request.send();
+      response.stream.transform(utf8.decoder).listen((value) {
+        print(value);
+        // ignore: void_checks
+      });
+    }
+  }
 
   late String error = "Email IsNot Exist";
   bool? forgetpass;
   String? myEmail;
   int? forgetID;
+
 
   register({String? username, email, password, phone, String? listImages, address, about,price}) async {
     emit(cons_Loading_Register());
@@ -239,11 +265,12 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       "phone": phone,
       "city": mycity,
       "address": address,
+      "introPrice": price,
       "about": about,
       "type_introducer": myType,
       "Confirmed": false.toString(),
-      "intro_img": listImages,
       "introPrice":price,
+      "certificate": listImages,
       //"intro_logo":imagee.path,
       "categories": cat_id.toString(),
       "specailst": spec_id.toString(),
@@ -266,10 +293,9 @@ class UserCubit extends Cubit<cons_login_Register_States> {
           final loadeddata = jdson['user'];
           myid = loadeddata["id"];
           print(response.body);
-
           ///upload image logo kant adema h3mlha fe profile
           // uploadImage(imagee.readAsBytesSync(),myid);
-          uploadImages(myid);
+          uploadImagesx(myid);
           emit(cons_Register_Scusess());
           return true;
         } else if (response.statusCode == 400) {
@@ -291,12 +317,13 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     }
   }
 
-  Future<void> login(String email, String password) async{
+  Future<void> login(String email, String password) async {
     emit(cons_Loading_login());
     final url = Uri.parse(
         "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAKbxexl8OzpCBcBj-_Gp5iyM_8mVcumYo");
     try {
-      final res = await http.post(url, body: json.encode({
+      final res = await http.post(url,
+          body: json.encode({
             'email': email,
             'password': password,
             'returnSecureToken': true,
@@ -305,8 +332,8 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       if (resdata['error'] != null) {
         throw "${resdata['error']['message']}";
       }
-     var tokenuser = resdata['idToken'];
-     var userId = resdata['localId'];
+      var tokenuser = resdata['idToken'];
+      var userId = resdata['localId'];
       CashHelper.putData("userToken", tokenuser);
       CashHelper.putData("userFBId", userId);
       getUserLogin(email);
@@ -385,9 +412,9 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     if (res.statusCode == 200) {
       print(res.body.toString());
       var resp = jsonDecode(res.body);
-      for (var x in resp){
-        userid=x["id"];
-        confirmed=x["Confirmed"];
+      for (var x in resp) {
+        userid = x["id"];
+        confirmed = x["Confirmed"];
       }
       CashHelper.putData("userId", userid);
       emit(cons_Login_Scusess(confirmed!));
@@ -395,6 +422,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       print('no connect');
     }
   }
+
   ///Search by ID
   Future<void> getUserDetails(id) async {
     final url = Uri.parse("$base_api/users/$id");
@@ -509,5 +537,4 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       emit(DontAcceptPrivacyState());
     }
   }
-
 }

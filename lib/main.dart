@@ -6,6 +6,7 @@ import 'package:helpy_app/model/user_model.dart';
 import 'package:helpy_app/modules/User/cubit/cubit.dart';
 import 'package:helpy_app/modules/Splash_screen/animation_Splash/main.dart';
 import 'package:helpy_app/Cubit/states.dart';
+import 'package:helpy_app/modules/User/login/screren/register.dart';
 import 'package:helpy_app/modules/customer/cubit/cubit.dart';
 
 import 'package:helpy_app/shared/localization/set_localization.dart';
@@ -83,7 +84,7 @@ class MyApp extends StatelessWidget {
               primarySwatch: Colors.amber,
             ),
             themeMode: ThemeMode.light,
-            home: Animation_Splash(),
+            home: Register_intro("Buoeiaw@yahoo.com"),
             //// HomeServices(),  // Animation_Splash(),
             builder: EasyLoading.init(),
           );

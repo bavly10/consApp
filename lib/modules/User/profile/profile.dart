@@ -11,7 +11,7 @@ import 'package:helpy_app/modules/User/login/main_login.dart';
 import 'package:helpy_app/modules/User/profile/Widgets/changePass/changepass.dart';
 import 'package:helpy_app/modules/User/profile/Widgets/user_rate/user_rate_screen.dart';
 import 'package:helpy_app/modules/User/profile/Widgets/wallet/wallet_screen.dart';
-import 'package:helpy_app/modules/User_screen/introducer.dart';
+import 'package:helpy_app/modules/User/profile/Widgets/edit_introducer.dart';
 
 import 'package:helpy_app/modules/customer/taps/profile/edit_profile/widgets/custom_list_tile.dart';
 import 'package:helpy_app/shared/componotents.dart';
@@ -28,6 +28,8 @@ class UserProfileScreen extends StatelessWidget {
     return BlocBuilder<UserCubit, cons_login_Register_States>(
       builder: (context, state) {
         final model = UserCubit.get(context).loginModel;
+        final model2 = UserCubit.get(context).loginModel!.userClass!.id;
+
         final cubit = cons_Cubit.get(context);
         cons_Cubit.get(context).getMyShared();
         return Scaffold(
@@ -117,7 +119,7 @@ class UserProfileScreen extends StatelessWidget {
                       textTitle: "editProfile",
                       trailingIcon: Icons.arrow_forward_ios_rounded,
                       onTap: () {
-                        navigateTo(context, Introducer(320));
+                        navigateTo(context, EditIntroducer(model));
                       },
                     )),
                 Padding(
@@ -138,7 +140,7 @@ class UserProfileScreen extends StatelessWidget {
                       textTitle: "wallet",
                       trailingIcon: Icons.arrow_forward_ios_rounded,
                       onTap: () {
-                        navigateTo(context,const WalletScreen());
+                        navigateTo(context, const WalletScreen());
                       },
                     )),
                 Padding(
@@ -171,17 +173,17 @@ class UserProfileScreen extends StatelessWidget {
                       items: lanugage.lang_list
                           .map<DropdownMenuItem<lanugage>>(
                               (lang) => DropdownMenuItem(
-                            value: lang,
-                            child: Row(
-                              children: [
-                                Text(lang.flag!),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Text(lang.name!)
-                              ],
-                            ),
-                          ))
+                                    value: lang,
+                                    child: Row(
+                                      children: [
+                                        Text(lang.flag!),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(lang.name!)
+                                      ],
+                                    ),
+                                  ))
                           .toList(),
                       underline: const SizedBox(),
                       icon: Icon(
@@ -200,7 +202,7 @@ class UserProfileScreen extends StatelessWidget {
                       textTitle: "rating",
                       trailingIcon: Icons.arrow_forward_ios_rounded,
                       onTap: () {
-                        navigateTo(context,const UserRateScreen());
+                        navigateTo(context, const UserRateScreen());
                       },
                     )),
                 Padding(

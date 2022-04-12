@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/modules/User/cubit/cubit.dart';
 import 'package:helpy_app/modules/User/cubit/states.dart';
@@ -33,18 +34,18 @@ class Register_intro extends StatefulWidget {
 
 class _Register_introState extends State<Register_intro> {
   TextEditingController nameController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController aboutController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
-  TextEditingController priceController = TextEditingController();
   final GlobalKey<FormState> form = GlobalKey();
-  late String images;
 
   @override
   void initState() {
     nameController = TextEditingController();
+    priceController = TextEditingController();
     emailController = TextEditingController();
     addressController = TextEditingController();
     passwordController = TextEditingController();
@@ -57,6 +58,7 @@ class _Register_introState extends State<Register_intro> {
   @override
   void dispose() {
     nameController.dispose();
+    priceController.dispose();
     emailController.dispose();
     passwordController.dispose();
     phoneController.dispose();
@@ -428,7 +430,46 @@ class _Register_introState extends State<Register_intro> {
                             ),
                           ),
                     const SizedBox(
-                      height: 30,
+                      height: 10,
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: Card(
+                        color: Colors.white,
+                        elevation: 4,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              My_TextFormFiled(
+                                  validator: (String? s) {
+                                    if (s!.isEmpty) return "price is required";
+                                  },
+                                  controller: priceController,
+                                  myhintText: mytranslate(context, "price"),
+                                  textInputType: TextInputType.number),
+                              Row(
+                                children: [
+                                  Text("Tax",style: TextStyle(fontSize: 20,color:Colors.grey[600]),),
+                                 const Spacer(),
+                                  Text("25%",style: TextStyle(fontSize: 15,color:Colors.grey[600]),),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text("Total",style: TextStyle(fontSize: 20,color:Colors.grey[600]),),
+                                  const Spacer(),
+                                  Text("1000",style: TextStyle(fontSize: 25,color:myAmber,fontWeight: FontWeight.bold),),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
                     CustomSwitch(
                         label: UserCubit.get(context).privacyLabel,
@@ -438,8 +479,7 @@ class _Register_introState extends State<Register_intro> {
                               context: context,
                               builder: (context) {
                                 return CustomClipPath(
-                                  myText:
-                                      "con built the Consolutios app as a Commercial app This SERVICE is provided by con and is intended for This page is used to inform visitors regarding our policies with the collection use and disclosure of Personal Information if anyone decided to use our Service If you choose to use our Service, then you agree to the collection and use of information in relation to this policy. The Personal Information that we collect is used for providing and improving the Service. We will not use or share your information with anyone except as described in this Privacy Policy  The terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, which are accessible at Consolutios unless otherwise defined in this Privacy PolicyInformation Collection and UseFor a better experience, while using our Service, we may require you to provide us with certain personally identifiable information, including but not limited to con. The information that we request will be retained by us and used as described in this privacy policy The app does use third-party services that may collect information used to identify you Link to the privacy policy of third-party service providers used by the app Google Play Services Log Data We want to inform you that whenever you use our Service, in a case of an error in the app we collect data and information (through third-party products) on your phone called Log Data. This Log Data may include information such as your device Internet Protocol (“IP”) address, device name, operating system version, the configuration of the app when utilizing our Service, the time and date of your use of the Service, and other statistics Cookies Cookies are files with a small amount of data that are commonly used as anonymous unique identifiers. These are sent to your browser from the websites that you visit and are stored on your device's internal memory This Service does not use these cookies explicitly. However, the app may use third-party code and libraries that use “cookies” to collect information and improve their services. You have the option to either accept or refuse these cookies and know when a cookie is being sent to your device. If you choose to refuse our cookies, you may not be able to use some portions of this Service Service Providers We may employ third-party companies and individuals due to the following reasons To facilitate our Service To provide the Service on our behalf",
+                                  myText: "con built the Consolutios app as a Commercial app This SERVICE is provided by con and is intended for This page is used to inform visitors regarding our policies with the collection use and disclosure of Personal Information if anyone decided to use our Service If you choose to use our Service, then you agree to the collection and use of information in relation to this policy. The Personal Information that we collect is used for providing and improving the Service. We will not use or share your information with anyone except as described in this Privacy Policy  The terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, which are accessible at Consolutios unless otherwise defined in this Privacy PolicyInformation Collection and UseFor a better experience, while using our Service, we may require you to provide us with certain personally identifiable information, including but not limited to con. The information that we request will be retained by us and used as described in this privacy policy The app does use third-party services that may collect information used to identify you Link to the privacy policy of third-party service providers used by the app Google Play Services Log Data We want to inform you that whenever you use our Service, in a case of an error in the app we collect data and information (through third-party products) on your phone called Log Data. This Log Data may include information such as your device Internet Protocol (“IP”) address, device name, operating system version, the configuration of the app when utilizing our Service, the time and date of your use of the Service, and other statistics Cookies Cookies are files with a small amount of data that are commonly used as anonymous unique identifiers. These are sent to your browser from the websites that you visit and are stored on your device's internal memory This Service does not use these cookies explicitly. However, the app may use third-party code and libraries that use “cookies” to collect information and improve their services. You have the option to either accept or refuse these cookies and know when a cookie is being sent to your device. If you choose to refuse our cookies, you may not be able to use some portions of this Service Service Providers We may employ third-party companies and individuals due to the following reasons To facilitate our Service To provide the Service on our behalf",
                                 );
                               });
                         }),
@@ -453,18 +493,16 @@ class _Register_introState extends State<Register_intro> {
                               if (UserCubit.get(context).isChecked) {
                                 if (cubit.result != null) {
                                   try {
-                                    for (var element in cubit.result!.files) {
-                                      images = element.path!;
-                                      print(element.path);
+                                    for (var element in cubit.result!.paths) {
                                       await cubit.register(
                                           address: addressController.text,
                                           email: widget.email,
                                           username: nameController.text,
+                                          price: priceController.text,
                                           password: passwordController.text,
                                           phone: phoneController.text,
                                           about: aboutController.text,
-                                           price:priceController.text,
-                                          listImages: images);
+                                          listImages: element);
                                     }
                                   } on FirebaseException catch (e) {
                                     var emesage = "Error In Signup";
@@ -486,11 +524,13 @@ class _Register_introState extends State<Register_intro> {
                                   } catch (e) {
                                     print(e);
                                   }
-                                } else {
+                                }
+                                else {
                                   myToast(
                                       message: "Please Complete All Fields");
                                 }
-                              } else {
+                              }
+                              else {
                                 myToast(
                                     message: "Please Press ok about privacy");
                                 print('please press ok about privacy');
@@ -579,13 +619,6 @@ class _Register_introState extends State<Register_intro> {
           const SizedBox(
             height: 15,
           ),
-          My_TextFormFiled(
-              validator: (String? s) {
-                if (s!.isEmpty) return "price is required";
-              },
-              controller: priceController,
-              myhintText: mytranslate(context, "price"),
-              textInputType: TextInputType.number),
           const SizedBox(
             height: 15,
           ),
