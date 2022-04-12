@@ -23,10 +23,11 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:slide_popup_dialog_null_safety/slide_popup_dialog.dart'
     as slideDialog;
 
-class Introducer extends StatelessWidget {
-  final int id;
+class EditIntroducer extends StatelessWidget {
+  // final int id;
+  LoginModel? cc;
 
-  Introducer(this.id);
+  EditIntroducer(this.cc);
   String imgurl = base_api;
   Color mycolor = Colors.white;
   @override
@@ -76,17 +77,17 @@ class Introducer extends StatelessWidget {
                   contentPadding: EdgeInsets.all(8),
                 ));
       } else if (state is Cons_Payment_done) {
-        navigateTo(context, PaymentsTest(state.url, id));
+        //  navigateTo(context, PaymentsTest(state.url, id));
       } else if (state is Cons_Payment_notdone) {
         EasyLoading.showToast(state.error,
             toastPosition: EasyLoadingToastPosition.bottom,
             duration: const Duration(seconds: 3));
       }
     }, builder: (context, state) {
-      ConsCubitIntro.get(context).getSpecIntro(id);
-      final cubit = ConsCubitIntro.get(context).findbyid(id);
-      print(cubit);
-      UserStrapi? cc;
+      // ConsCubitIntro.get(context).getSpecIntro(id);
+      // final cubit = ConsCubitIntro.get(context).findbyid(id);
+      // print(cubit);
+
       return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -104,11 +105,11 @@ class Introducer extends StatelessWidget {
                 Container(
                     color: Colors.white,
                     height: MediaQuery.of(context).size.height * 0.35),
-                cubit.introImg!.isEmpty
+                cc!.userClass!.introImg!.isEmpty
                     ? const Icon(Icons.error)
                     : CarouselSlider(
                         carouselController: CarouselControllerImpl(),
-                        items: cubit.introImg!
+                        items: cc!.userClass!.introImg!
                             .map((e) => CachedNetworkImage(
                                   imageUrl: imgurl + e.url!,
                                   fit: BoxFit.fill,
@@ -144,7 +145,7 @@ class Introducer extends StatelessWidget {
                   top: MediaQuery.of(context).size.height * .20,
                   child: Align(
                     alignment: AlignmentDirectional.bottomCenter,
-                    child: cubit.introLogo == null
+                    child: cc!.userClass!.introLogo == null
                         ? const CircleAvatar(
                             radius: 50,
                             backgroundImage: ExactAssetImage("assets/logo.png"))
@@ -164,7 +165,8 @@ class Introducer extends StatelessWidget {
                                     height: MediaQuery.of(context).size.height *
                                         0.13,
                                     width: double.infinity,
-                                    imageUrl: imgurl + cubit.introLogo!.url!,
+                                    imageUrl:
+                                        imgurl + cc!.userClass!.introLogo!.url!,
                                     fit: BoxFit.cover,
                                     placeholder: (context, url) =>
                                         const SpinKitCircle(
@@ -190,7 +192,7 @@ class Introducer extends StatelessWidget {
               ],
             ),
             Text(
-              cubit.username,
+              cc!.userClass!.username,
               style: TextStyle(
                   fontWeight: FontWeight.bold, color: myAmber, fontSize: 20),
             ),
@@ -218,13 +220,13 @@ class Introducer extends StatelessWidget {
                                   Icons.place_rounded,
                                   color: myAmber,
                                 ),
-                                Text(cubit.city ?? "Error"),
+                                Text(cc!.userClass!.city ?? "Error"),
                               ],
                             ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                cubit.address ?? "Error",
+                                cc!.userClass!.address ?? "Error",
                                 style: const TextStyle(
                                     fontSize: 12, color: Colors.black87),
                               ),
@@ -265,9 +267,9 @@ class Introducer extends StatelessWidget {
                   body: TabBarView(
                     physics: const NeverScrollableScrollPhysics(),
                     children: [
-                      PostsIntro(cubit),
-                      ServicesIntro(cubit),
-                      AboutIntro(cubit),
+                      PostsIntro(cc!.userClass!),
+                      ServicesIntro(cc!.userClass!),
+                      AboutIntro(cc!.userClass!),
                     ],
                   ),
                 ),
@@ -283,15 +285,15 @@ class Introducer extends StatelessWidget {
                   pillColor: myAmber,
                   backgroundColor: Colors.white,
                   context: context,
-                  child: MySlideDialog(
-                      cubit.username, mytranslate(context, "connect")));
+                  child: MySlideDialog(cc!.userClass!.username,
+                      mytranslate(context, "connect")));
             } else {
               CustomerCubit.get(context)
                   .getCustomerData(cons_Cubit.get(context).customerID)
                   .then((value) async {
                 var model = CustomerCubit.get(context).model;
                 await ConsCubitIntro.get(context).getPay(
-                    user: cubit.username,
+                    user: cc!.userClass!.username,
                     name: model!.username,
                     email: model.email,
                     phone: model.phone,
@@ -306,7 +308,7 @@ class Introducer extends StatelessWidget {
                 width: 5,
               ),
               Text(
-                '${cubit.introPrice} SR',
+                '${cc!.userClass!.introPrice} SR',
                 style: const TextStyle(color: Colors.white, fontSize: 18),
               ),
             ],
