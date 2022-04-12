@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:helpy_app/model/user_model.dart';
 import 'package:helpy_app/modules/User_screen/edit_introducer.dart';
+import 'package:helpy_app/modules/User_screen/tabs/introducer.dart';
 import 'package:helpy_app/shared/componotents.dart';
 import 'package:helpy_app/shared/localization/translate.dart';
 import 'package:helpy_app/shared/my_colors.dart';
@@ -53,7 +54,7 @@ class PaymentError extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50)),
                 onPressed: () {
-                  // navigateToFinish(context, Introducer(cubit.id!));
+                  navigateToFinish(context, Introducer(cubit.id!));
                 },
                 child: Text(
                   mytranslate(context, "back"),
