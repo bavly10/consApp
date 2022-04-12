@@ -39,7 +39,7 @@ class EditIntroducer extends StatelessWidget {
             context: context,
             builder: (context) => AlertDialog(
                   backgroundColor: Colors.white,
-                  insetPadding: EdgeInsets.all(8),
+                  insetPadding: const EdgeInsets.all(8),
                   elevation: 10,
                   titlePadding: const EdgeInsets.all(0.0),
                   title: Center(
@@ -74,7 +74,7 @@ class EditIntroducer extends StatelessWidget {
                       ],
                     ),
                   ),
-                  contentPadding: EdgeInsets.all(8),
+                  contentPadding: const EdgeInsets.all(8),
                 ));
       } else if (state is Cons_Payment_done) {
         //  navigateTo(context, PaymentsTest(state.url, id));
@@ -277,44 +277,6 @@ class EditIntroducer extends StatelessWidget {
             ),
           ],
         )),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () async {
-            cons_Cubit.get(context).getMyShared();
-            if (cons_Cubit.get(context).customerToken == null) {
-              slideDialog.showSlideDialog(
-                  pillColor: myAmber,
-                  backgroundColor: Colors.white,
-                  context: context,
-                  child: MySlideDialog(cc!.userClass!.username,
-                      mytranslate(context, "connect")));
-            } else {
-              CustomerCubit.get(context)
-                  .getCustomerData(cons_Cubit.get(context).customerID)
-                  .then((value) async {
-                var model = CustomerCubit.get(context).model;
-                await ConsCubitIntro.get(context).getPay(
-                    user: cc!.userClass!.username,
-                    name: model!.username,
-                    email: model.email,
-                    phone: model.phone,
-                    amount: 30);
-              });
-            }
-          },
-          label: Row(
-            children: [
-              const Text('Connect'),
-              const SizedBox(
-                width: 5,
-              ),
-              Text(
-                '${cc!.userClass!.introPrice} SR',
-                style: const TextStyle(color: Colors.white, fontSize: 18),
-              ),
-            ],
-          ),
-          backgroundColor: Colors.yellow.shade800,
-        ),
       );
     });
   }
