@@ -38,6 +38,7 @@ class _Register_introState extends State<Register_intro> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
   final GlobalKey<FormState> form = GlobalKey();
   late String images;
 
@@ -49,6 +50,7 @@ class _Register_introState extends State<Register_intro> {
     passwordController = TextEditingController();
     phoneController = TextEditingController();
     aboutController = TextEditingController();
+    priceController = TextEditingController();
     super.initState();
   }
 
@@ -60,6 +62,7 @@ class _Register_introState extends State<Register_intro> {
     phoneController.dispose();
     aboutController.dispose();
     addressController.dispose();
+    priceController.dispose();
     super.dispose();
   }
 
@@ -460,6 +463,7 @@ class _Register_introState extends State<Register_intro> {
                                           password: passwordController.text,
                                           phone: phoneController.text,
                                           about: aboutController.text,
+                                           price:priceController.text,
                                           listImages: images);
                                     }
                                   } on FirebaseException catch (e) {
@@ -572,6 +576,16 @@ class _Register_introState extends State<Register_intro> {
             controller: passwordController,
             myhintText: mytranslate(context, "Password"),
           ),
+          const SizedBox(
+            height: 15,
+          ),
+          My_TextFormFiled(
+              validator: (String? s) {
+                if (s!.isEmpty) return "price is required";
+              },
+              controller: priceController,
+              myhintText: mytranslate(context, "price"),
+              textInputType: TextInputType.number),
           const SizedBox(
             height: 15,
           ),

@@ -19,8 +19,7 @@ import 'package:helpy_app/shared/localization/translate.dart';
 import 'package:helpy_app/shared/my_colors.dart';
 import 'package:helpy_app/shared/network.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:slide_popup_dialog_null_safety/slide_popup_dialog.dart'
-as slideDialog;
+import 'package:slide_popup_dialog_null_safety/slide_popup_dialog.dart' as slideDialog;
 
 class Introducer extends StatelessWidget {
   final int id;
@@ -37,7 +36,7 @@ class Introducer extends StatelessWidget {
                 context: context,
                 builder: (context) => AlertDialog(
                   backgroundColor: Colors.white,
-                  insetPadding: EdgeInsets.all(8),
+                  insetPadding: const EdgeInsets.all(8),
                   elevation: 10,
                   titlePadding: const EdgeInsets.all(0.0),
                   title: Center(
@@ -72,7 +71,7 @@ class Introducer extends StatelessWidget {
                       ],
                     ),
                   ),
-                  contentPadding: EdgeInsets.all(8),
+                  contentPadding: const EdgeInsets.all(8),
                 ));
           }
           else if (state is Cons_Payment_done) {

@@ -227,7 +227,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
   String? myEmail;
   int? forgetID;
 
-  register({String? username, email, password, phone, String? listImages, address, about}) async {
+  register({String? username, email, password, phone, String? listImages, address, about,price}) async {
     emit(cons_Loading_Register());
     late var response;
     final url = Uri.parse("$base_api/auth/local/register");
@@ -243,6 +243,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       "type_introducer": myType,
       "Confirmed": false.toString(),
       "intro_img": listImages,
+      "introPrice":price,
       //"intro_logo":imagee.path,
       "categories": cat_id.toString(),
       "specailst": spec_id.toString(),
