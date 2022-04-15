@@ -9,9 +9,9 @@ import 'package:helpy_app/modules/User/cubit/cubit.dart';
 import 'package:helpy_app/modules/User/cubit/states.dart';
 import 'package:helpy_app/modules/User/login/main_login.dart';
 import 'package:helpy_app/modules/User/profile/Widgets/changePass/changepass.dart';
+import 'package:helpy_app/modules/User/profile/Widgets/edit_profile/edit_introducer.dart';
 import 'package:helpy_app/modules/User/profile/Widgets/user_rate/user_rate_screen.dart';
 import 'package:helpy_app/modules/User/profile/Widgets/wallet/wallet_screen.dart';
-import 'package:helpy_app/modules/User/profile/Widgets/edit_introducer.dart';
 
 import 'package:helpy_app/modules/customer/taps/profile/edit_profile/widgets/custom_list_tile.dart';
 import 'package:helpy_app/shared/componotents.dart';

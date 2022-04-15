@@ -1,10 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/modules/Deatils_Special/cubit/cubit.dart';
 import 'package:helpy_app/modules/Deatils_Special/cubit/states.dart';
-import 'package:helpy_app/modules/User/profile/Widgets/edit_introducer.dart';
 import 'package:helpy_app/modules/User_screen/introducer.dart';
 import 'package:helpy_app/modules/complian/complian_screen.dart';
 import 'package:helpy_app/shared/componotents.dart';

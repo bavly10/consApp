@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:helpy_app/model/user_model.dart';
-import 'package:helpy_app/modules/User/profile/Widgets/edit_introducer.dart';
 import 'package:helpy_app/modules/User_screen/tabs/introducer.dart';
 import 'package:helpy_app/shared/componotents.dart';
 import 'package:helpy_app/shared/localization/translate.dart';

@@ -84,7 +84,7 @@ class MyApp extends StatelessWidget {
               primarySwatch: Colors.amber,
             ),
             themeMode: ThemeMode.light,
-            home: Register_intro("Buoeiaw@yahoo.com"),
+            home:Animation_Splash(),
             //// HomeServices(),  // Animation_Splash(),
             builder: EasyLoading.init(),
           );
