@@ -314,15 +314,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
   String? myEmail;
   int? forgetID;
 
-  register(
-      {String? username,
-        email,
-        password,
-        phone,
-        String? listImages,
-        address,
-        about,
-        dynamic price}) async {
+  register({String? username, email, password, phone, String? listImages, address, about, dynamic price}) async {
     emit(cons_Loading_Register());
     late var response;
     final url = Uri.parse("$base_api/auth/local/register");
@@ -611,5 +603,6 @@ class UserCubit extends Cubit<cons_login_Register_States> {
   double tax=0.25;
   void getTotal(int price){
     double myprice=price*tax;
+
   }
 }
