@@ -5,6 +5,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:helpy_app/model/post.dart';
 
@@ -139,7 +140,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
   var mediaType;
   void changeMedia(bool media) {
     if (media) {
-      mediaType = MediaType('image', 'png');
+      mediaType = MediaType('image', 'jpg');
       print(mediaType);
     } else {
       mediaType = MediaType('application', 'pdf');
@@ -165,7 +166,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       allowMultiple: allowMultiple,
       withReadStream: true,
       withData: true,
-    ))!;
+    ));
     if (result == null) {
       emit(TakeImagess_Error_State());
     } else {
@@ -188,7 +189,31 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     var request = http.MultipartRequest("POST", uri);
     var multipartFile = http.MultipartFile('files', stream, length,
         filename: basename(imagee!.path),
-        contentType: MediaType('image', 'png'));
+        contentType: MediaType('image', 'jpg'));
+    request.files.add(multipartFile);
+    request.fields.addAll(a);
+    var response = await request.send();
+    response.stream.transform(utf8.decoder).listen((value) {
+      print(value);
+    });
+  }
+
+  void uploadProfileImage(Uint8List imageBytes, id) async {
+    Map<String, String> a = {
+      "files": imagee!.path,
+      "ref": "user",
+      "refId": "$id",
+      "field": "intro_img",
+      "source": "users-permissions"
+    };
+    String url = base_api + "/upload";
+    var stream = http.ByteStream(DelegatingStream.typed(imagee!.openRead()));
+    var uri = Uri.parse(url);
+    int length = imageBytes.length;
+    var request = http.MultipartRequest("POST", uri);
+    var multipartFile = http.MultipartFile('files', stream, length,
+        filename: basename(imagee!.path),
+        contentType: MediaType('image', 'jpg'));
     request.files.add(multipartFile);
     request.fields.addAll(a);
     var response = await request.send();
@@ -220,6 +245,68 @@ class UserCubit extends Cubit<cons_login_Register_States> {
         print(value);
         // ignore: void_checks
       });
+    });
+  }
+
+  void uploadIntroImages(id) {
+    result?.files.forEach((element) async {
+      String url = base_api + "/upload";
+      var uri = Uri.parse(url);
+      var request = http.MultipartRequest("POST", uri);
+      Map<String, String> a = {
+        "files": element.path!,
+        "ref": "user",
+        "refId": "$id",
+        "field": "intro_img",
+        "source": "users-permissions"
+      };
+      var stream = http.ByteStream(DelegatingStream.typed(element.readStream!));
+      int? length = element.bytes!.length;
+      var multipartFile = http.MultipartFile('files', stream, length,
+          filename: basename(element.path!), contentType: mediaType);
+      request.fields.addAll(a);
+      request.files.add(multipartFile);
+      final response = await request.send();
+      response.stream.transform(utf8.decoder).listen((value) {
+        print(value);
+        // ignore: void_checks
+      });
+    });
+  }
+
+  void uploadProfileUserImage({required String id}) {
+    FirebaseStorage.instance
+        .ref()
+        .child('users/${Uri.file(imagee!.path).pathSegments.last}')
+        .putFile(imagee!)
+        .then((value) {
+      value.ref.getDownloadURL().then((String? value) {
+        print(value);
+        //uploadProfileImage(imagee!.readAsBytesSync(), id);
+        updateUserImage(image: value, id: id);
+
+        emit(UploadUserImageSucessState());
+
+        //profileImageUrl = value!;
+      }).catchError((error) {
+        print(error);
+        emit(UploadUserImageErrorState());
+      });
+    }).catchError((onError) {
+      emit(UploadUserImageErrorState());
+    });
+  }
+
+  updateUserImage({String? image, required String id}) {
+    emit(LoadingChangeUserImageState());
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(id)
+        .update({'image': image}).then((value) {
+      emit(ChangeUserImageSuessState());
+    }).catchError((onError) {
+      print(onError.toString());
+      emit(ChangeUserImageErrorState());
     });
   }
 

@@ -47,12 +47,10 @@ class cons_getuser_login extends cons_login_Register_States {}
 
 class cons_getuser_logindone extends cons_login_Register_States {}
 
-class cons_user_Scusess extends cons_login_Register_States {
+class cons_user_Scusess extends cons_login_Register_States {}
 
-}
-class cons_user_error extends cons_login_Register_States {
+class cons_user_error extends cons_login_Register_States {}
 
-}
 class cons_Login_Scusess extends cons_login_Register_States {
   final bool confirmed;
   cons_Login_Scusess(this.confirmed);
@@ -112,3 +110,13 @@ class AcceptPrivacyState extends cons_login_Register_States {}
 class DontAcceptPrivacyState extends cons_login_Register_States {}
 
 class ChangeCheckedState extends cons_login_Register_States {}
+
+class UploadUserImageSucessState extends cons_login_Register_States {}
+
+class UploadUserImageErrorState extends cons_login_Register_States {}
+
+class LoadingChangeUserImageState extends cons_login_Register_States {}
+
+class ChangeUserImageSuessState extends cons_login_Register_States {}
+
+class ChangeUserImageErrorState extends cons_login_Register_States {}
