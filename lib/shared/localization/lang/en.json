@@ -147,5 +147,8 @@
    "surely": "Surely",
    "lang": "Change Language",
    "editProfile": "Edit Profile",
-   "price": "Price Of Service"
+   "price": "Price Of Service",
+   "total": "Total",
+   "Tax": "Tax",
+   "SR": "S.R"
 }

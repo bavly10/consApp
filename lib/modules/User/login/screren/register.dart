@@ -302,8 +302,7 @@ class _Register_introState extends State<Register_intro> {
                                       color: myAmber,
                                       size: 35,
                                     ),
-                                    items: listSpec
-                                        .map<DropdownMenuItem<Specailsts>>(
+                                    items: listSpec.map<DropdownMenuItem<Specailsts>>(
                                             (spec) => DropdownMenuItem(
                                                   value: spec,
                                                   child: Text(spec.specTitle),
@@ -313,17 +312,13 @@ class _Register_introState extends State<Register_intro> {
                                       cubit.changeSelectSpec(val);
                                     },
                                   ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
+                                  const SizedBox(height: 10,),
                                   SizedBox(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.60,
+                                    width: MediaQuery.of(context).size.width * 0.60,
                                     child: ElevatedButton(
                                       child: Text(
                                           mytranslate(context, "Uploadimage"),
-                                          style: const TextStyle(
-                                              color: Colors.white)),
+                                          style: const TextStyle(color: Colors.white)),
                                       onPressed: () {
                                         FocusScope.of(context).unfocus();
                                         CustomAlertDialogButtons(
@@ -333,8 +328,7 @@ class _Register_introState extends State<Register_intro> {
                                               Navigator.of(context).pop();
                                             },
                                             onTapImages: () {
-                                              cubit.pickFiles(
-                                                  ['png', 'jpg'], true);
+                                              cubit.pickFiles(['png', 'jpg'], true);
                                               cubit.changeMedia(true);
                                               Navigator.pop(context);
                                             },
@@ -343,18 +337,14 @@ class _Register_introState extends State<Register_intro> {
                                             images: "Images",
                                             onTapDelete: () {
                                               if (cubit.result == null) {
-                                                myToast(
-                                                    message: "Not Selected");
+                                                myToast(message: "Not Selected");
                                               } else {
                                                 cubit.deleteImageBlocList();
                                                 Navigator.pop(context);
                                               }
                                             });
                                       },
-                                      style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all(
-                                                  myAmber)),
+                                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(myAmber)),
                                     ),
                                   ),
                                   const SizedBox(
@@ -364,42 +354,18 @@ class _Register_introState extends State<Register_intro> {
                                     Column(
                                       children: [
                                         CarouselSlider(
-                                            carouselController:
-                                                CarouselControllerImpl(),
+                                            carouselController: CarouselControllerImpl(),
                                             items: cubit.result!.files
                                                 .map((e) => Column(
                                                       children: [
                                                         FadeInImage(
-                                                            height: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .height *
-                                                                0.23,
-                                                            width:
-                                                                double.infinity,
-                                                            placeholder:
-                                                                const ExactAssetImage(
-                                                                    "assets/logo.png"),
-                                                            imageErrorBuilder:
-                                                                (context,
-                                                                    object,
-                                                                    stacktrace) {
-                                                              return const Icon(
-                                                                Icons
-                                                                    .picture_as_pdf,
-                                                                size: 130,
-                                                              );
+                                                            height: MediaQuery.of(context).size.height * 0.23, width: double.infinity,
+                                                            placeholder: const ExactAssetImage("assets/logo.png"),
+                                                            imageErrorBuilder: (context, object, stacktrace) {
+                                                              return const Icon(Icons.picture_as_pdf, size: 130,);
                                                             },
-                                                            image: FileImage(
-                                                                File(e.path!))),
-                                                        Text(
-                                                          e.name,
-                                                          style: const TextStyle(
-                                                              color: Colors
-                                                                  .deepPurple,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
+                                                            image: FileImage(File(e.path!))),
+                                                        Text(e.name, style: const TextStyle(color: Colors.deepPurple, fontWeight: FontWeight.bold),
                                                         ),
                                                       ],
                                                     ))
@@ -415,11 +381,8 @@ class _Register_introState extends State<Register_intro> {
                                                 initialPage: 0,
                                                 scrollDirection:
                                                     Axis.horizontal)),
-                                        const SizedBox(
-                                          height: 1,
-                                        ),
-                                        Text(
-                                            "${cubit.myimagecount} ${mytranslate(context, "list_image")}")
+                                        const SizedBox(height: 1,),
+                                        Text("${cubit.myimagecount} ${mytranslate(context, "list_image")}")
                                       ],
                                     )
                                 ],
@@ -440,6 +403,13 @@ class _Register_introState extends State<Register_intro> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               My_TextFormFiled(
+                                onchanged: (String? s){
+                                  if(s!.isEmpty){
+                                    cubit.total=0;
+                                  }else{
+                                    cubit.getTotal(int.parse(s));
+                                  }
+                                },
                                   validator: (String? s) {
                                     if (s!.isEmpty) return "price is required";
                                   },
@@ -449,7 +419,7 @@ class _Register_introState extends State<Register_intro> {
                               Row(
                                 children: [
                                   Text(
-                                    "Tax",
+                                    mytranslate(context,"Tax"),
                                     style: TextStyle(
                                         fontSize: 20, color: Colors.grey[600]),
                                   ),
@@ -464,17 +434,21 @@ class _Register_introState extends State<Register_intro> {
                               Row(
                                 children: [
                                   Text(
-                                    "Total",
+                                    mytranslate(context,"total"),
                                     style: TextStyle(
                                         fontSize: 20, color: Colors.grey[600]),
                                   ),
                                   const Spacer(),
-                                  Text(
-                                    "1000",
-                                    style: TextStyle(
-                                        fontSize: 25,
-                                        color: myAmber,
-                                        fontWeight: FontWeight.bold),
+                                  RichText(
+                                    text:TextSpan(
+                                        text: cubit.total.toString(),style:const TextStyle(color: Colors.black,height: 1.4,fontSize: 18),
+                                        children: [
+                                          TextSpan(
+                                              text: mytranslate(context, "SR"),style: TextStyle(color:myAmber)
+                                          )
+                                        ]
+                                    ),
+
                                   ),
                                 ],
                               ),
@@ -485,7 +459,7 @@ class _Register_introState extends State<Register_intro> {
                           ),
                         ),
                       ),
-                    ),
+                    ), ///price
                     CustomSwitch(
                         label: UserCubit.get(context).privacyLabel,
                         selected: UserCubit.get(context).isChecked,
@@ -514,7 +488,7 @@ class _Register_introState extends State<Register_intro> {
                                           address: addressController.text,
                                           email: widget.email,
                                           username: nameController.text,
-                                          price: priceController.text,
+                                          price: cubit.total,
                                           password: passwordController.text,
                                           phone: phoneController.text,
                                           about: aboutController.text,

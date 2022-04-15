@@ -599,10 +599,13 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     }
   }
 
-  late double total;
+  late double total=0;
   double tax=0.25;
-  void getTotal(int price){
-    double myprice=price*tax;
 
+  double getTotal(int price){
+    double myprice=price*tax;
+      total=price+myprice;
+      emit(Changeprice());
+    return total;
   }
 }
