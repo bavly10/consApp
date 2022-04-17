@@ -150,5 +150,10 @@
    "price": "Price Of Service",
    "total": "Total",
    "Tax": "Tax",
-   "SR": "S.R"
+   "SR": "S.R",
+   "error": "Please Try Again",
+   "slideimg": "Updating Your Cover Suessfully",
+   "choose": "You choosed..",
+   "sure": "Do you want to updating ?",
+   "covers": "Updating  your Cover suecssfully"
 }

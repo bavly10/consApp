@@ -10,6 +10,13 @@ import 'package:image_picker/image_picker.dart';
 
 import '../modules/MainScreen/main_screen.dart';
 
+SnackBar snakBar(context) {
+  return SnackBar(
+    content: Text(mytranslate(context, "error")),
+    backgroundColor: Colors.black54,
+  );
+}
+
 void navigateTo(context, widget) =>
     Navigator.push(context, MaterialPageRoute(builder: (context) => widget));
 void navigateToFinish(context, widget) => Navigator.pushReplacement(
@@ -40,7 +47,7 @@ My_TextFormFiled({
       textInputAction: textInputAction,
       textDirection: textdirection,
       maxLines: maxLines,
-      onChanged:onchanged,
+      onChanged: onchanged,
       validator: validator,
       obscureText: obscureText,
       style: const TextStyle(color: Colors.black),
@@ -577,8 +584,9 @@ String secretEmail(String email) {
   String star = secretPart.replaceAll(RegExp(r'.'), '*');
   return email.replaceAll(secretPart, star);
 }
-  void submitData(context) {
-    CashHelper.putData('onBoarding', false).then((value) {
-      navigateToFinish(context, Mainscreen());
-    });
-  }
+
+void submitData(context) {
+  CashHelper.putData('onBoarding', false).then((value) {
+    navigateToFinish(context, Mainscreen());
+  });
+}

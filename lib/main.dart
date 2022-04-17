@@ -34,9 +34,15 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-            create: (context) => cons_Cubit()..checkInternetConnectivity()..getCategories()..getSpecailsts()..getAds()),
+            create: (context) => cons_Cubit()
+              ..checkInternetConnectivity()
+              ..getCategories()
+              ..getSpecailsts()
+              ..getAds()),
         BlocProvider(create: (context) => ConsCubitIntro()),
-        BlocProvider(create: (context) => CustomerCubit()..getCustomerData(cons_Cubit.get(context).customerID)),
+        BlocProvider(
+            create: (context) => CustomerCubit()
+              ..getCustomerData(cons_Cubit.get(context).customerID)),
         BlocProvider(create: (context) => UserCubit()),
       ],
       child: BlocBuilder<cons_Cubit, cons_States>(
@@ -84,8 +90,8 @@ class MyApp extends StatelessWidget {
               primarySwatch: Colors.amber,
             ),
             themeMode: ThemeMode.light,
-            home: Register_intro("Buoeiaw@yahoo.com"),
-            //// HomeServices(),  // Animation_Splash(),
+            home: Animation_Splash(),
+            //// HomeServices(),
             builder: EasyLoading.init(),
           );
         },

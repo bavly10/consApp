@@ -119,5 +119,14 @@ class LoadingChangeUserImageState extends cons_login_Register_States {}
 
 class ChangeUserImageSuessState extends cons_login_Register_States {}
 
+class ChangeUserImageLoadingState extends cons_login_Register_States {}
+
 class ChangeUserImageErrorState extends cons_login_Register_States {}
+
 class Changeprice extends cons_login_Register_States {}
+
+class ChangeCoverUserImageSuessState extends cons_login_Register_States {}
+
+class ChangeCoverUserImageLoadingState extends cons_login_Register_States {}
+
+class ChangeCoverUserImageErrorState extends cons_login_Register_States {}

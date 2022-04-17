@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,8 @@ import 'package:helpy_app/modules/User/cubit/states.dart';
 import 'package:helpy_app/modules/User_screen/tabs/about.dart';
 import 'package:helpy_app/modules/User_screen/tabs/posts/posts.dart';
 import 'package:helpy_app/modules/User_screen/tabs/services.dart';
+
+import 'package:helpy_app/shared/componotents.dart';
 import 'package:helpy_app/shared/localization/translate.dart';
 import 'package:helpy_app/shared/my_colors.dart';
 import 'package:helpy_app/shared/network.dart';
@@ -30,6 +33,7 @@ class EditIntroducer extends StatelessWidget {
   List<Widget> items = [
     const Image(image: AssetImage("assets/logo.png")),
   ];
+  List<String> images = ["assets/logo.png"];
 
   @override
   Widget build(BuildContext context) {
@@ -37,19 +41,45 @@ class EditIntroducer extends StatelessWidget {
     return BlocConsumer<UserCubit, cons_login_Register_States>(
         listener: (ctx, state) {
       if (state is TakeImage_State) {
-        UserCubit.get(context).uploadProfileUserImage(id: cons_Cubit.get(context).userFBID!);
+        UserCubit.get(context)
+            .uploadProfileUserImage(id: cons_Cubit.get(context).userFBID!);
         print(cons_Cubit.get(context).userFBID);
         UserCubit.get(context).uploadImage(
             UserCubit.get(context).imagee!.readAsBytesSync(),
             loginmodel!.userClass!.id);
+      } else if (state is TakeImagess_State) {
+        //  UserCubit.get(context).uploadIntro My_CustomAlertDialog(
+        My_CustomAlertDialog(
+          pressTitle: mytranslate(context, "done"),
+          icon: Icons.update,
+          iconColor: myAmber,
+          onPress: () {
+            UserCubit.get(context).uploadIntroImages(loginmodel!.userClass!.id);
+            Navigator.pop(context);
+          },
+          content: mytranslate(context, "choose") +
+              UserCubit.get(context).myimagecount.toString() +
+              "\n" +
+              mytranslate(context, "sure"),
+          context: context,
+          bigTitle: mytranslate(context, "surely"),
+          pressColor: myAmber,
+        );
+      } else if (state is ChangeUserImageSuessState) {
+        myToast(message: mytranslate(context, "changproimage"));
+      } else if (state is LoadingChangeUserImageState) {
+        myToast(
+            message: mytranslate(context, mytranslate(context, "loadimage")));
+      } else if (state is ChangeUserImageErrorState) {
+        ScaffoldMessenger.of(context).showSnackBar(snakBar(context));
+      } else if (state is ChangeCoverUserImageSuessState) {
+        myToast(message: mytranslate(context, "covers"));
+      } else if (state is ChangeCoverUserImageErrorState) {
+        ScaffoldMessenger.of(context).showSnackBar(snakBar(context));
       }
-      else if (state is TakeImagess_State) {
-        UserCubit.get(context).uploadIntroImages(loginmodel!.userClass!.id);
-      }
-    },
-        builder: (context, state) {
+    }, builder: (context, state) {
       File? image = UserCubit.get(context).imagee;
-      var introImage = UserCubit.get(context).loginModel!.userClass!.introLogo;
+      var introLogo = UserCubit.get(context).loginModel!.userClass!.introLogo;
       var cubit = UserCubit.get(context);
       return Scaffold(
         backgroundColor: Colors.white,
@@ -72,19 +102,18 @@ class EditIntroducer extends StatelessWidget {
                   alignment: AlignmentDirectional.bottomCenter,
                   children: [
                     if (cubit.result?.files != null)
-                     CarouselSlider(
+                      CarouselSlider(
                           carouselController: CarouselControllerImpl(),
                           items: cubit.result!.files
                               .map((e) => Container(
-                                decoration:  BoxDecoration(
-                                  borderRadius: const BorderRadius.only(
-                                      bottomLeft: Radius.circular(25.0),
-                                      bottomRight: Radius.circular(25.0)),
-                                  image: DecorationImage(
-                                    image: FileImage(File(e.path!)), fit: BoxFit.fill
-                                  )
-                                ),
-                              ))
+                                    decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.only(
+                                            bottomLeft: Radius.circular(25.0),
+                                            bottomRight: Radius.circular(25.0)),
+                                        image: DecorationImage(
+                                            image: FileImage(File(e.path!)),
+                                            fit: BoxFit.fill)),
+                                  ))
                               .toList(),
                           options: CarouselOptions(
                               enableInfiniteScroll: true,
@@ -95,55 +124,68 @@ class EditIntroducer extends StatelessWidget {
                               autoPlay: true,
                               initialPage: 0,
                               scrollDirection: Axis.horizontal))
-                    else if(loginmodel!.userClass!.introImg == null)
+                    else if (loginmodel!.userClass?.introImg == null)
                       CarouselSlider(
-                        carouselController: CarouselControllerImpl(),
-                        items:items.toList(),
-                        options: CarouselOptions(
-                            enableInfiniteScroll: true,
-                            viewportFraction: 1.0,
-                            onPageChanged: (int i, _) {},
-                            autoPlayInterval: const Duration(seconds: 4),
-                            enlargeCenterPage: true,
-                            autoPlay: true,
-                            initialPage: 0,
-                            scrollDirection: Axis.horizontal))
-                     else
-                       CarouselSlider(
-                        carouselController: CarouselControllerImpl(),
-                        items: loginmodel!.userClass!.introImg!
-                            .map((e) => CachedNetworkImage(
-                          imageUrl: imgurl + e.url!,
-                          fit: BoxFit.fill,
-                          imageBuilder: (context, imageProvider) =>
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.only(
-                                      bottomLeft: Radius.circular(25.0),
-                                      bottomRight: Radius.circular(25.0)),
-                                  image: DecorationImage(
-                                    image: imageProvider,
+                          carouselController: CarouselControllerImpl(),
+                          items: images.map<Widget>((i) {
+                            return Builder(
+                              builder: (BuildContext context) {
+                                return Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.only(
+                                            bottomLeft: Radius.circular(25.0),
+                                            bottomRight: Radius.circular(25.0)),
+                                        image: DecorationImage(
+                                            image: AssetImage(i))));
+                              },
+                            );
+                          }).toList(),
+                          options: CarouselOptions(
+                              enableInfiniteScroll: true,
+                              viewportFraction: 1.0,
+                              onPageChanged: (int i, _) {},
+                              autoPlayInterval: const Duration(seconds: 4),
+                              enlargeCenterPage: true,
+                              autoPlay: true,
+                              initialPage: 0,
+                              scrollDirection: Axis.horizontal))
+                    else
+                      CarouselSlider(
+                          carouselController: CarouselControllerImpl(),
+                          items: loginmodel!.userClass!.introImg!
+                              .map((e) => CachedNetworkImage(
+                                    imageUrl: imgurl + e.url!,
                                     fit: BoxFit.fill,
-                                  ),
-                                ),
-                              ),
-                          placeholder: (context, url) =>
-                              SpinKitCircle(
-                                color: myAmber,
-                              ),
-                          errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                        ))
-                            .toList(),
-                        options: CarouselOptions(
-                            enableInfiniteScroll: true,
-                            viewportFraction: 1.0,
-                            onPageChanged: (int i, _) {},
-                            autoPlayInterval: const Duration(seconds: 2),
-                            enlargeCenterPage: true,
-                            initialPage: 0,
-                            autoPlay: true,
-                            scrollDirection: Axis.horizontal)),
+                                    imageBuilder: (context, imageProvider) =>
+                                        Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.only(
+                                            bottomLeft: Radius.circular(25.0),
+                                            bottomRight: Radius.circular(25.0)),
+                                        image: DecorationImage(
+                                          image: imageProvider,
+                                          fit: BoxFit.fill,
+                                        ),
+                                      ),
+                                    ),
+                                    placeholder: (context, url) =>
+                                        SpinKitCircle(
+                                      color: myAmber,
+                                    ),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
+                                  ))
+                              .toList(),
+                          options: CarouselOptions(
+                              enableInfiniteScroll: true,
+                              viewportFraction: 1.0,
+                              onPageChanged: (int i, _) {},
+                              autoPlayInterval: const Duration(seconds: 2),
+                              enlargeCenterPage: true,
+                              initialPage: 0,
+                              autoPlay: true,
+                              scrollDirection: Axis.horizontal)),
                     Positioned(
                       //top: 190,
                       left: 10,
@@ -193,7 +235,7 @@ class EditIntroducer extends StatelessWidget {
                         child: Stack(
                           alignment: Alignment.bottomRight,
                           children: [
-                            if (introImage != null)
+                            if (introLogo != null)
                               CachedNetworkImage(
                                 height:
                                     MediaQuery.of(context).size.height * 0.13,
@@ -212,7 +254,11 @@ class EditIntroducer extends StatelessWidget {
                               const Image(
                                 image: AssetImage('assets/logo.png'),
                               ),
-                            if (image != null) Image(image: FileImage(image)),
+                            if (image != null)
+                              Image(
+                                image: FileImage(image),
+                                fit: BoxFit.fill,
+                              ),
                             Positioned(
                               top: 63,
                               left: 2,
