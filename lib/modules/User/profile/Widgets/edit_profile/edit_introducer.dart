@@ -39,9 +39,7 @@ class EditIntroducer extends StatelessWidget {
       if (state is TakeImage_State) {
         UserCubit.get(context).uploadProfileUserImage(id: cons_Cubit.get(context).userFBID!);
         print(cons_Cubit.get(context).userFBID);
-        UserCubit.get(context).uploadImage(
-            UserCubit.get(context).imagee!.readAsBytesSync(),
-            loginmodel!.userClass!.id);
+        UserCubit.get(context).uploadImage(UserCubit.get(context).imagee!.readAsBytesSync(),loginmodel!.userClass!.id);
       }
       else if (state is TakeImagess_State) {
         UserCubit.get(context).uploadIntroImages(loginmodel!.userClass!.id);
