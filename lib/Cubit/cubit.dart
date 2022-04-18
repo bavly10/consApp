@@ -8,7 +8,7 @@ import 'package:helpy_app/model/categories_model.dart';
 import 'package:helpy_app/model/specailsts_model.dart';
 import 'package:helpy_app/model/user_model.dart';
 import 'package:helpy_app/modules/MainScreen/aboutus.dart';
-import 'package:helpy_app/modules/MainScreen/ads.dart';
+import 'package:helpy_app/modules/MainScreen/Ads/ads.dart';
 import 'package:helpy_app/modules/MainScreen/home_services.dart';
 import 'package:helpy_app/modules/User/login/main_login.dart';
 
@@ -195,7 +195,8 @@ class cons_Cubit extends Cubit<cons_States> {
           if (pro >= 0) {
             myads[pro] = (Ads(
               id: item['id'],
-              userName: UserName.fromJson(item['user_name']),
+              Name: item['Name'],
+              URLLink: item['URLLink'],
               profileImage: ProfileImage.fromJson(item['profileImage']),
               premium: item['premium'],
             ));
@@ -204,7 +205,8 @@ class cons_Cubit extends Cubit<cons_States> {
           } else {
             myads.add(Ads(
               id: item['id'],
-              userName: UserName.fromJson(item['user_name']),
+              Name: item['Name'],
+              URLLink: item['URLLink'],
               profileImage: ProfileImage.fromJson(item['profileImage']),
               premium: item['premium'],
             ));
@@ -214,7 +216,8 @@ class cons_Cubit extends Cubit<cons_States> {
           if (pros >= 0) {
             myads2[pros] = (Ads(
               id: item['id'],
-              userName: UserName.fromJson(item['user_name']),
+              Name: item['Name'],
+              URLLink: item['URLLink'],
               profileImage: ProfileImage.fromJson(item['profileImage']),
               premium: item['premium'],
             ));
@@ -223,7 +226,8 @@ class cons_Cubit extends Cubit<cons_States> {
           } else {
             myads2.add(Ads(
               id: item['id'],
-              userName: UserName.fromJson(item['user_name']),
+              Name: item['Name'],
+              URLLink: item['URLLink'],
               profileImage: ProfileImage.fromJson(item['profileImage']),
               premium: item['premium'],
             ));

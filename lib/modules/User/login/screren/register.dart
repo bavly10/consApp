@@ -483,17 +483,14 @@ class _Register_introState extends State<Register_intro> {
                               if (UserCubit.get(context).isChecked) {
                                 if (cubit.result != null) {
                                   try {
-                                    for (var element in cubit.result!.paths) {
-                                      await cubit.register(
-                                          address: addressController.text,
-                                          email: widget.email,
-                                          username: nameController.text,
-                                          price: cubit.total,
-                                          password: passwordController.text,
-                                          phone: phoneController.text,
-                                          about: aboutController.text,
-                                          listImages: element);
-                                    }
+                                    await cubit.register(
+                                      address: addressController.text,
+                                      email: widget.email,
+                                      username: nameController.text,
+                                      price: cubit.total.toString(),
+                                      password: passwordController.text,
+                                      phone: phoneController.text,
+                                      about: aboutController.text);
                                   } on FirebaseException catch (e) {
                                     var emesage = "Error In Signup";
                                     if (e.code == 'email-already-in-use') {

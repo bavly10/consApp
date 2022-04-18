@@ -17,18 +17,21 @@ import 'package:helpy_app/modules/customer/taps/profile/edit_profile/widgets/cus
 import 'package:helpy_app/shared/componotents.dart';
 import 'package:helpy_app/shared/localization/translate.dart';
 import 'package:helpy_app/shared/my_colors.dart';
+import 'package:helpy_app/shared/network.dart';
 import 'package:helpy_app/shared/shared_prefernces.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UserProfileScreen extends StatelessWidget {
-  const UserProfileScreen({Key? key}) : super(key: key);
+  UserProfileScreen({Key? key}) : super(key: key);
+  String imgurl = base_api;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserCubit, cons_login_Register_States>(
       builder: (context, state) {
         final model = UserCubit.get(context).loginModel;
         final model2 = UserCubit.get(context).loginModel!.userClass!.id;
+        final image = UserCubit.get(context).loginModel!.userClass?.introLogo;
 
         final cubit = cons_Cubit.get(context);
         cons_Cubit.get(context).getMyShared();
@@ -39,48 +42,23 @@ class UserProfileScreen extends StatelessWidget {
                 Stack(
                   alignment: AlignmentDirectional.bottomCenter,
                   children: [
-                    const CircleAvatar(
-                      backgroundImage: AssetImage('assets/logo.png'),
-                      radius: 50,
-                    ),
-                    Positioned(
-                      // top: 750,
-                      left: 10,
-                      child: Center(
-                        child: Container(
-                          //alignment: AlignmentDirectional.topStart,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            shape: BoxShape.rectangle,
-                            color: HexColor('#C18F3A'),
+                    image == null
+                        ? const CircleAvatar(
+                            backgroundImage: AssetImage('assets/logo.png'),
+                            radius: 50,
+                          )
+                        : CircleAvatar(
+                            backgroundImage: NetworkImage(
+                                imgurl + model!.userClass!.introLogo!.url!),
+                            radius: 50,
                           ),
-                          //  alignment: Alignment.topRight,
-                          height: 20,
-                          width: 20,
-                          child: InkWell(
-                            onTap: () {
-                              UserCubit.get(context)
-                                  .getImageBloc(ImageSource.gallery);
-                            },
-                            child: const Align(
-                              alignment: Alignment.center,
-                              child: Icon(
-                                Icons.mode_edit_rounded,
-                                color: Colors.white54,
-                                size: 15,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
                   ],
                 ),
                 const SizedBox(
                   height: 20,
                 ),
                 Text(
-                  model?.userClass!.username ?? 'Error',
+                  model?.userClass?.username ?? 'Error',
                   style: TextStyle(
                       fontSize: 18,
                       color: HexColor('#C18F3A'),

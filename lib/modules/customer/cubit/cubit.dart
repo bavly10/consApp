@@ -7,7 +7,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:helpy_app/model/complian.dart';
 import 'package:helpy_app/model/customer_model.dart';
-import 'package:helpy_app/modules/MainScreen/ads.dart';
+import 'package:helpy_app/modules/MainScreen/Ads/ads.dart';
 import 'package:helpy_app/modules/customer/Chat/chats_screen.dart';
 import 'package:helpy_app/modules/customer/cubit/state.dart';
 import 'package:helpy_app/model/user_model.dart';

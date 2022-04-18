@@ -1,7 +1,9 @@
+import 'package:clickable_list_wheel_view/clickable_list_wheel_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/Cubit/states.dart';
+import 'package:helpy_app/modules/MainScreen/Ads/ads_Deatils.dart';
 
 import 'package:helpy_app/shared/compononet/custom_ads_card.dart';
 import 'package:helpy_app/shared/componotents.dart';
@@ -12,7 +14,7 @@ class AdsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var listAsd = cons_Cubit.get(context).myads;
     var listAsd2 = cons_Cubit.get(context).myads2;
-
+    final _scrollController = FixedExtentScrollController();
     return BlocConsumer<cons_Cubit, cons_States>(
       listener: (context, state) {
         if (state is Cons_noNewData_Ads) {
@@ -25,16 +27,23 @@ class AdsScreen extends StatelessWidget {
           child: Column(
             children: [
               Expanded(
-                child: ListWheelScrollView.useDelegate(
-                  physics: const BouncingScrollPhysics(),
-                  itemExtent: 350,
-                  childDelegate: ListWheelChildBuilderDelegate(
-                      builder: (context, index) {
-                        return CustomAdsCard(
-                          ads: listAsd[index],
-                        );
-                      },
-                      childCount: listAsd.length),
+                child: ClickableListWheelScrollView(
+                  scrollController: _scrollController,
+                  itemHeight:  250.0,
+                  itemCount: listAsd.length,
+                  onItemTapCallback: (index)=>navigateTo(context, AdsDetails(listAsd[index].URLLink.toString())),
+                  child: ListWheelScrollView.useDelegate(
+                    controller: _scrollController,
+                    physics: const FixedExtentScrollPhysics(),
+                    itemExtent: 350,
+                    childDelegate: ListWheelChildBuilderDelegate(
+                        builder: (context, index) {
+                          return CustomAdsCard(
+                            ads: listAsd[index],
+                          );
+                        },
+                        childCount: listAsd.length),
+                  ),
                 ),
               ),
               SizedBox(

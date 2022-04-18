@@ -99,7 +99,7 @@ class UserStrapi {
   String? provider;
   bool? blocked;
   Role? role;
-  double? price;
+  dynamic price;
   DateTime? createdAt;
   DateTime? updatedAt;
   Categories_user? categories;
@@ -138,7 +138,7 @@ class UserStrapi {
         confirmed: json["Confirmed"],
         forgetpass: json['forgetPass'],
         city: json["city"],
-        price: json['introPrice'],
+        price: json['introPrice'] != null,
         address: json["address"],
         introLogo: json["intro_logo"] != null
             ? Img_user.fromJson(json["intro_logo"])

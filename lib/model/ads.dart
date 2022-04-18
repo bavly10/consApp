@@ -17,7 +17,8 @@ class Ads {
     this.createdAt,
     this.updatedAt,
     required this.premium,
-    required this.userName,
+    required this.Name,
+    required this.URLLink,
     required this.profileImage,
   });
 
@@ -26,7 +27,8 @@ class Ads {
   DateTime? createdAt;
   DateTime? updatedAt;
   bool premium;
-  UserName userName;
+  String?URLLink;
+  String?Name;
   ProfileImage profileImage;
 
   factory Ads.fromJson(Map<String, dynamic> json) => Ads(
@@ -35,7 +37,8 @@ class Ads {
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
         premium: json["premium"],
-        userName: UserName.fromJson(json["user_name"]),
+        URLLink: json["URLLink"],
+         Name: json["Name"],
         profileImage: ProfileImage.fromJson(json["profileImage"]),
       );
 
@@ -45,7 +48,8 @@ class Ads {
         "created_at": createdAt!.toIso8601String(),
         "updated_at": updatedAt!.toIso8601String(),
         "premium": premium,
-        "user_name": userName.toJson(),
+        "URLLink": URLLink,
+        "Name": Name,
         "profileImage": profileImage.toJson(),
       };
 }

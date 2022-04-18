@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:ffi';
+
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:helpy_app/model/post.dart';
 
 import 'package:helpy_app/model/user_model.dart';
-import 'package:helpy_app/modules/MainScreen/ads.dart';
+import 'package:helpy_app/modules/MainScreen/Ads/ads.dart';
 import 'package:helpy_app/modules/User/cubit/states.dart';
 import 'package:helpy_app/modules/User/home_screen/user_main.dart';
 import 'package:helpy_app/modules/User/profile/profile.dart';
@@ -44,7 +44,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     const UserHome(),
     ChatsScreen(),
     AdsScreen(),
-    const UserProfileScreen(),
+    UserProfileScreen(),
   ];
 
   void changeIndex(int index) {
@@ -69,9 +69,10 @@ class UserCubit extends Cubit<cons_login_Register_States> {
   void changPasswordVisibilty() {
     isPassword = !isPassword;
     iconVisiblity =
-    isPassword ? Icons.visibility : Icons.visibility_off_outlined;
+        isPassword ? Icons.visibility : Icons.visibility_off_outlined;
     emit(ChangePasswordVisibiltyState());
   }
+
 ////////////////////////////////////////
   ///dispose controllers
   @override
@@ -165,7 +166,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       allowMultiple: allowMultiple,
       withReadStream: true,
       withData: true,
-    ));
+    ))!;
     if (result == null) {
       emit(TakeImagess_Error_State());
     } else {
@@ -202,7 +203,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       "files": imagee!.path,
       "ref": "user",
       "refId": "$id",
-      "field": "intro_img",
+      "field": "intro_logo",
       "source": "users-permissions"
     };
     String url = base_api + "/upload";
@@ -221,7 +222,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     });
   }
 
-  void uploadImages(id) {
+  void uploadImagesStrapi(id,String filedName) async {
     result!.files.forEach((element) async {
       String url = base_api + "/upload";
       var uri = Uri.parse(url);
@@ -230,44 +231,27 @@ class UserCubit extends Cubit<cons_login_Register_States> {
         "files": element.path!,
         "ref": "user",
         "refId": "$id",
-        "field": "certificate",
+        "field": filedName,
         "source": "users-permissions"
       };
       var stream = http.ByteStream(DelegatingStream.typed(element.readStream!));
       int? length = element.bytes!.length;
       var multipartFile = http.MultipartFile('files', stream, length,
-          filename: basename(element.path!), contentType: mediaType);
+          filename: basename(element.path!),
+          contentType: MediaType('image', 'jpg'));
       request.fields.addAll(a);
       request.files.add(multipartFile);
       final response = await request.send();
+      if (response.statusCode == 200) {
+        debugPrint("Sucess");
+        emit(ChangeCoverUserImageSuessState());
+      } else {
+        debugPrint("Faield");
+        emit(ChangeCoverUserImageErrorState());
+      }
       response.stream.transform(utf8.decoder).listen((value) {
-        print(value);
-        // ignore: void_checks
-      });
-    });
-  }
+        debugPrint(value);
 
-  void uploadIntroImages(id) {
-    result?.files.forEach((element) async {
-      String url = base_api + "/upload";
-      var uri = Uri.parse(url);
-      var request = http.MultipartRequest("POST", uri);
-      Map<String, String> a = {
-        "files": element.path!,
-        "ref": "user",
-        "refId": "$id",
-        "field": "intro_img",
-        "source": "users-permissions"
-      };
-      var stream = http.ByteStream(DelegatingStream.typed(element.readStream!));
-      int? length = element.bytes!.length;
-      var multipartFile = http.MultipartFile('files', stream, length,
-          filename: basename(element.path!), contentType: mediaType);
-      request.fields.addAll(a);
-      request.files.add(multipartFile);
-      final response = await request.send();
-      response.stream.transform(utf8.decoder).listen((value) {
-        print(value);
         // ignore: void_checks
       });
     });
@@ -314,7 +298,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
   String? myEmail;
   int? forgetID;
 
-  register({String? username, email, password, phone, String? listImages, address, about, dynamic price}) async {
+  register({String? username, email, password, phone, address, about, dynamic price}) async {
     emit(cons_Loading_Register());
     late var response;
     final url = Uri.parse("$base_api/auth/local/register");
@@ -330,33 +314,26 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       "about": about,
       "type_introducer": myType,
       "Confirmed": false.toString(),
-      "certificate": listImages,
-      //"intro_logo":imagee.path,
       "categories": cat_id.toString(),
       "specailst": spec_id.toString(),
     };
     try {
       authres = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      await FirebaseFirestore.instance
-          .collection("users")
-          .doc(authres.user!.uid)
-          .set({
+      await FirebaseFirestore.instance.collection("users").doc(authres.user!.uid).set({
         'username': username,
         'email': email,
         "phone": phone,
         "userid": authres.user!.uid,
       }).then((value) async {
         response = await http.post(url, headers: headrs, body: body);
+        print(response.toString());
         if (response.statusCode == 200) {
           var jdson = jsonDecode(response.body);
           final loadeddata = jdson['user'];
           myid = loadeddata["id"];
           print(response.body);
-
-          ///upload image logo kant adema h3mlha fe profile
-          // uploadImage(imagee.readAsBytesSync(),myid);
-          uploadImages(myid);
+          uploadImagesStrapi(myid,"certificate");
           emit(cons_Register_Scusess());
           return true;
         } else if (response.statusCode == 400) {
@@ -367,6 +344,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
           emit(cons_Login_Error(loginModel!));
           return false;
         } else {
+          print(response);
           emit(cons_Register_final_Error());
         }
       });
@@ -560,7 +538,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
           "field": "filepdf"
         };
         var stream =
-        http.ByteStream(DelegatingStream.typed(element.readStream!));
+            http.ByteStream(DelegatingStream.typed(element.readStream!));
         int? length = element.bytes!.length;
         var multipartFile = http.MultipartFile('files', stream, length,
             filename: basename(element.path!),
@@ -599,13 +577,13 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     }
   }
 
-  late double total=0;
-  double tax=0.25;
+  late double total = 0;
+  double tax = 0.25;
 
-  double getTotal(int price){
-    double myprice=price*tax;
-      total=price+myprice;
-      emit(Changeprice());
+  double getTotal(int price) {
+    double myprice = price * tax;
+    total = price + myprice;
+    emit(Changeprice());
     return total;
   }
 }
