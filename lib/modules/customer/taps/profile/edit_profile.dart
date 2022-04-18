@@ -35,6 +35,10 @@ class EditProfile extends StatelessWidget {
       } else if (state is TakeImageCustomer_State) {
         CustomerCubit.get(context)
             .uploadProfileImage(id: cons_Cubit.get(context).customerID!);
+      } else if (state is UpdateCustomerDataErrorState) {
+        ScaffoldMessenger.of(context).showSnackBar(snakBar(context));
+      } else if (state is ChangeCustomerImageSuessState) {
+        ScaffoldMessenger.of(context).showSnackBar(snakBar(context));
       }
     }, builder: (context, state) {
       File? image = CustomerCubit.get(context).imagee;
