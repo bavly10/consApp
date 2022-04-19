@@ -40,7 +40,7 @@ class ChangePasswordUser extends StatelessWidget {
               navigateToFinish(context, Main_login());
             },
             pressTitle: mytranslate(context, "logout"),
-            icon: Icons.add,
+            icon: Icons.restore,
             pressColor: myAmber);
       }
     }, builder: (context, state) {
