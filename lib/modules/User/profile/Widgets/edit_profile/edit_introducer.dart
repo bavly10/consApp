@@ -103,210 +103,127 @@ class EditIntroducer extends StatelessWidget {
                 Container(
                     color: Colors.white,
                     height: MediaQuery.of(context).size.height * 0.35),
-                introImg!.isEmpty
-                    ? Stack(
-                        alignment: AlignmentDirectional.bottomCenter,
-                        children: [
-                          // if (loginmodel!.userClass!.introImg == null)
-
-                          CarouselSlider(
-                              carouselController: CarouselControllerImpl(),
-                              items: images.map<Widget>((i) {
-                                return Builder(
-                                  builder: (BuildContext context) {
-                                    return Container(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                const BorderRadius.only(
-                                                    bottomLeft:
-                                                        Radius.circular(25.0),
-                                                    bottomRight:
-                                                        Radius.circular(25.0)),
-                                            image: DecorationImage(
-                                                image: AssetImage(i))));
-                                  },
-                                );
-                              }).toList(),
-                              options: CarouselOptions(
-                                  enableInfiniteScroll: true,
-                                  viewportFraction: 1.0,
-                                  onPageChanged: (int i, _) {},
-                                  autoPlayInterval: const Duration(seconds: 4),
-                                  enlargeCenterPage: true,
-                                  autoPlay: true,
-                                  initialPage: 0,
-                                  scrollDirection: Axis.horizontal)),
-
-                          Positioned(
-                            //top: 190,
-                            left: 10,
-                            child: Center(
-                              child: Container(
-                                //alignment: AlignmentDirectional.topStart,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  shape: BoxShape.rectangle,
-                                  color: HexColor('#C18F3A'),
-                                ),
-                                //  alignment: Alignment.topRight,
-                                height: 23,
-                                width: 23,
-                                child: InkWell(
-                                  onTap: () {
-                                    UserCubit.get(context)
-                                        .pickFiles(['jpg', 'png'], true);
-                                  },
-                                  child: const Align(
-                                    alignment: Alignment.center,
-                                    child: Icon(
-                                      Icons.mode_edit_rounded,
-                                      color: Colors.white54,
-                                      size: 15,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      )
-                    : Stack(
-                        alignment: AlignmentDirectional.bottomCenter,
-                        children: [
-                          // if (loginmodel!.userClass!.introImg == null)
-
-                          // CarouselSlider(
-                          //     carouselController: CarouselControllerImpl(),
-                          //     items: images.map<Widget>((i) {
-                          //       return Builder(
-                          //         builder: (BuildContext context) {
-                          //           return Container(
-                          //               width: MediaQuery.of(context).size.width,
-                          //               decoration: BoxDecoration(
-                          //                   borderRadius: const BorderRadius.only(
-                          //                       bottomLeft: Radius.circular(25.0),
-                          //                       bottomRight: Radius.circular(25.0)),
-                          //                   image: DecorationImage(
-                          //                       image: AssetImage(i))));
-                          //         },
-                          //       );
-                          //     }).toList(),
-                          //     options: CarouselOptions(
-                          //         enableInfiniteScroll: true,
-                          //         viewportFraction: 1.0,
-                          //         onPageChanged: (int i, _) {},
-                          //         autoPlayInterval: const Duration(seconds: 4),
-                          //         enlargeCenterPage: true,
-                          //         autoPlay: true,
-                          //         initialPage: 0,
-                          //         scrollDirection: Axis.horizontal))
-
-                          if (cubit.result?.files != null)
-                            CarouselSlider(
-                                carouselController: CarouselControllerImpl(),
-                                items: cubit.result!.files
-                                    .map((e) => Container(
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  const BorderRadius.only(
-                                                      bottomLeft:
-                                                          Radius.circular(25.0),
-                                                      bottomRight:
-                                                          Radius.circular(
-                                                              25.0)),
-                                              image: DecorationImage(
-                                                  image:
-                                                      FileImage(File(e.path!)),
-                                                  fit: BoxFit.fill)),
-                                        ))
-                                    .toList(),
-                                options: CarouselOptions(
-                                    enableInfiniteScroll: true,
-                                    viewportFraction: 1.0,
-                                    onPageChanged: (int i, _) {},
-                                    autoPlayInterval:
-                                        const Duration(seconds: 4),
-                                    enlargeCenterPage: true,
-                                    autoPlay: true,
-                                    initialPage: 0,
-                                    scrollDirection: Axis.horizontal))
-                          else
-                            CarouselSlider(
-                                carouselController: CarouselControllerImpl(),
-                                items: loginmodel!.userClass!.introImg!
-                                    .map((e) => CachedNetworkImage(
-                                          imageUrl: imgurl + e.url!,
+                Stack(
+                  alignment: AlignmentDirectional.bottomCenter,
+                  children: [
+                    if (introImg!.isEmpty)
+                      CarouselSlider(
+                          carouselController: CarouselControllerImpl(),
+                          items: images.map<Widget>((i) {
+                            return Builder(
+                              builder: (BuildContext context) {
+                                return Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.only(
+                                            bottomLeft: Radius.circular(25.0),
+                                            bottomRight: Radius.circular(25.0)),
+                                        image: DecorationImage(
+                                            image: AssetImage(i))));
+                              },
+                            );
+                          }).toList(),
+                          options: CarouselOptions(
+                              enableInfiniteScroll: true,
+                              viewportFraction: 1.0,
+                              onPageChanged: (int i, _) {},
+                              autoPlayInterval: const Duration(seconds: 4),
+                              enlargeCenterPage: true,
+                              autoPlay: true,
+                              initialPage: 0,
+                              scrollDirection: Axis.horizontal))
+                    else if (cubit.result?.files != null)
+                      CarouselSlider(
+                          carouselController: CarouselControllerImpl(),
+                          items: cubit.result!.files
+                              .map((e) => Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.only(
+                                            bottomLeft: Radius.circular(25.0),
+                                            bottomRight: Radius.circular(25.0)),
+                                        image: DecorationImage(
+                                            image: FileImage(File(e.path!)),
+                                            fit: BoxFit.fill)),
+                                  ))
+                              .toList(),
+                          options: CarouselOptions(
+                              enableInfiniteScroll: true,
+                              viewportFraction: 1.0,
+                              onPageChanged: (int i, _) {},
+                              autoPlayInterval: const Duration(seconds: 4),
+                              enlargeCenterPage: true,
+                              autoPlay: true,
+                              initialPage: 0,
+                              scrollDirection: Axis.horizontal))
+                    else
+                      CarouselSlider(
+                          carouselController: CarouselControllerImpl(),
+                          items: loginmodel!.userClass!.introImg!
+                              .map((e) => CachedNetworkImage(
+                                    imageUrl: imgurl + e.url!,
+                                    fit: BoxFit.fill,
+                                    imageBuilder: (context, imageProvider) =>
+                                        Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.only(
+                                            bottomLeft: Radius.circular(25.0),
+                                            bottomRight: Radius.circular(25.0)),
+                                        image: DecorationImage(
+                                          image: imageProvider,
                                           fit: BoxFit.fill,
-                                          imageBuilder:
-                                              (context, imageProvider) =>
-                                                  Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  const BorderRadius.only(
-                                                      bottomLeft:
-                                                          Radius.circular(25.0),
-                                                      bottomRight:
-                                                          Radius.circular(
-                                                              25.0)),
-                                              image: DecorationImage(
-                                                image: imageProvider,
-                                                fit: BoxFit.fill,
-                                              ),
-                                            ),
-                                          ),
-                                          placeholder: (context, url) =>
-                                              SpinKitCircle(
-                                            color: myAmber,
-                                          ),
-                                          errorWidget: (context, url, error) =>
-                                              const Icon(Icons.error),
-                                        ))
-                                    .toList(),
-                                options: CarouselOptions(
-                                    enableInfiniteScroll: true,
-                                    viewportFraction: 1.0,
-                                    onPageChanged: (int i, _) {},
-                                    autoPlayInterval:
-                                        const Duration(seconds: 2),
-                                    enlargeCenterPage: true,
-                                    initialPage: 0,
-                                    autoPlay: true,
-                                    scrollDirection: Axis.horizontal)),
-                          Positioned(
-                            //top: 190,
-                            left: 10,
-                            child: Center(
-                              child: Container(
-                                //alignment: AlignmentDirectional.topStart,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  shape: BoxShape.rectangle,
-                                  color: HexColor('#C18F3A'),
-                                ),
-                                //  alignment: Alignment.topRight,
-                                height: 23,
-                                width: 23,
-                                child: InkWell(
-                                  onTap: () {
-                                    UserCubit.get(context)
-                                        .pickFiles(['jpg', 'png'], true);
-                                  },
-                                  child: const Align(
-                                    alignment: Alignment.center,
-                                    child: Icon(
-                                      Icons.mode_edit_rounded,
-                                      color: Colors.white54,
-                                      size: 15,
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
+                                    placeholder: (context, url) =>
+                                        SpinKitCircle(
+                                      color: myAmber,
+                                    ),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
+                                  ))
+                              .toList(),
+                          options: CarouselOptions(
+                              enableInfiniteScroll: true,
+                              viewportFraction: 1.0,
+                              onPageChanged: (int i, _) {},
+                              autoPlayInterval: const Duration(seconds: 2),
+                              enlargeCenterPage: true,
+                              initialPage: 0,
+                              autoPlay: true,
+                              scrollDirection: Axis.horizontal)),
+                    Positioned(
+                      //top: 190,
+                      left: 10,
+                      child: Center(
+                        child: Container(
+                          //alignment: AlignmentDirectional.topStart,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            shape: BoxShape.rectangle,
+                            color: HexColor('#C18F3A'),
+                          ),
+                          //  alignment: Alignment.topRight,
+                          height: 23,
+                          width: 23,
+                          child: InkWell(
+                            onTap: () {
+                              UserCubit.get(context)
+                                  .pickFiles(['jpg', 'png'], true);
+                            },
+                            child: const Align(
+                              alignment: Alignment.center,
+                              child: Icon(
+                                Icons.mode_edit_rounded,
+                                color: Colors.white54,
+                                size: 15,
                               ),
                             ),
                           ),
-                        ],
+                        ),
                       ),
+                    ),
+                  ],
+                ),
                 Positioned(
                   top: MediaQuery.of(context).size.height * .20,
                   child: Align(
