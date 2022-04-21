@@ -11,6 +11,7 @@ import 'package:helpy_app/modules/customer/taps/profile/change_pass.dart';
 import 'package:helpy_app/modules/customer/taps/profile/edit_profile.dart';
 
 import 'package:helpy_app/modules/customer/taps/profile/edit_profile/widgets/custom_list_tile.dart';
+import 'package:helpy_app/modules/customer/taps/profile/wallet_screen.dart';
 import 'package:helpy_app/shared/componotents.dart';
 import 'package:helpy_app/shared/localization/translate.dart';
 import 'package:helpy_app/shared/my_colors.dart';
@@ -91,6 +92,28 @@ class ProfileScreen extends StatelessWidget {
                         },
                       )),
                   Padding(
+                    padding: const EdgeInsets.only(right: 13, left: 15),
+                    child: Container(
+                      height: 1,
+                      width: MediaQuery.of(context).size.width,
+                      color: Colors.grey[100],
+                    ),
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.only(
+                        right: 5,
+                        bottom: 8,
+                        top: 5,
+                      ),
+                      child: CustomListTile(
+                        textTitle: "wallet",
+                        trailingIcon: Icons.arrow_forward_ios_rounded,
+                        onTap: () {
+                          navigateTo(
+                              context, WalletScreenCustomer(model: model));
+                        },
+                      )),
+                  Padding(
                       padding: const EdgeInsets.only(
                           bottom: 8, top: 5, right: 16, left: 12),
                       child: DropdownButton(
@@ -108,17 +131,17 @@ class ProfileScreen extends StatelessWidget {
                         items: lanugage.lang_list
                             .map<DropdownMenuItem<lanugage>>(
                                 (lang) => DropdownMenuItem(
-                              value: lang,
-                              child: Row(
-                                children: [
-                                  Text(lang.flag!),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(lang.name!)
-                                ],
-                              ),
-                            ))
+                                      value: lang,
+                                      child: Row(
+                                        children: [
+                                          Text(lang.flag!),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(lang.name!)
+                                        ],
+                                      ),
+                                    ))
                             .toList(),
                         underline: const SizedBox(),
                         icon: Icon(

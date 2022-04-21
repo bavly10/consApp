@@ -159,5 +159,8 @@
    "loadfile": "Uploading Your File...",
    "pricef": "Price Of File...",
    "detailsf": "details Of File:",
-   "upd": "UPDATE"
+   "upd": "UPDATE",
+   "walletp": "You Have Points in Your Wallet",
+   "current": "Your Current Points",
+   "valid": "Valid for use on your orders"
 }

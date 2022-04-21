@@ -106,56 +106,7 @@ class EditIntroducer extends StatelessWidget {
                 Stack(
                   alignment: AlignmentDirectional.bottomCenter,
                   children: [
-                    if (introImg!.isEmpty)
-                      CarouselSlider(
-                          carouselController: CarouselControllerImpl(),
-                          items: images.map<Widget>((i) {
-                            return Builder(
-                              builder: (BuildContext context) {
-                                return Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    decoration: BoxDecoration(
-                                        borderRadius: const BorderRadius.only(
-                                            bottomLeft: Radius.circular(25.0),
-                                            bottomRight: Radius.circular(25.0)),
-                                        image: DecorationImage(
-                                            image: AssetImage(i))));
-                              },
-                            );
-                          }).toList(),
-                          options: CarouselOptions(
-                              enableInfiniteScroll: true,
-                              viewportFraction: 1.0,
-                              onPageChanged: (int i, _) {},
-                              autoPlayInterval: const Duration(seconds: 4),
-                              enlargeCenterPage: true,
-                              autoPlay: true,
-                              initialPage: 0,
-                              scrollDirection: Axis.horizontal))
-                    else if (cubit.result?.files != null)
-                      CarouselSlider(
-                          carouselController: CarouselControllerImpl(),
-                          items: cubit.result!.files
-                              .map((e) => Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius: const BorderRadius.only(
-                                            bottomLeft: Radius.circular(25.0),
-                                            bottomRight: Radius.circular(25.0)),
-                                        image: DecorationImage(
-                                            image: FileImage(File(e.path!)),
-                                            fit: BoxFit.fill)),
-                                  ))
-                              .toList(),
-                          options: CarouselOptions(
-                              enableInfiniteScroll: true,
-                              viewportFraction: 1.0,
-                              onPageChanged: (int i, _) {},
-                              autoPlayInterval: const Duration(seconds: 4),
-                              enlargeCenterPage: true,
-                              autoPlay: true,
-                              initialPage: 0,
-                              scrollDirection: Axis.horizontal))
-                    else
+                    if (introImg!.isNotEmpty)
                       CarouselSlider(
                           carouselController: CarouselControllerImpl(),
                           items: loginmodel!.userClass!.introImg!
@@ -190,6 +141,55 @@ class EditIntroducer extends StatelessWidget {
                               enlargeCenterPage: true,
                               initialPage: 0,
                               autoPlay: true,
+                              scrollDirection: Axis.horizontal))
+                    else if (cubit.result?.files != null)
+                      CarouselSlider(
+                          carouselController: CarouselControllerImpl(),
+                          items: cubit.result!.files
+                              .map((e) => Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.only(
+                                            bottomLeft: Radius.circular(25.0),
+                                            bottomRight: Radius.circular(25.0)),
+                                        image: DecorationImage(
+                                            image: FileImage(File(e.path!)),
+                                            fit: BoxFit.fill)),
+                                  ))
+                              .toList(),
+                          options: CarouselOptions(
+                              enableInfiniteScroll: true,
+                              viewportFraction: 1.0,
+                              onPageChanged: (int i, _) {},
+                              autoPlayInterval: const Duration(seconds: 4),
+                              enlargeCenterPage: true,
+                              autoPlay: true,
+                              initialPage: 0,
+                              scrollDirection: Axis.horizontal))
+                    else
+                      CarouselSlider(
+                          carouselController: CarouselControllerImpl(),
+                          items: images.map<Widget>((i) {
+                            return Builder(
+                              builder: (BuildContext context) {
+                                return Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.only(
+                                            bottomLeft: Radius.circular(25.0),
+                                            bottomRight: Radius.circular(25.0)),
+                                        image: DecorationImage(
+                                            image: AssetImage(i))));
+                              },
+                            );
+                          }).toList(),
+                          options: CarouselOptions(
+                              enableInfiniteScroll: true,
+                              viewportFraction: 1.0,
+                              onPageChanged: (int i, _) {},
+                              autoPlayInterval: const Duration(seconds: 4),
+                              enlargeCenterPage: true,
+                              autoPlay: true,
+                              initialPage: 0,
                               scrollDirection: Axis.horizontal)),
                     Positioned(
                       //top: 190,
