@@ -115,14 +115,14 @@ class CreateFile extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 10,
                   ),
                   if (result != null)
                     Stack(
-                      // alignment: AlignmentDirectional.topCenter,
+                      // alignment: Alignment,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(top: 12.0, bottom: 20),
+                          padding: const EdgeInsets.only(top: 25.0, bottom: 20),
                           child: Text(
                             mytranslate(context, "detailsf"),
                             style: TextStyle(
@@ -208,15 +208,18 @@ class CreateFile extends StatelessWidget {
                             ),
                           ),
                         ),
-                        IconButton(
-                            onPressed: () {
-                              UserCubit.get(context).deleteImageBlocList();
-                            },
-                            icon: Icon(
-                              Icons.cancel,
-                              color: HexColor('#C18F3A'),
-                              size: 20,
-                            )),
+                        Positioned(
+                          left: 5,
+                          child: IconButton(
+                              onPressed: () {
+                                UserCubit.get(context).deleteImageBlocList();
+                              },
+                              icon: Icon(
+                                Icons.cancel,
+                                color: HexColor('#C18F3A'),
+                                size: 20,
+                              )),
+                        ),
                       ],
                     ),
                   Mybutton(
