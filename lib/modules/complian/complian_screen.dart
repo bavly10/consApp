@@ -101,10 +101,13 @@ class ComplianScreen extends StatelessWidget {
                         color: Colors.white,
                       ),
                       child: DropdownButton<String>(
-                        autofocus: true,
+                        // autofocus: true,
                         isExpanded: true,
                         focusColor: myAmber,
-                        hint: Text(mytranslate(context, "type")),
+                        hint: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(mytranslate(context, "type")),
+                        ),
                         dropdownColor: Colors.white,
                         // value: CustomerCubit.get(context).selectedText,
                         items: <String>[
