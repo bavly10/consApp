@@ -27,7 +27,7 @@ class CreatePost extends StatelessWidget {
             },
             content: mytranslate(context, "postdone"),
             context: context,
-            bigTitle: "MyCompany",
+            bigTitle: mytranslate(context, "surely"),
             pressColor: myAmber,
           );
 
@@ -90,22 +90,22 @@ class CreatePost extends StatelessWidget {
                   ),
                   Expanded(
                       child: TextFormField(
-                        maxLines: 8,
-                        validator: (String? s) {
-                          if (s!.isEmpty) return "Post is required";
-                        },
-                        controller: textController,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: HexColor('#F7F7F7'),
-                          hintText: mytranslate(context, "decribe"),
-                          hintStyle: const TextStyle(fontSize: 12),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: BorderSide.none,
-                          ),
-                        ),
-                      )),
+                    maxLines: 8,
+                    validator: (String? s) {
+                      if (s!.isEmpty) return "Post is required";
+                    },
+                    controller: textController,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: HexColor('#F7F7F7'),
+                      hintText: mytranslate(context, "decribe"),
+                      hintStyle: const TextStyle(fontSize: 12),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                  )),
                   //  if (SocialCubit.get(context).postImage != null)
                   if (image != null)
                     Expanded(
@@ -147,7 +147,7 @@ class CreatePost extends StatelessWidget {
                       title: Text(
                         mytranslate(context, "posts"),
                         style:
-                        const TextStyle(fontSize: 14, color: Colors.white),
+                            const TextStyle(fontSize: 14, color: Colors.white),
                       ),
                       color: HexColor('#C18F3A'))
                 ],

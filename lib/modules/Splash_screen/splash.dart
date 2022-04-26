@@ -18,6 +18,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
+    cons_Cubit.get(context).getMyLang();
     super.initState();
     Timer(
         const Duration(seconds: 4),

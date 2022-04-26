@@ -30,8 +30,8 @@ class UserProfileScreen extends StatelessWidget {
     return BlocBuilder<UserCubit, cons_login_Register_States>(
       builder: (context, state) {
         final model = UserCubit.get(context).loginModel;
-        final model2 = UserCubit.get(context).loginModel!.userClass!.id;
-        final image = UserCubit.get(context).loginModel!.userClass?.introLogo;
+        final model2 = UserCubit.get(context).loginModel?.userClass?.id;
+        final image = UserCubit.get(context).loginModel?.userClass?.introLogo;
 
         final cubit = cons_Cubit.get(context);
         cons_Cubit.get(context).getMyShared();
@@ -81,10 +81,15 @@ class UserProfileScreen extends StatelessWidget {
                       top: 5,
                     ),
                     child: CustomListTile(
-                      textTitle: "changepassword",
+                      textTitle: "editProfile",
                       trailingIcon: Icons.arrow_forward_ios_rounded,
                       onTap: () {
-                        navigateTo(context, ChangePasswordUser());
+                        if (model != null) {
+                          navigateTo(context, EditIntroducer(model));
+                        } else {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(snakBarError(context));
+                        }
                       },
                     )),
                 Padding(
@@ -94,10 +99,15 @@ class UserProfileScreen extends StatelessWidget {
                       top: 5,
                     ),
                     child: CustomListTile(
-                      textTitle: "editProfile",
+                      textTitle: "changepassword",
                       trailingIcon: Icons.arrow_forward_ios_rounded,
                       onTap: () {
-                        navigateTo(context, EditIntroducer(model));
+                        if (model != null) {
+                          navigateTo(context, ChangePasswordUser());
+                        } else {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(snakBarError(context));
+                        }
                       },
                     )),
                 Padding(

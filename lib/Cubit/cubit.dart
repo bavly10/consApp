@@ -33,15 +33,18 @@ class cons_Cubit extends Cubit<cons_States> {
       case "en":
         xtranslate = false;
         locale_cubit = Locale(lang.lang_Code!, "US");
+        CashHelper.putData("locale", "en");
         break;
       case "ar":
         xtranslate = true;
         locale_cubit = Locale(lang.lang_Code!, "SA");
+        CashHelper.putData("locale", "ar");
         break;
       default:
         locale_cubit = const Locale("ar", "SA");
         break;
     }
+    // CashHelper.putData("locale", xtranslate);
     emit(cons_Change_Language());
   }
 
@@ -246,7 +249,10 @@ class cons_Cubit extends Cubit<cons_States> {
   String? userFBID;
   int? userID;
   int? customerIDStrapi;
+  String? localeLang;
 
+  bool? langg;
+  String? language;
   void getMyShared() {
     customerToken = CashHelper.getData("tokenCustomer");
     customerID = CashHelper.getData("cust_id");
@@ -254,5 +260,10 @@ class cons_Cubit extends Cubit<cons_States> {
     userID = CashHelper.getData("userId");
     userFBID = CashHelper.getData("userFBId");
     customerIDStrapi = CashHelper.getData("customer_idStrapi");
+  }
+
+  void getMyLang() {
+    language = CashHelper.getData("locale");
+    print("langg$language");
   }
 }

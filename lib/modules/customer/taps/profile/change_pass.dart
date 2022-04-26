@@ -29,7 +29,7 @@ class ChangePassword extends StatelessWidget {
       }
     }, builder: (context, state) {
       var model = CustomerCubit.get(context).model;
-      String textEmail = model!.email;
+      String? textEmail = model?.email;
       return Scaffold(
           appBar: AppBar(
             title: Text(
@@ -38,59 +38,61 @@ class ChangePassword extends StatelessWidget {
             ),
             centerTitle: true,
           ),
-          body: Form(
-            key: formKey,
-            child: ListView(
-              padding: const EdgeInsets.all(15),
-              reverse: true,
-              shrinkWrap: true,
-              //reverse: true,
-              children: [
-                MaterialButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(35.0)),
-                  color: HexColor('#C18F3A'),
-                  onPressed: () {
-                    FocusScope.of(context).requestFocus(FocusNode());
-                    if (formKey.currentState!.validate()) {
-                      CustomerCubit.get(context).changePassword(
-                          textEmail, cons_Cubit.get(context).customerID);
-                    }
-                  },
-                  child: Text(
-                    mytranslate(context, "sendurl"),
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      letterSpacing: 2,
-                    ),
+          body: model != null
+              ? Form(
+                  key: formKey,
+                  child: ListView(
+                    padding: const EdgeInsets.all(15),
+                    reverse: true,
+                    shrinkWrap: true,
+                    //reverse: true,
+                    children: [
+                      MaterialButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(35.0)),
+                        color: HexColor('#C18F3A'),
+                        onPressed: () {
+                          FocusScope.of(context).requestFocus(FocusNode());
+                          if (formKey.currentState!.validate()) {
+                            CustomerCubit.get(context).changePassword(
+                                textEmail!, cons_Cubit.get(context).customerID);
+                          }
+                        },
+                        child: Text(
+                          mytranslate(context, "sendurl"),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            letterSpacing: 2,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        secretEmail(textEmail!),
+                        style: TextStyle(
+                            color: myAmber,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20.0),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(mytranslate(context, "passtext")),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Image(
+                        image: const ExactAssetImage("assets/pass.png"),
+                        height: MediaQuery.of(context).size.height * .30,
+                        width: double.infinity,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                    ],
                   ),
-                ),
-                Text(
-                  secretEmail(textEmail),
-                  style: TextStyle(
-                      color: myAmber,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20.0),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(mytranslate(context, "passtext")),
-                const SizedBox(
-                  height: 10,
-                ),
-                Image(
-                  image: const ExactAssetImage("assets/pass.png"),
-                  height: MediaQuery.of(context).size.height * .30,
-                  width: double.infinity,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-              ],
-            ),
-          ));
+                )
+              : Center(child: CircularProgressIndicator()));
     });
   }
 }

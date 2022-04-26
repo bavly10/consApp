@@ -119,24 +119,22 @@ class CreateFile extends StatelessWidget {
                   ),
                   if (result != null)
                     Stack(
-                      alignment: AlignmentDirectional.topEnd,
+                      // alignment: AlignmentDirectional.topCenter,
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(top: 12.0, bottom: 20),
-                          child: Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                mytranslate(context, "detailsf"),
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    color: HexColor('#C18F3A')),
-                              )),
+                          child: Text(
+                            mytranslate(context, "detailsf"),
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: HexColor('#C18F3A')),
+                          ),
                         ),
                         // ignore: sized_box_for_whitespace
                         Padding(
                           padding: const EdgeInsets.only(top: 30.0),
-                          child: Container(
+                          child: SizedBox(
                             height: MediaQuery.of(context).size.height * .20,
                             width: double.infinity,
                             child: Padding(
@@ -147,60 +145,63 @@ class CreateFile extends StatelessWidget {
                                   const SizedBox(
                                     height: 10,
                                   ),
-                                  Row(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(5.0),
-                                        child: Text(
-                                          mytranslate(context, "filen"),
+                                  Expanded(
+                                    child: Row(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: Text(
+                                            mytranslate(context, "filen"),
+                                            style: const TextStyle(
+                                                color: Colors.blueGrey),
+                                          ),
+                                        ),
+                                        Text(
+                                          result.files.single.name,
                                           style: const TextStyle(
                                               color: Colors.blueGrey),
                                         ),
-                                      ),
-                                      Text(result.files.single.name,
-                                          style: const TextStyle(
-                                              color: Colors.blueGrey)),
-                                      Text(
-                                        result.files.single.name,
-                                        style: const TextStyle(
-                                            color: Colors.blueGrey),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                  Row(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(5.0),
-                                        child: Text(
-                                          mytranslate(context, "filez"),
+                                  Expanded(
+                                    child: Row(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: Text(
+                                            mytranslate(context, "filez"),
+                                            style: const TextStyle(
+                                                color: Colors.blueGrey),
+                                          ),
+                                        ),
+                                        Text(
+                                          '${result.files.single.size} KB',
                                           style: const TextStyle(
                                               color: Colors.blueGrey),
                                         ),
-                                      ),
-                                      Text(
-                                        '${result.files.single.size} KB',
-                                        style: const TextStyle(
-                                            color: Colors.blueGrey),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                  Row(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(5.0),
-                                        child: Text(
-                                          mytranslate(context, "fileE"),
+                                  Expanded(
+                                    child: Row(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: Text(
+                                            mytranslate(context, "fileE"),
+                                            style: const TextStyle(
+                                                color: Colors.blueGrey),
+                                          ),
+                                        ),
+                                        Text(
+                                          result.files.single.extension
+                                              .toString(),
                                           style: const TextStyle(
                                               color: Colors.blueGrey),
                                         ),
-                                      ),
-                                      Text(
-                                        result.files.single.extension
-                                            .toString(),
-                                        style: const TextStyle(
-                                            color: Colors.blueGrey),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),

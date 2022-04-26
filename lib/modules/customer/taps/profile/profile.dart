@@ -67,7 +67,12 @@ class ProfileScreen extends StatelessWidget {
                         textTitle: "editprofile",
                         trailingIcon: Icons.arrow_forward_ios_rounded,
                         onTap: () {
-                          navigateTo(context, EditProfile());
+                          if (model == null) {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snakBarError(context));
+                          } else {
+                            navigateTo(context, EditProfile());
+                          }
                         },
                       )),
                   Padding(
@@ -88,7 +93,12 @@ class ProfileScreen extends StatelessWidget {
                         textTitle: "changepassword",
                         trailingIcon: Icons.arrow_forward_ios_rounded,
                         onTap: () {
-                          navigateTo(context, ChangePassword());
+                          if (model == null) {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snakBarError(context));
+                          } else {
+                            navigateTo(context, ChangePassword());
+                          }
                         },
                       )),
                   Padding(
@@ -109,8 +119,13 @@ class ProfileScreen extends StatelessWidget {
                         textTitle: "wallet",
                         trailingIcon: Icons.arrow_forward_ios_rounded,
                         onTap: () {
-                          navigateTo(
-                              context, WalletScreenCustomer(model: model));
+                          if (model == null) {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snakBarError(context));
+                          } else {
+                            navigateTo(
+                                context, WalletScreenCustomer(model: model));
+                          }
                         },
                       )),
                   Padding(

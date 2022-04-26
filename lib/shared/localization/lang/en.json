@@ -55,8 +55,8 @@
    "history": "History Orders",
    "ads": "Ads",
    "noData": "No More Data",
-   "nomoreData": "Can't Connect Now Try again 😢",
-   "errorData": "Maybe Something Error Please Try again 😢",
+   "nomoreData": "Can't Connect Now Try again ",
+   "errorData": "Maybe Something Error Please Try again ",
    "details": "Details",
    "post_details": "Details Post",
    "feeds": "Feeds",
@@ -162,5 +162,9 @@
    "upd": "UPDATE",
    "walletp": "You Have Points in Your Wallet",
    "current": "Your Current Points",
-   "valid": "Valid for use on your orders"
+   "valid": "Valid for use on your orders",
+   "res1": "lack of commitment",
+   "res2": "Offense",
+   "res3": "Inefficiency",
+   "res4": "Another Reasons"
 }

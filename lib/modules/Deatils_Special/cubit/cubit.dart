@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helpy_app/model/payment.dart';
 import 'package:helpy_app/model/user_model.dart';
@@ -45,8 +44,10 @@ class ConsCubitIntro extends Cubit<cons_StatesIntro> {
               introLogo: value["intro_logo"] == null
                   ? null
                   : Img_user.fromJson(value["intro_logo"]),
-              introImg:(value['intro_img'] as List<dynamic>)
-                  .map((e) => Img_user(url: e["url"],))
+              introImg: (value['intro_img'] as List<dynamic>)
+                  .map((e) => Img_user(
+                        url: e["url"],
+                      ))
                   .toList(),
               posts: (value['posts'] as List<dynamic>)
                   .map((e) => Post_user(
@@ -71,8 +72,10 @@ class ConsCubitIntro extends Cubit<cons_StatesIntro> {
               username: value["username"],
               typeIntroducer: value["type_introducer"],
               specailst: Specailst_user.fromJson(value["specailst"]),
-              introImg:(value['intro_img'] as List<dynamic>)
-                  .map((e) => Img_user(url: e["url"],))
+              introImg: (value['intro_img'] as List<dynamic>)
+                  .map((e) => Img_user(
+                        url: e["url"],
+                      ))
                   .toList(),
               introLogo: value["intro_logo"] == null
                   ? null
