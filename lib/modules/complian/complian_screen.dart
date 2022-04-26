@@ -9,6 +9,7 @@ import 'package:helpy_app/modules/MainScreen/main_screen.dart';
 import 'package:helpy_app/modules/User/cubit/cubit.dart';
 import 'package:helpy_app/modules/customer/cubit/cubit.dart';
 import 'package:helpy_app/modules/customer/cubit/state.dart';
+import 'package:helpy_app/modules/customer/main.dart';
 import 'package:helpy_app/shared/compononet/custom_clip_slider.dart';
 import 'package:helpy_app/shared/componotents.dart';
 import 'package:helpy_app/shared/localization/translate.dart';
@@ -30,9 +31,12 @@ class ComplianScreen extends StatelessWidget {
         listener: (context, state) {
       if (state is AddUserComplianSueeeState) {
         My_CustomAlertDialog(
+          icon: Icons.done,
+          iconColor: myAmber,
           pressTitle: mytranslate(context, "done"),
           onPress: () {
-            navigateToFinish(context, Mainscreen());
+            navigateToFinish(context, MainCustomer());
+
             // navigateTo(context, SpecialList(cat!));
             // navigateToFinish(context, HomeServices());
           },
@@ -100,9 +104,9 @@ class ComplianScreen extends StatelessWidget {
                         autofocus: true,
                         isExpanded: true,
                         focusColor: myAmber,
-                        hint: const Text("Type of complian"),
+                        hint: Text(mytranslate(context, "type")),
                         dropdownColor: Colors.white,
-                        value: CustomerCubit.get(context).selectedText,
+                        // value: CustomerCubit.get(context).selectedText,
                         items: <String>[
                           mytranslate(context, "res1"),
                           mytranslate(context, "res2"),
