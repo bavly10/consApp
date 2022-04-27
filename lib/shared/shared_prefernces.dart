@@ -1,7 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CashHelper {
-  static late  SharedPreferences sharedPreferences;
+  static late SharedPreferences sharedPreferences;
 
   static init() async {
     sharedPreferences = await SharedPreferences.getInstance();
@@ -21,5 +22,4 @@ class CashHelper {
   static Future<bool> removeData(String key) async {
     return await sharedPreferences.remove(key);
   }
-
 }

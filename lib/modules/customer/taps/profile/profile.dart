@@ -11,6 +11,7 @@ import 'package:helpy_app/modules/customer/taps/profile/change_pass.dart';
 import 'package:helpy_app/modules/customer/taps/profile/edit_profile.dart';
 
 import 'package:helpy_app/modules/customer/taps/profile/edit_profile/widgets/custom_list_tile.dart';
+import 'package:helpy_app/modules/customer/taps/profile/wallet_screen.dart';
 import 'package:helpy_app/shared/componotents.dart';
 import 'package:helpy_app/shared/localization/translate.dart';
 import 'package:helpy_app/shared/my_colors.dart';
@@ -66,7 +67,12 @@ class ProfileScreen extends StatelessWidget {
                         textTitle: "editprofile",
                         trailingIcon: Icons.arrow_forward_ios_rounded,
                         onTap: () {
-                          navigateTo(context, EditProfile());
+                          if (model == null) {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snakBarError(context));
+                          } else {
+                            navigateTo(context, EditProfile());
+                          }
                         },
                       )),
                   Padding(
@@ -87,7 +93,39 @@ class ProfileScreen extends StatelessWidget {
                         textTitle: "changepassword",
                         trailingIcon: Icons.arrow_forward_ios_rounded,
                         onTap: () {
-                          navigateTo(context, ChangePassword());
+                          if (model == null) {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snakBarError(context));
+                          } else {
+                            navigateTo(context, ChangePassword());
+                          }
+                        },
+                      )),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 13, left: 15),
+                    child: Container(
+                      height: 1,
+                      width: MediaQuery.of(context).size.width,
+                      color: Colors.grey[100],
+                    ),
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.only(
+                        right: 5,
+                        bottom: 8,
+                        top: 5,
+                      ),
+                      child: CustomListTile(
+                        textTitle: "wallet",
+                        trailingIcon: Icons.arrow_forward_ios_rounded,
+                        onTap: () {
+                          if (model == null) {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snakBarError(context));
+                          } else {
+                            navigateTo(
+                                context, WalletScreenCustomer(model: model));
+                          }
                         },
                       )),
                   Padding(
@@ -96,7 +134,7 @@ class ProfileScreen extends StatelessWidget {
                       child: DropdownButton(
                         isExpanded: true,
                         onChanged: (lang) {
-                          cubit.changeLang(lang, context);
+                          cubit.changeLang(lang);
                         },
 
                         hint: Text(
@@ -108,17 +146,17 @@ class ProfileScreen extends StatelessWidget {
                         items: lanugage.lang_list
                             .map<DropdownMenuItem<lanugage>>(
                                 (lang) => DropdownMenuItem(
-                              value: lang,
-                              child: Row(
-                                children: [
-                                  Text(lang.flag!),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(lang.name!)
-                                ],
-                              ),
-                            ))
+                                      value: lang,
+                                      child: Row(
+                                        children: [
+                                          Text(lang.flag!),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(lang.name!)
+                                        ],
+                                      ),
+                                    ))
                             .toList(),
                         underline: const SizedBox(),
                         icon: Icon(

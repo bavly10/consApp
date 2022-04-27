@@ -5,8 +5,8 @@ import 'dart:math';
 import 'package:helpy_app/Cubit/states.dart';
 import 'package:helpy_app/model/ads.dart';
 import 'package:helpy_app/model/categories_model.dart';
+import 'package:helpy_app/model/lang.dart';
 import 'package:helpy_app/model/specailsts_model.dart';
-import 'package:helpy_app/model/user_model.dart';
 import 'package:helpy_app/modules/MainScreen/aboutus.dart';
 import 'package:helpy_app/modules/MainScreen/Ads/ads.dart';
 import 'package:helpy_app/modules/MainScreen/home_services.dart';
@@ -26,24 +26,34 @@ class cons_Cubit extends Cubit<cons_States> {
   cons_Cubit() : super(Con_InitalState());
   static cons_Cubit get(context) => BlocProvider.of(context);
 
+  // ignore: non_constant_identifier_names
   Locale? locale_cubit;
   static bool xtranslate = false;
-  void changeLang(lang, BuildContext context) {
-    switch (lang.lang_Code) {
+  void changeLang( lang) {
+    switch (lang) {
       case "en":
         xtranslate = false;
-        locale_cubit = Locale(lang.lang_Code!, "US");
+        locale_cubit = Locale(lang, "US");
+        CashHelper.putData("locale","en");
         break;
       case "ar":
         xtranslate = true;
-        locale_cubit = Locale(lang.lang_Code!, "SA");
+        locale_cubit = Locale(lang, "SA");
+        CashHelper.putData("locale", "ar");
         break;
       default:
         locale_cubit = const Locale("ar", "SA");
-        break;
     }
+    // CashHelper.putData("locale", xtranslate);
     emit(cons_Change_Language());
   }
+
+  void getMyLang() {
+   String mylanguage = CashHelper.getData("locale")??'en';
+   print(mylanguage);
+   return changeLang(mylanguage);
+  }
+
 
   bool isConnected = true;
   Future<bool> checkInternetConnectivity() async {
@@ -246,6 +256,9 @@ class cons_Cubit extends Cubit<cons_States> {
   String? userFBID;
   int? userID;
   int? customerIDStrapi;
+  String? localeLang;
+
+  bool? langg;
 
   void getMyShared() {
     customerToken = CashHelper.getData("tokenCustomer");
@@ -254,5 +267,8 @@ class cons_Cubit extends Cubit<cons_States> {
     userID = CashHelper.getData("userId");
     userFBID = CashHelper.getData("userFBId");
     customerIDStrapi = CashHelper.getData("customer_idStrapi");
+    localeLang = CashHelper.getData("locale");
   }
+
+
 }

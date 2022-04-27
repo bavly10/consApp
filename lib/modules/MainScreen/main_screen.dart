@@ -20,7 +20,6 @@ class Mainscreen extends StatefulWidget {
 }
 
 class _MainscreenState extends State<Mainscreen> {
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<cons_Cubit, cons_States>(
@@ -30,46 +29,55 @@ class _MainscreenState extends State<Mainscreen> {
           mytranslate(context, "chose_cat"),
           mytranslate(context, "Ads"),
           mytranslate(context, "AboutUs"),
-        mytranslate(context, "login"),
+          mytranslate(context, "login"),
         ];
         return Scaffold(
-          bottomNavigationBar:MyNavigationBar(
+          bottomNavigationBar: MyNavigationBar(
             color: Colors.white,
-            index:cubit.currentindex,
-            onTap:cubit.changeIndex,
-            iconData0:MdiIcons.home,
+            index: cubit.currentindex,
+            onTap: cubit.changeIndex,
+            iconData0: MdiIcons.home,
             iconData1: Icons.add_comment_sharp,
             iconData2: MdiIcons.adjust,
             iconData3: MdiIcons.login,
           ),
           appBar: AppBar(
             iconTheme: const IconThemeData(opacity: 0),
-            title: Text(titles[cubit.currentindex],style: TextStyle(color: myAmber),),
+            title: Text(
+              titles[cubit.currentindex],
+              style: TextStyle(color: myAmber),
+            ),
             actions: [
               Padding(
-                padding: const EdgeInsets.only(left: 8.0,right: 8.0),
+                padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                 child: DropdownButton(
                   onChanged: (lang) {
-                    cubit.changeLang(lang, context);
+                    cubit.changeLang(lang);
+                    print(lang.toString());
                   },
-                  items: lanugage.lang_list.map<DropdownMenuItem<lanugage>>((lang) =>
-                      DropdownMenuItem(
-                        value: lang,
-                        child: Row(
-                          children: [
-                            Text(lang.flag!),
-                            const SizedBox(width: 10,),
-                            Text(lang.name!)
-                          ],
-                        ),
-                      )).toList(),
-                  underline:const SizedBox(),
-                    icon:Icon(Icons.language,color: myAmber,size: 30.0,) ,
+                  items: lanugage.lang_list
+                      .map<DropdownMenuItem<lanugage>>(
+                          (lang) => DropdownMenuItem(value: lang,
+                            child: Row(
+                              children: [
+                                Text(lang.flag!),
+                                const SizedBox(width: 10,),
+                                    Text(lang.name!)
+                                  ],
+                                ),
+                              ))
+                      .toList(),
+                  underline: const SizedBox(),
+                  icon: Icon(
+                    Icons.language,
+                    color: myAmber,
+                    size: 30.0,
+                  ),
                 ),
               ),
             ],
           ),
-          body:cubit.screen[cubit.currentindex],
+          body: cubit.screen[cubit.currentindex],
         );
       },
     );

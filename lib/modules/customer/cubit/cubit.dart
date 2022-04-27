@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -11,7 +10,6 @@ import 'package:helpy_app/modules/MainScreen/Ads/ads.dart';
 import 'package:helpy_app/modules/customer/Chat/chats_screen.dart';
 import 'package:helpy_app/modules/customer/cubit/state.dart';
 import 'package:helpy_app/model/user_model.dart';
-import 'package:helpy_app/modules/customer/main.dart';
 import 'package:helpy_app/modules/customer/taps/customer_category.dart';
 import 'package:helpy_app/modules/customer/taps/profile/profile.dart';
 import 'package:helpy_app/shared/network.dart';
@@ -21,7 +19,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CustomerCubit extends Cubit<Customer_States> {
-
   CustomerCubit() : super(consSignInUpCustomer_InitalState());
   static CustomerCubit get(context) => BlocProvider.of(context);
 
@@ -43,7 +40,7 @@ class CustomerCubit extends Cubit<Customer_States> {
   List<Widget> screen = [
     const CustomerCategory(),
     ChatsScreen(),
-     AdsScreen(),
+    AdsScreen(),
     const ProfileScreen(),
   ];
 
@@ -51,7 +48,6 @@ class CustomerCubit extends Cubit<Customer_States> {
     currentindex = index;
     emit(CustomerChangeState());
   }
-
 
   Future getImageBloc(ImageSource src) async {
     pickedFile = await picker.pickImage(source: src, imageQuality: 50);
@@ -63,16 +59,18 @@ class CustomerCubit extends Cubit<Customer_States> {
       print("no image selected");
     }
   }
+
   deleteImageBlocLogin() {
     imagee = null;
     emit(DeleteImageCustomer_State());
     print("image Deleted");
   }
 
-
-
-
-  Future<void>register({required String username, required String email, required String password, required String phone}) async {
+  Future<void> register(
+      {required String username,
+      required String email,
+      required String password,
+      required String phone}) async {
     emit(RegisterLoadingState());
     late var response;
     final url = Uri.parse("$base_api/Customers");
@@ -161,6 +159,7 @@ class CustomerCubit extends Cubit<Customer_States> {
       editUser(name: name, phone: phone, id: id);
     }
   }
+
   Future<void> getCustomerStrapi(email) async {
     final url = Uri.parse("$base_api/Customers?_where[email]=$email");
     final http.Response res = await http.get(url);
@@ -173,7 +172,9 @@ class CustomerCubit extends Cubit<Customer_States> {
       CashHelper.putData("customer_idStrapi", xmyId);
     }
   }
-  void editUser({required String name, required String phone, dynamic id}) async {
+
+  void editUser(
+      {required String name, required String phone, dynamic id}) async {
     final response = await http.put(
         Uri.parse(
           "$base_api/Customers/$id",
@@ -210,7 +211,11 @@ class CustomerCubit extends Cubit<Customer_States> {
   }
 
   void changePassword(String email, id) async {
-    await FirebaseFirestore.instance.collection('customers').doc(id).get().then((value) {
+    await FirebaseFirestore.instance
+        .collection('customers')
+        .doc(id)
+        .get()
+        .then((value) {
       if (value.get('email') == email) {
         emit(EmailCustomerisExitState());
         FirebaseAuth.instance
@@ -274,7 +279,8 @@ class CustomerCubit extends Cubit<Customer_States> {
     });
   }
 
-  Future addUserINChat(String userid, String username, String customerid) async {
+  Future addUserINChat(
+      String userid, String username, String customerid) async {
     emit(CustomerLoadingState());
     await FirebaseFirestore.instance
         .collection("AllChat")
@@ -306,7 +312,7 @@ class CustomerCubit extends Cubit<Customer_States> {
 
   ComplianModel? complianModel;
   Future<ComplianModel?> addComplian(
-      String subject, String details, int userid,int customerid) async {
+      String subject, String details, int userid, int customerid) async {
     emit(AddUserComplianLoadingState());
     final response = await http.post(
       Uri.parse("$base_api/Complians"),
@@ -330,5 +336,11 @@ class CustomerCubit extends Cubit<Customer_States> {
       emit(AddUserComplianErrorState());
       throw Exception('Failed to Add Complain');
     }
+  }
+
+  String? selectedText;
+  void changSelected(value) {
+    selectedText = value;
+    emit(ChangeSelectedDropDown());
   }
 }

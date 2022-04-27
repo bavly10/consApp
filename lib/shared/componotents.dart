@@ -17,6 +17,13 @@ SnackBar snakBar(context) {
   );
 }
 
+SnackBar snakBarError(context) {
+  return SnackBar(
+    content: Text(mytranslate(context, "nomoreData")),
+    backgroundColor: Colors.black54,
+  );
+}
+
 void navigateTo(context, widget) =>
     Navigator.push(context, MaterialPageRoute(builder: (context) => widget));
 void navigateToFinish(context, widget) => Navigator.pushReplacement(

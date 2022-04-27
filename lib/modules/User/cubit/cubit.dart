@@ -166,7 +166,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       allowMultiple: allowMultiple,
       withReadStream: true,
       withData: true,
-    ))!;
+    ));
     if (result == null) {
       emit(TakeImagess_Error_State());
     } else {
@@ -222,7 +222,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     });
   }
 
-  void uploadImagesStrapi(id,String filedName) async {
+  void uploadImagesStrapi(id, String filedName) async {
     result!.files.forEach((element) async {
       String url = base_api + "/upload";
       var uri = Uri.parse(url);
@@ -298,7 +298,14 @@ class UserCubit extends Cubit<cons_login_Register_States> {
   String? myEmail;
   int? forgetID;
 
-  register({String? username, email, password, phone, address, about, dynamic price}) async {
+  register(
+      {String? username,
+      email,
+      password,
+      phone,
+      address,
+      about,
+      dynamic price}) async {
     emit(cons_Loading_Register());
     late var response;
     final url = Uri.parse("$base_api/auth/local/register");
@@ -320,7 +327,10 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     try {
       authres = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      await FirebaseFirestore.instance.collection("users").doc(authres.user!.uid).set({
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(authres.user!.uid)
+          .set({
         'username': username,
         'email': email,
         "phone": phone,
@@ -333,7 +343,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
           final loadeddata = jdson['user'];
           myid = loadeddata["id"];
           print(response.body);
-          uploadImagesStrapi(myid,"certificate");
+          uploadImagesStrapi(myid, "certificate");
           emit(cons_Register_Scusess());
           return true;
         } else if (response.statusCode == 400) {

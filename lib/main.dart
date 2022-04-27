@@ -7,6 +7,7 @@ import 'package:helpy_app/modules/User/cubit/cubit.dart';
 import 'package:helpy_app/modules/Splash_screen/animation_Splash/main.dart';
 import 'package:helpy_app/Cubit/states.dart';
 import 'package:helpy_app/modules/User/login/screren/register.dart';
+import 'package:helpy_app/modules/complian/complian_screen.dart';
 import 'package:helpy_app/modules/customer/cubit/cubit.dart';
 
 import 'package:helpy_app/shared/localization/set_localization.dart';
@@ -14,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:helpy_app/shared/localization/translate.dart';
 import 'package:helpy_app/shared/my_colors.dart';
 import 'package:helpy_app/shared/shared_prefernces.dart';
 import 'modules/Deatils_Special/cubit/cubit.dart';
@@ -38,7 +40,7 @@ class MyApp extends StatelessWidget {
               ..checkInternetConnectivity()
               ..getCategories()
               ..getSpecailsts()
-              ..getAds()),
+              ..getAds()..getMyLang()),
         BlocProvider(create: (context) => ConsCubitIntro()),
         BlocProvider(
             create: (context) => CustomerCubit()
@@ -63,17 +65,19 @@ class MyApp extends StatelessWidget {
                   return deviceLocal;
                 }
               }
-              return supportedLocales.first;
+              return supportedLocales.single;
             },
             supportedLocales: const [
               Locale('en', 'US'), // English, no country code
               Locale('ar', 'SA'), // Spanish, no country code
             ],
-            title: 'Consultation',
+            title: "Surely",
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
+              fontFamily: 'Cairo',
               appBarTheme: AppBarTheme(
                   titleTextStyle: TextStyle(
+                      fontFamily: 'Cairo',
                       color: myAmber,
                       fontSize: 22,
                       fontWeight: FontWeight.w600),
@@ -90,7 +94,8 @@ class MyApp extends StatelessWidget {
               primarySwatch: Colors.amber,
             ),
             themeMode: ThemeMode.light,
-            home:Animation_Splash(),
+            home: Animation_Splash(),
+
             //// HomeServices(),
             builder: EasyLoading.init(),
           );

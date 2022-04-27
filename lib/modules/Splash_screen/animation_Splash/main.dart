@@ -9,7 +9,6 @@ import 'package:helpy_app/shared/my_colors.dart';
 class Animation_Splash extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    cons_Cubit.get(context).getMyShared();
     return Material(
         child: Stack(
             children: <Widget>[

@@ -1,23 +1,26 @@
 class CustomerModel {
   final String username, email, phone;
   String? image;
+  double? walletPoint;
   CustomerModel(
       {required this.username,
-        required this.email,
-        required this.phone,
-        this.image});
+      required this.email,
+      required this.phone,
+      this.image,
+      this.walletPoint});
 
   factory CustomerModel.fromJson(Map<String, dynamic> json) => CustomerModel(
-    username: json["username"],
-    email: json["email"],
-    phone: json["phone"],
-    image: json["image"],
-  );
+      username: json["username"],
+      email: json["email"],
+      phone: json["phone"],
+      image: json["image"],
+      walletPoint: json["walletPoint"]);
   Map<String, dynamic> toMap() {
     return {
       'username': username,
       'email': email,
       'phone': phone,
+      'walletPoint': walletPoint
     };
   }
 
