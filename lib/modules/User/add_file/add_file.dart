@@ -18,16 +18,16 @@ class CreateFile extends StatelessWidget {
     return BlocConsumer<UserCubit, cons_login_Register_States>(
       listener: (context, state) {
         if (state is UploadUserFileLoadingState) {
-          myToast(message: mytranslate(context, "loadimage"));
+          myToast(message: mytranslate(context, "loadfile"));
         } else if (state is UploadUserFileSueeeState) {
           My_CustomAlertDialog(
-            pressTitle:mytranslate(context, "done"),
-            onPress: (){
+            pressTitle: mytranslate(context, "done"),
+            onPress: () {
               navigateToFinish(context, UserMain());
             },
             content: mytranslate(context, "suessfully"),
             context: context,
-            bigTitle: "MyCompany",
+            bigTitle: mytranslate(context, "surely"),
             pressColor: myAmber,
           );
         } else if (state is UploadUserFileErrorState) {
@@ -95,18 +95,18 @@ class CreateFile extends StatelessWidget {
                           width: MediaQuery.of(context).size.width * .50,
                           child: My_TextFormFiled(
                             textInputType: TextInputType.number,
-                            validator:(String? s){
-                              if(s!.isEmpty) return  "price is required";
+                            validator: (String? s) {
+                              if (s!.isEmpty) return "price is required";
                             },
                             controller: textController,
-                            myhintText: 'price...',
+                            myhintText: mytranslate(context, "pricef"),
                           ),
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          'SR',
+                          mytranslate(context, "SR"),
                           style: TextStyle(
                               color: HexColor('#C18F3A'),
                               fontWeight: FontWeight.bold),
@@ -126,7 +126,7 @@ class CreateFile extends StatelessWidget {
                           child: Align(
                               alignment: Alignment.topLeft,
                               child: Text(
-                                'Details Of File:',
+                                mytranslate(context, "detailsf"),
                                 style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
@@ -223,17 +223,16 @@ class CreateFile extends StatelessWidget {
                       onPress: () {
                         FocusScope.of(context).unfocus();
                         if (form.currentState!.validate()) {
-                          if(result!=null)
-                          {
+                          if (result != null) {
                             UserCubit.get(context).addFile(
                               textController.text,
                               cons_Cubit.get(context).userID.toString(),
                               result.files.first.path,
                               result.files.first.name,
                             );
-                          }
-                          else{
-                            return myToast(message: mytranslate(context, "pdffile"));
+                          } else {
+                            return myToast(
+                                message: mytranslate(context, "pdffile"));
                           }
                         }
                       },

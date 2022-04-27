@@ -44,7 +44,9 @@ class EditIntroducer extends StatelessWidget {
         UserCubit.get(context)
             .uploadProfileUserImage(id: cons_Cubit.get(context).userFBID!);
         print(cons_Cubit.get(context).userFBID);
-        UserCubit.get(context).uploadImage(UserCubit.get(context).imagee!.readAsBytesSync(),loginmodel!.userClass!.id);
+        UserCubit.get(context).uploadImage(
+            UserCubit.get(context).imagee!.readAsBytesSync(),
+            loginmodel!.userClass!.id);
         UserCubit.get(context).uploadImage(
             UserCubit.get(context).imagee!.readAsBytesSync(),
             loginmodel!.userClass!.id);
@@ -55,7 +57,8 @@ class EditIntroducer extends StatelessWidget {
           icon: Icons.update,
           iconColor: myAmber,
           onPress: () {
-            UserCubit.get(context).uploadImagesStrapi(loginmodel!.userClass!.id,"intro_img");
+            UserCubit.get(context)
+                .uploadImagesStrapi(loginmodel!.userClass!.id, "intro_img");
             Navigator.pop(context);
           },
           content: mytranslate(context, "choose") +
@@ -128,7 +131,10 @@ class EditIntroducer extends StatelessWidget {
                       //         autoPlay: true,
                       //         initialPage: 0,
                       //         scrollDirection: Axis.horizontal))
-                      Icon(Icons.code,color: Colors.black87,)
+                      Icon(
+                        Icons.code,
+                        color: Colors.black87,
+                      )
                     else if (cubit.result?.files != null)
                       CarouselSlider(
                           carouselController: CarouselControllerImpl(),

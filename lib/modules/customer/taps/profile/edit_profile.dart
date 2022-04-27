@@ -47,7 +47,7 @@ class EditProfile extends StatelessWidget {
       return Scaffold(
           appBar: AppBar(
             title: Text(
-              mytranslate(context, "editprof"),
+              mytranslate(context, "editprofile"),
               style: TextStyle(color: HexColor('#C18F3A')),
             ),
             centerTitle: true,
@@ -61,9 +61,9 @@ class EditProfile extends StatelessWidget {
               children: [
                 Mybutton(
                   context: context,
-                  title: const Text(
-                    "UPDATE",
-                    style: TextStyle(color: Colors.white),
+                  title: Text(
+                    mytranslate(context, "upd"),
+                    style: const TextStyle(color: Colors.white),
                   ),
                   onPress: () {
                     FocusScope.of(context).requestFocus(FocusNode());
@@ -133,7 +133,7 @@ class EditProfile extends StatelessWidget {
                   padding: const EdgeInsets.only(
                       right: 10, bottom: 8, top: 8, left: 5),
                   child: Text(
-                    mytranslate(context, "Name"),
+                    mytranslate(context, "name"),
                     style: const TextStyle(fontSize: 14),
                   ),
                 ),

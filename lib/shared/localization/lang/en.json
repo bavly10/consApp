@@ -84,12 +84,12 @@
    "signout": "Sign Out",
    "profile": "Profile",
    "phoneno": "Phone Number",
-   "EnterEmail": "Please enter your Email",
+   "EnterEmail": "Please Enter Your Email",
    "otpPassVerify": "Please enter your email to verify your password",
    "update": "Update",
    "verifypass": "Verify Password",
    "customerTitle": "🎉Congratulations!!🎉",
-   "cusomterdone": "Your Account is Activated",
+   "cusomterdone": "Your Account Is Activated",
    "errorlogin": "Failed to login Check your Connection",
    "postdone": "Post Sucessfully 👍",
    "postfailed": "Post Failed 😢",
@@ -155,5 +155,9 @@
    "slideimg": "Updating Your Cover Sucessfully👍",
    "choose": "You choosed..",
    "sure": "Do you want to updating ?",
-   "covers": "Updating  your Cover Sucessfully👍"
+   "covers": "Updating  your Cover Sucessfully👍",
+   "loadfile": "Uploading Your File...",
+   "pricef": "Price Of File...",
+   "detailsf": "details Of File:",
+   "upd": "UPDATE"
 }
