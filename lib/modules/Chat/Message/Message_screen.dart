@@ -10,7 +10,7 @@ class MessagesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(),
-      body: BodyMessage(),
+      body: BodyMessage(userid:senderid,username: username, ),
     );
   }
   AppBar buildAppBar() {

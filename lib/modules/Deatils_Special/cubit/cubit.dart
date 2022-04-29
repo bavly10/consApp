@@ -203,6 +203,7 @@ class ConsCubitIntro extends Cubit<cons_StatesIntro> {
     } else if (response.statusCode == 400) {
       var jdsonn = jsonDecode(response.body);
       emit(Cons_Payment_notdone(jdsonn.toString()));
+      print(jdsonn.toString());
       return false;
     } else {}
   }

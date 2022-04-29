@@ -11,9 +11,9 @@ class CustomerCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<cons_Cubit, cons_States>(
+    return BlocBuilder<ConsCubit, cons_States>(
         builder: (ctx,state){
-          final listCat=cons_Cubit.get(context).mycat;
+          final listCat=ConsCubit.get(context).mycat;
           return listCat.isEmpty
               ? Center(child: SpinKitCircle(color: myAmber,),)
               :GridView.builder(

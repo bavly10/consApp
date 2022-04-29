@@ -20,8 +20,8 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 class UserMain extends StatelessWidget {
   Widget build(BuildContext context) {
-    cons_Cubit.get(context).getMyShared();
-    UserCubit.get(context).getUserDetails(cons_Cubit.get(context).userID);
+    ConsCubit.get(context).getMyShared();
+    UserCubit.get(context).getUserDetails(ConsCubit.get(context).userID);
     return BlocBuilder<UserCubit, cons_login_Register_States>(
       builder: (context, state) {
         final model = UserCubit.get(context).loginModel;

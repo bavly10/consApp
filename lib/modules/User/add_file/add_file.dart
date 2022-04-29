@@ -230,7 +230,7 @@ class CreateFile extends StatelessWidget {
                           if (result != null) {
                             UserCubit.get(context).addFile(
                               textController.text,
-                              cons_Cubit.get(context).userID.toString(),
+                              ConsCubit.get(context).userID.toString(),
                               result.files.first.path,
                               result.files.first.name,
                             );

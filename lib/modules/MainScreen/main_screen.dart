@@ -22,9 +22,9 @@ class Mainscreen extends StatefulWidget {
 class _MainscreenState extends State<Mainscreen> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<cons_Cubit, cons_States>(
+    return BlocBuilder<ConsCubit, cons_States>(
       builder: (context, state) {
-        final cubit = cons_Cubit.get(context);
+        final cubit = ConsCubit.get(context);
         List<String> titles = [
           mytranslate(context, "chose_cat"),
           mytranslate(context, "Ads"),
@@ -53,7 +53,6 @@ class _MainscreenState extends State<Mainscreen> {
                 child: DropdownButton(
                   onChanged: (lang) {
                     cubit.changeLang(lang);
-                    print(lang.toString());
                   },
                   items: lanugage.lang_list
                       .map<DropdownMenuItem<lanugage>>(
@@ -62,8 +61,7 @@ class _MainscreenState extends State<Mainscreen> {
                               children: [
                                 Text(lang.flag!),
                                 const SizedBox(width: 10,),
-                                    Text(lang.name!)
-                                  ],
+                                Text(lang.name!)],
                                 ),
                               ))
                       .toList(),

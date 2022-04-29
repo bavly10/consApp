@@ -32,8 +32,8 @@ class _new_messageState extends State<new_message> {
 
   _Sendmesage() async{
     FocusScope.of(context).unfocus();
-   cons_Cubit.get(context).getMyShared();
-   var customerid= cons_Cubit.get(context).customerID;
+   ConsCubit.get(context).getMyShared();
+   var customerid= ConsCubit.get(context).customerID;
    final userdata= await FirebaseFirestore.instance.collection('users').doc(widget.userid).get();
     await FirebaseFirestore.instance.collection('AllChat').doc(customerid).collection("chats").doc(widget.userid).collection("mesage").add({
       "text":_entermesage,

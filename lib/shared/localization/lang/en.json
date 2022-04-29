@@ -168,5 +168,6 @@
    "res3": "Inefficiency",
    "res4": "Another Reasons",
    "type": "Tye Of Complian",
-   "mustlogin": "You should to be login"
+   "mustlogin": "You should to be login",
+   "typemessage": "Type message"
 }

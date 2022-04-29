@@ -12,10 +12,10 @@ import 'package:helpy_app/shared/componotents.dart';
 class AdsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var listAsd = cons_Cubit.get(context).myads;
-    var listAsd2 = cons_Cubit.get(context).myads2;
+    var listAsd = ConsCubit.get(context).myads;
+    var listAsd2 = ConsCubit.get(context).myads2;
     final _scrollController = FixedExtentScrollController();
-    return BlocConsumer<cons_Cubit, cons_States>(
+    return BlocConsumer<ConsCubit, cons_States>(
       listener: (context, state) {
         if (state is Cons_noNewData_Ads) {
           myToast(message: "no data");
@@ -23,7 +23,7 @@ class AdsScreen extends StatelessWidget {
       },
       builder: (context, state) {
         return RefreshIndicator(
-          onRefresh: () async => await cons_Cubit.get(context).getAds(),
+          onRefresh: () async => await ConsCubit.get(context).getAds(),
           child: Column(
             children: [
               Expanded(

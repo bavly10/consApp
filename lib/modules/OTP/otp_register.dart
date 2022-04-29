@@ -18,7 +18,7 @@ class OtpRegister extends StatelessWidget {
   var emailController=TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<cons_Cubit,cons_States>(
+    return BlocConsumer<ConsCubit,cons_States>(
       listener: (ctx,state){
         if(state is cons_SendTOP_Scusess)
           {
@@ -69,7 +69,7 @@ class OtpRegister extends StatelessWidget {
                        if (_form.currentState!.validate()){
                          FocusScope.of(context).unfocus();
                          randomCode();
-                         cons_Cubit.get(context).sendOTPMail(email: emailController.text,code: code.toInt(),);
+                         ConsCubit.get(context).sendOTPMail(email: emailController.text,code: code.toInt(),);
                        }
                      }),
                    ),

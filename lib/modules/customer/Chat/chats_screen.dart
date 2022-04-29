@@ -5,7 +5,7 @@ import 'package:helpy_app/modules/customer/Chat/Tab/old.dart';
 import 'package:helpy_app/shared/my_colors.dart';
 import 'package:helpy_app/shared/strings.dart';
 
-import 'Tab/newTest.dart';
+import 'Tab/new.dart';
 
 
 class ChatsScreen extends StatefulWidget {

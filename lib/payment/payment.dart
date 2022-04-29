@@ -17,7 +17,7 @@ class PaymentsTest extends StatelessWidget {
   ScrollController scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
-    cons_Cubit.get(context).getMyShared();
+    ConsCubit.get(context).getMyShared();
     final cubit = ConsCubitIntro.get(context).findbyid(id);
     return BlocBuilder<ConsCubitIntro, cons_StatesIntro>(builder: (ctx, state) {
       return Scaffold(
@@ -63,22 +63,27 @@ class PaymentsTest extends StatelessWidget {
     });
   }
   addchat(context,userid,username)async{
-    String? custId=cons_Cubit.get(context).customerID;
-    await FirebaseFirestore.instance.collection("AllChat").doc(custId!+userid).set({
-      "myid": cons_Cubit.get(context).customerID,
-      "senderid": userid,
-      "name": username,
-      "key":userid+custId,
+    ConsCubit.get(context).getMyShared();
+    String? custId=ConsCubit.get(context).customerID;
+    final customerdata = await FirebaseFirestore.instance.collection('customers').doc(custId).get();
+    final userdata = await FirebaseFirestore.instance.collection('users').doc(userid.toString()).get();
+    await FirebaseFirestore.instance.collection("AllChat").doc(custId).set({
+      "senderID":userid,
+      "myID": custId,
+      "nameCustomer": customerdata["username"],
+      "imageIntroduce":userdata["imageIntroduce"],
+      "imageCustomer":customerdata["imageCustomer"],
       "time":Timestamp.now(),
+      "nameIntroduce":username,
     }).then((value) => null);
-    final userdata = await FirebaseFirestore.instance.collection('customers').doc(custId).get();
-    await FirebaseFirestore.instance.collection("AllChat").doc(userid+custId).set({
-          "myid": userid,
-          "senderid": custId,
-          "name": userdata["username"],
-          "key":userid+custId,
-          "image":userdata["image"],
-           "time":Timestamp.now(),
-        }).then((value) =>  myToast(message: "تم اضافه الي قائمه الاصدقاء"));
+    await FirebaseFirestore.instance.collection("AllChat").doc(userid.toString()).set({
+      "myID":userid,
+      "senderID": custId,
+      "nameCustomer": customerdata["username"],
+      "imageIntroduce":userdata["imageIntroduce"],
+      "imageCustomer":customerdata["imageCustomer"],
+      "time":Timestamp.now(),
+      "nameIntroduce":username,
+    }).then((value) =>  myToast(message: "تم اضافه الي قائمه الاصدقاء"));
   }
 }

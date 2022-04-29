@@ -22,23 +22,23 @@ import 'package:http/http.dart' as http;
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 
-class cons_Cubit extends Cubit<cons_States> {
-  cons_Cubit() : super(Con_InitalState());
-  static cons_Cubit get(context) => BlocProvider.of(context);
+class ConsCubit extends Cubit<cons_States> {
+  ConsCubit() : super(Con_InitalState());
+  static ConsCubit get(context) => BlocProvider.of(context);
 
   // ignore: non_constant_identifier_names
   Locale? locale_cubit;
   static bool xtranslate = false;
-  void changeLang( lang) {
-    switch (lang) {
+  void changeLang(lang) {
+    switch (lang.lang_Code) {
       case "en":
         xtranslate = false;
-        locale_cubit = Locale(lang, "US");
+        locale_cubit = Locale(lang.lang_Code, "US");
         CashHelper.putData("locale","en");
         break;
       case "ar":
         xtranslate = true;
-        locale_cubit = Locale(lang, "SA");
+        locale_cubit = Locale(lang.lang_Code, "SA");
         CashHelper.putData("locale", "ar");
         break;
       default:
@@ -253,22 +253,16 @@ class cons_Cubit extends Cubit<cons_States> {
   String? customerToken;
   String? customerID;
   String? userToken;
-  String? userFBID;
   int? userID;
   int? customerIDStrapi;
   String? localeLang;
-
-  bool? langg;
-
   void getMyShared() {
     customerToken = CashHelper.getData("tokenCustomer");
     customerID = CashHelper.getData("cust_id");
     userToken = CashHelper.getData("userToken");
     userID = CashHelper.getData("userId");
-    userFBID = CashHelper.getData("userFBId");
     customerIDStrapi = CashHelper.getData("customer_idStrapi");
     localeLang = CashHelper.getData("locale");
   }
-
 
 }

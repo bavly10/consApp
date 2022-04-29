@@ -45,7 +45,7 @@ class CustomClipPath extends StatelessWidget {
                         padding: const EdgeInsets.only(left: 10),
                         child: Text(
                           myText,
-                          maxLines: 28,
+                          maxLines: 22,
                         ),
                       ),
                       Expanded(

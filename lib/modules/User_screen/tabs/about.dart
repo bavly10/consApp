@@ -10,11 +10,11 @@ class AboutIntro extends StatelessWidget {
   const AboutIntro(this.cubit);
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<cons_Cubit,cons_States>(
+    return BlocBuilder<ConsCubit,cons_States>(
    builder: (ctx,state){
      return  Padding(
        padding: const EdgeInsets.all(8.0),
-       child: Text(cubit.about??"Not Found", style:const TextStyle(fontSize: 18,),textDirection: cons_Cubit.xtranslate?TextDirection.rtl:TextDirection.ltr,),
+       child: Text(cubit.about??"Not Found", style:const TextStyle(fontSize: 18,),textDirection: ConsCubit.xtranslate?TextDirection.rtl:TextDirection.ltr,),
      );
    },
     );

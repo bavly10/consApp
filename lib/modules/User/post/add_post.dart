@@ -141,7 +141,7 @@ class CreatePost extends StatelessWidget {
                           UserCubit.get(context).AddPost(
                               textController.text,
                               DateTime.now().toString(),
-                              cons_Cubit.get(context).userID);
+                              ConsCubit.get(context).userID);
                         }
                       },
                       title: Text(

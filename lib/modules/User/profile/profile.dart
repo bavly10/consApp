@@ -33,8 +33,8 @@ class UserProfileScreen extends StatelessWidget {
         final model2 = UserCubit.get(context).loginModel?.userClass?.id;
         final image = UserCubit.get(context).loginModel?.userClass?.introLogo;
 
-        final cubit = cons_Cubit.get(context);
-        cons_Cubit.get(context).getMyShared();
+        final cubit = ConsCubit.get(context);
+        ConsCubit.get(context).getMyShared();
         return Scaffold(
           body: SingleChildScrollView(
             child: Column(

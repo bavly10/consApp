@@ -23,27 +23,19 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 class EditIntroducer extends StatelessWidget {
-  // final int id;
   LoginModel? loginmodel;
-
   EditIntroducer(this.loginmodel);
-
   String imgurl = base_api;
   Color mycolor = Colors.white;
-  List<Widget> items = [
-    const Image(image: AssetImage("assets/logo.png")),
-  ];
-  List<String> images = ["assets/logo.png"];
 
   @override
   Widget build(BuildContext context) {
-    cons_Cubit.get(context).getMyShared();
+    ConsCubit.get(context).getMyShared();
     return BlocConsumer<UserCubit, cons_login_Register_States>(
         listener: (ctx, state) {
       if (state is TakeImage_State) {
-        UserCubit.get(context)
-            .uploadProfileUserImage(id: cons_Cubit.get(context).userFBID!);
-        print(cons_Cubit.get(context).userFBID);
+        UserCubit.get(context).uploadProfileUserImage(id: ConsCubit.get(context).userID!.toString());
+        print(ConsCubit.get(context).userID);
         UserCubit.get(context).uploadImage(
             UserCubit.get(context).imagee!.readAsBytesSync(),
             loginmodel!.userClass!.id);
@@ -72,8 +64,7 @@ class EditIntroducer extends StatelessWidget {
       } else if (state is ChangeUserImageSuessState) {
         myToast(message: mytranslate(context, "changproimage"));
       } else if (state is LoadingChangeUserImageState) {
-        myToast(
-            message: mytranslate(context, mytranslate(context, "loadimage")));
+        myToast(message: mytranslate(context,"loadimage"));
       } else if (state is ChangeUserImageErrorState) {
         ScaffoldMessenger.of(context).showSnackBar(snakBar(context));
       } else if (state is ChangeCoverUserImageSuessState) {
@@ -108,8 +99,7 @@ class EditIntroducer extends StatelessWidget {
                 Stack(
                   alignment: AlignmentDirectional.bottomCenter,
                   children: [
-                    if (introImg != null)
-                      if (introImg.isNotEmpty)
+                      if (introImg!.isNotEmpty)
                         CarouselSlider(
                             carouselController: CarouselControllerImpl(),
                             items: loginmodel!.userClass!.introImg!
@@ -171,32 +161,7 @@ class EditIntroducer extends StatelessWidget {
                                 initialPage: 0,
                                 scrollDirection: Axis.horizontal))
                       else
-                        CarouselSlider(
-                            carouselController: CarouselControllerImpl(),
-                            items: images.map<Widget>((i) {
-                              return Builder(
-                                builder: (BuildContext context) {
-                                  return Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      decoration: BoxDecoration(
-                                          borderRadius: const BorderRadius.only(
-                                              bottomLeft: Radius.circular(25.0),
-                                              bottomRight:
-                                                  Radius.circular(25.0)),
-                                          image: DecorationImage(
-                                              image: AssetImage(i))));
-                                },
-                              );
-                            }).toList(),
-                            options: CarouselOptions(
-                                enableInfiniteScroll: true,
-                                viewportFraction: 1.0,
-                                onPageChanged: (int i, _) {},
-                                autoPlayInterval: const Duration(seconds: 4),
-                                enlargeCenterPage: true,
-                                autoPlay: true,
-                                initialPage: 0,
-                                scrollDirection: Axis.horizontal)),
+                        const Image(height: 150,image: ExactAssetImage("assets/logo.png"),fit: BoxFit.cover,),
                     Positioned(
                       //top: 190,
                       left: 10,

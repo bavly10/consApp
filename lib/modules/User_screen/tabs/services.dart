@@ -38,9 +38,9 @@ class _ServicesIntroState extends State<ServicesIntro> {
               Padding(
                 padding: const EdgeInsets.only(left: 8.0,right: 8.0),
                 child: TextButton(onPressed: (){
-                  cons_Cubit.get(context).getMyShared();
+                  ConsCubit.get(context).getMyShared();
                   final myfile=base_api+e.fileIntro!.url!;
-                  if(cons_Cubit.get(context).customerToken==null) {
+                  if(ConsCubit.get(context).customerToken==null) {
                     slideDialog.showSlideDialog(
                         pillColor: myAmber,
                         backgroundColor:Colors.white,

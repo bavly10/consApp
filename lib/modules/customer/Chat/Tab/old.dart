@@ -11,7 +11,7 @@ class OldChat extends StatelessWidget {
     return Scaffold(
       backgroundColor: mygrey,
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection("AllChat").where("myid",isEqualTo: cons_Cubit.get(context).customerID!).where("time",isGreaterThan:ahmed).snapshots(),
+        stream: FirebaseFirestore.instance.collection("AllChat").where("myid",isEqualTo: ConsCubit.get(context).customerID!).where("time",isGreaterThan:ahmed).snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return  Text('Error: ${snapshot.error}');

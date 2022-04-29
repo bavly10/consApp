@@ -71,8 +71,8 @@ class _Register_introState extends State<Register_intro> {
   @override
   Widget build(BuildContext context) {
     final cubit = UserCubit.get(context);
-    final listCateg = cons_Cubit.get(context).mycat;
-    final listSpec = cons_Cubit.get(context).myspec.where((element) => element.catTitle.title == cubit.catSelect);
+    final listCateg = ConsCubit.get(context).mycat;
+    final listSpec = ConsCubit.get(context).myspec.where((element) => element.catTitle.title == cubit.catSelect);
     return BlocConsumer<UserCubit, cons_login_Register_States>(
       listener: (ctx, state) {
         /// success
@@ -222,7 +222,7 @@ class _Register_introState extends State<Register_intro> {
                       height: 10,
                     ),
                     typeService(context),
-                    cons_Cubit.get(context).mycat.isEmpty
+                    ConsCubit.get(context).mycat.isEmpty
                         ? const Text("No internet Connetcion")
                         : SizedBox(
                             width: double.infinity,
@@ -359,7 +359,7 @@ class _Register_introState extends State<Register_intro> {
                                                 .map((e) => Column(
                                                       children: [
                                                         FadeInImage(
-                                                            height: MediaQuery.of(context).size.height * 0.23, width: double.infinity,
+                                                            height: MediaQuery.of(context).size.height * 0.20, width: double.infinity,
                                                             placeholder: const ExactAssetImage("assets/logo.png"),
                                                             imageErrorBuilder: (context, object, stacktrace) {
                                                               return const Icon(Icons.picture_as_pdf, size: 130,);
@@ -487,7 +487,6 @@ class _Register_introState extends State<Register_intro> {
                                       address: addressController.text,
                                       email: widget.email,
                                       username: nameController.text,
-                                      price: cubit.total.toString(),
                                       password: passwordController.text,
                                       phone: phoneController.text,
                                       about: aboutController.text);

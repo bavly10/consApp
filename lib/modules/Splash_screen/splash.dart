@@ -29,10 +29,10 @@ class _SplashScreenState extends State<SplashScreen> {
                     OnBoardingScreen(),
                   )
                 }
-              else if (cons_Cubit.get(context).customerToken == null &&
-                  cons_Cubit.get(context).userToken == null)
+              else if (ConsCubit.get(context).customerToken == null &&
+                  ConsCubit.get(context).userToken == null)
                 {navigateToFinish(context, Mainscreen())}
-              else if (cons_Cubit.get(context).customerToken != null)
+              else if (ConsCubit.get(context).customerToken != null)
                 {
                   navigateToFinish(
                     context,

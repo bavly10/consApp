@@ -55,7 +55,7 @@ class ChangePassword extends StatelessWidget {
                           FocusScope.of(context).requestFocus(FocusNode());
                           if (formKey.currentState!.validate()) {
                             CustomerCubit.get(context).changePassword(
-                                textEmail!, cons_Cubit.get(context).customerID);
+                                textEmail!, ConsCubit.get(context).customerID);
                           }
                         },
                         child: Text(

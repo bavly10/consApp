@@ -3,6 +3,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:helpy_app/Cubit/my_observer.dart';
 import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/model/user_model.dart';
+import 'package:helpy_app/modules/Chat/cubit.dart';
 import 'package:helpy_app/modules/User/cubit/cubit.dart';
 import 'package:helpy_app/modules/Splash_screen/animation_Splash/main.dart';
 import 'package:helpy_app/Cubit/states.dart';
@@ -36,20 +37,21 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-            create: (context) => cons_Cubit()
+            create: (context) => ConsCubit()
               ..checkInternetConnectivity()
               ..getCategories()
               ..getSpecailsts()
-              ..getAds()..getMyLang()),
+              ..getAds()..getMyShared()),
         BlocProvider(create: (context) => ConsCubitIntro()),
         BlocProvider(
             create: (context) => CustomerCubit()
-              ..getCustomerData(cons_Cubit.get(context).customerID)),
+              ..getCustomerData(ConsCubit.get(context).customerID)),
         BlocProvider(create: (context) => UserCubit()),
+        BlocProvider(create: (context) => ConsChat()),
       ],
-      child: BlocBuilder<cons_Cubit, cons_States>(
+      child: BlocBuilder<ConsCubit, cons_States>(
         builder: (context, state) {
-          final cubit = cons_Cubit.get(context);
+          final cubit = ConsCubit.get(context);
           return MaterialApp(
             locale: cubit.locale_cubit,
             localizationsDelegates: const [

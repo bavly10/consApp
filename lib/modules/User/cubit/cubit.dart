@@ -258,19 +258,11 @@ class UserCubit extends Cubit<cons_login_Register_States> {
   }
 
   void uploadProfileUserImage({required String id}) {
-    FirebaseStorage.instance
-        .ref()
-        .child('users/${Uri.file(imagee!.path).pathSegments.last}')
-        .putFile(imagee!)
-        .then((value) {
+    FirebaseStorage.instance.ref().child('users/${Uri.file(imagee!.path).pathSegments.last}').putFile(imagee!).then((value) {
       value.ref.getDownloadURL().then((String? value) {
         print(value);
-        //uploadProfileImage(imagee!.readAsBytesSync(), id);
         updateUserImage(image: value, id: id);
-
         emit(UploadUserImageSucessState());
-
-        //profileImageUrl = value!;
       }).catchError((error) {
         print(error);
         emit(UploadUserImageErrorState());
@@ -285,7 +277,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     FirebaseFirestore.instance
         .collection("users")
         .doc(id)
-        .update({'image': image}).then((value) {
+        .update({'imageIntroduce': image}).then((value) {
       emit(ChangeUserImageSuessState());
     }).catchError((onError) {
       print(onError.toString());
@@ -305,7 +297,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       phone,
       address,
       about,
-      dynamic price}) async {
+     }) async {
     emit(cons_Loading_Register());
     late var response;
     final url = Uri.parse("$base_api/auth/local/register");
@@ -317,25 +309,15 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       "phone": phone,
       "city": mycity,
       "address": address,
-      "introPrice": price,
+      "introPrice": total.toString(),
       "about": about,
       "type_introducer": myType,
       "Confirmed": false.toString(),
       "categories": cat_id.toString(),
       "specailst": spec_id.toString(),
+      "Point":0.toString()
     };
     try {
-      authres = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      await FirebaseFirestore.instance
-          .collection("users")
-          .doc(authres.user!.uid)
-          .set({
-        'username': username,
-        'email': email,
-        "phone": phone,
-        "userid": authres.user!.uid,
-      }).then((value) async {
         response = await http.post(url, headers: headrs, body: body);
         print(response.toString());
         if (response.statusCode == 200) {
@@ -343,6 +325,14 @@ class UserCubit extends Cubit<cons_login_Register_States> {
           final loadeddata = jdson['user'];
           myid = loadeddata["id"];
           print(response.body);
+          authres = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+          await FirebaseFirestore.instance.collection("users").doc(myid.toString())
+              .set({
+            'username': username,
+            'email': email,
+            "phone": phone,
+            "userid":myid,
+          });
           uploadImagesStrapi(myid, "certificate");
           emit(cons_Register_Scusess());
           return true;
@@ -357,11 +347,12 @@ class UserCubit extends Cubit<cons_login_Register_States> {
           print(response);
           emit(cons_Register_final_Error());
         }
-      });
+
     } on FirebaseException catch (y) {
       emit(cons_Register_firebase_Error());
       throw y;
     } catch (e) {
+      print(e.toString());
       emit(cons_Register_finaly_Error());
     }
   }
@@ -382,9 +373,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
         throw "${resdata['error']['message']}";
       }
       var tokenuser = resdata['idToken'];
-      var userId = resdata['localId'];
       CashHelper.putData("userToken", tokenuser);
-      CashHelper.putData("userFBId", userId);
       getUserLogin(email);
       emit(cons_user_Scusess());
     } catch (e) {

@@ -26,7 +26,7 @@ class ComplianScreen extends StatelessWidget {
     final GlobalKey<FormState> formKey = GlobalKey();
     var subController = TextEditingController();
     var detController = TextEditingController();
-    cons_Cubit.get(context).getMyShared();
+    ConsCubit.get(context).getMyShared();
     return BlocConsumer<CustomerCubit, Customer_States>(
         listener: (context, state) {
       if (state is AddUserComplianSueeeState) {
@@ -159,7 +159,7 @@ class ComplianScreen extends StatelessWidget {
                               CustomerCubit.get(context).selectedText!,
                               detController.text,
                               user!.id!,
-                              cons_Cubit.get(context).customerIDStrapi!);
+                              ConsCubit.get(context).customerIDStrapi!);
                         }
                       },
                       title: Text(

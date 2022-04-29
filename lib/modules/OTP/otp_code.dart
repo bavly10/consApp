@@ -43,7 +43,7 @@ final bool isUser;
                Text(mytranslate(context, "otpcode")),
               TextButton(onPressed: (){
                 FocusScope.of(context).unfocus();
-                cons_Cubit.get(context).sendOTPMail(email: email,code: mycode,).then((value) =>
+                ConsCubit.get(context).sendOTPMail(email: email,code: mycode,).then((value) =>
                     myToast(message: "Code Has Been sent to $email"));
               }, child: Text(mytranslate(context, "otpcode2"),style: TextStyle(color: myAmber,decoration: TextDecoration.underline,),),),
             ],

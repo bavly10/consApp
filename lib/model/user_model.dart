@@ -82,7 +82,6 @@ class UserStrapi {
       this.phone,
       this.confirmed,
       this.city,
-      this.price,
       this.address,
       this.introLogo,
       this.introImg,
@@ -99,7 +98,6 @@ class UserStrapi {
   String? provider;
   bool? blocked;
   Role? role;
-  dynamic price;
   DateTime? createdAt;
   DateTime? updatedAt;
   Categories_user? categories;
@@ -138,7 +136,6 @@ class UserStrapi {
         confirmed: json["Confirmed"],
         forgetpass: json['forgetPass'],
         city: json["city"],
-        price: json['introPrice'] != null,
         address: json["address"],
         introLogo: json["intro_logo"] != null
             ? Img_user.fromJson(json["intro_logo"])

@@ -80,6 +80,7 @@ class CustomerCubit extends Cubit<Customer_States> {
       'email': email,
       'password': password,
       "phone": phone,
+      "walletPoint":0
     };
     try {
       authres = await _auth.createUserWithEmailAndPassword(
@@ -256,7 +257,7 @@ class CustomerCubit extends Cubit<Customer_States> {
     FirebaseFirestore.instance
         .collection("customers")
         .doc(id)
-        .update({'image': image}).then((value) {
+        .update({'imageCustomer': image}).then((value) {
       emit(ChangeCustomerImageSuessState());
     }).catchError((onError) {
       print(onError.toString());

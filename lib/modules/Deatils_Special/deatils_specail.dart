@@ -200,8 +200,8 @@ class _IntroducerSpecialState extends State<IntroducerSpecial> {
                                               const Spacer(),
                                               InkWell(
                                                   onTap: () {
-                                                    cons_Cubit.get(context).getMyShared();
-                                                    cons_Cubit.get(context).customerIDStrapi==null
+                                                    ConsCubit.get(context).getMyShared();
+                                                    ConsCubit.get(context).customerIDStrapi==null
                                                         ? myToast(
                                                         message: mytranslate(context, "mustlogin"))
                                                         : navigateTo(

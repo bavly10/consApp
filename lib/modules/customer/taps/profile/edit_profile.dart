@@ -25,7 +25,7 @@ class EditProfile extends StatelessWidget {
   var formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    cons_Cubit.get(context).getMyShared();
+    ConsCubit.get(context).getMyShared();
     return BlocConsumer<CustomerCubit, Customer_States>(
       listener: (context, state) {
         if (state is LoadingChangeCustomerImage) {
@@ -36,7 +36,7 @@ class EditProfile extends StatelessWidget {
           myToast(message: mytranslate(context, "editing"));
         } else if (state is TakeImageCustomer_State) {
           CustomerCubit.get(context)
-              .uploadProfileImage(id: cons_Cubit.get(context).customerID!);
+              .uploadProfileImage(id: ConsCubit.get(context).customerID!);
         } else if (state is UpdateCustomerDataErrorState) {
           ScaffoldMessenger.of(context).showSnackBar(snakBar(context));
         } else if (state is ChangeCustomerImageSuessState) {
@@ -79,7 +79,7 @@ class EditProfile extends StatelessWidget {
                                 phone: phoneController.text == ''
                                     ? model.phone
                                     : phoneController.text,
-                                id: cons_Cubit.get(context).customerID!);
+                                id: ConsCubit.get(context).customerID!);
                             // }
                           },
                           color: HexColor('#C18F3A'),

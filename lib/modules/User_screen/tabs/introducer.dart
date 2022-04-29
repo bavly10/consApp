@@ -273,8 +273,8 @@ class Introducer extends StatelessWidget {
         )),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () async {
-            cons_Cubit.get(context).getMyShared();
-            if (cons_Cubit.get(context).customerToken == null) {
+            ConsCubit.get(context).getMyShared();
+            if (ConsCubit.get(context).customerToken == null) {
               slideDialog.showSlideDialog(
                   pillColor: myAmber,
                   backgroundColor: Colors.white,
@@ -283,7 +283,7 @@ class Introducer extends StatelessWidget {
                       cubit.username, mytranslate(context, "connect")));
             } else {
               CustomerCubit.get(context)
-                  .getCustomerData(cons_Cubit.get(context).customerID)
+                  .getCustomerData(ConsCubit.get(context).customerID)
                   .then((value) async {
                 var model = CustomerCubit.get(context).model;
                 await ConsCubitIntro.get(context).getPay(

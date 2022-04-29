@@ -7,6 +7,8 @@ import 'chat_input_field.dart';
 import 'message.dart';
 
 class BodyMessage extends StatelessWidget {
+  final String userid,username;
+  BodyMessage({Key? key,  required this.userid,required this.username}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -21,7 +23,7 @@ class BodyMessage extends StatelessWidget {
             ),
           ),
         ),
-        ChatInputField()
+        ChatInputField(userid:userid,username: username,)
       ],
     );
   }

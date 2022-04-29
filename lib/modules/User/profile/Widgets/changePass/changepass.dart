@@ -24,8 +24,8 @@ class ChangePasswordUser extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    cons_Cubit.get(context).getMyShared();
-    UserCubit.get(context).getUserDetails(cons_Cubit.get(context).userID);
+    ConsCubit.get(context).getMyShared();
+    UserCubit.get(context).getUserDetails(ConsCubit.get(context).userID);
     final model = UserCubit.get(context).loginModel;
     return BlocConsumer<UserCubit, cons_login_Register_States>(
         listener: (context, state) {
