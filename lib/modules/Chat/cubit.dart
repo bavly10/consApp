@@ -24,8 +24,6 @@ class ConsChat extends Cubit<ConsChatStates> {
     final customerid=ConsCubit.get(context).customerID;
     final customerdata= await FirebaseFirestore.instance.collection('AllChat').doc(userid).get();
     final userdata= await FirebaseFirestore.instance.collection('AllChat').doc(userid).get();
-    print("userid $userid");
-    print("username  $username");
     await FirebaseFirestore.instance.collection('AllChat').doc(customerid).collection("chats").doc(userid).collection("message").add({
       "text":message,
       "senderid":userid,
@@ -44,6 +42,6 @@ class ConsChat extends Cubit<ConsChatStates> {
       "username":username,
       "image":customerdata["imageCustomer"],
     });
-   message==null;
+    emit(ConsChatSucessText());
   }
 }

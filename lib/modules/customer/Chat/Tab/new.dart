@@ -14,7 +14,7 @@ class newTest extends StatefulWidget {
 }
 
 class _newTestState extends State<newTest> {
-  String? senderid,username;
+  String? senderid,username,introduceimg;
   @override
   Widget build(BuildContext context) {
     ConsCubit.get(context).getMyShared();
@@ -35,10 +35,11 @@ class _newTestState extends State<newTest> {
                   onTap: (){
                     senderid=docs[index]['senderID'].toString();
                     username = docs[index]['nameIntroduce'];
+                    introduceimg = docs[index]['imageIntroduce'];
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (ctx) => MessagesScreen(ConsCubit.get(context).customerID!,username!,senderid!)));
+                            builder: (ctx) => MessagesScreen(ConsCubit.get(context).customerID!,username!,senderid!,introduceimg!)));
                     },
                   child: Padding(
                     padding:  const EdgeInsets.symmetric(

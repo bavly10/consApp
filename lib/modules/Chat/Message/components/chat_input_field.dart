@@ -37,7 +37,7 @@ class ChatInputField extends StatelessWidget {
                 cubit.isopen?IconButton(
                     icon: const Icon(Icons.send,color: kPrimaryColor),
                     onPressed: () {
-                      cubit.message!.trim().isEmpty ? null : cubit.sendMessage(context: context,userid: userid, username: username);
+                      cubit.message!.trim().isEmpty ? null : cubit.sendMessage(context: context,userid: userid, username: username).then((value) => controller.clear());
                     }):const
                 Icon(Icons.mic, color: kPrimaryColor),
                 const SizedBox(width: kDefaultPadding),
