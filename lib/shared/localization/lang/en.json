@@ -169,5 +169,8 @@
    "res4": "Another Reasons",
    "type": "Tye Of Complian",
    "mustlogin": "You should to be login",
-   "typemessage": "Type message"
+   "typemessage": "Type message",
+   "nothing": "No New Chats",
+   "hischat": "NO History Chats",
+   "Chats": "Chats"
 }

@@ -64,9 +64,11 @@ class WalletScreenCustomer extends StatelessWidget {
               ),
               CustomText(
                 fontsize: 29,
-                text: model?.walletPoint == null
-                    ? model!.walletPoint.toString() + mytranslate(context, "SR")
-                    : "Error",
+                text: model?.walletPoint != 0.0
+                    ? model!.walletPoint.toString() +
+                        "  " +
+                        mytranslate(context, "SR")
+                    : "0.0  " + mytranslate(context, "SR"),
                 alignment: Alignment.center,
                 color: Colors.blueGrey[700],
                 isBold: true,

@@ -1,12 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:helpy_app/modules/customer/Chat/Tab/new.dart';
 import 'package:helpy_app/modules/customer/Chat/Tab/old.dart';
+import 'package:helpy_app/shared/localization/translate.dart';
 import 'package:helpy_app/shared/my_colors.dart';
 import 'package:helpy_app/shared/strings.dart';
 
 import 'Tab/new.dart';
-
 
 class ChatsScreen extends StatefulWidget {
   @override
@@ -19,15 +18,17 @@ class _ChatsScreenState extends State<ChatsScreen> {
     return Scaffold(
       body: DefaultTabController(
         length: 2,
-        child:NestedScrollView(
+        child: NestedScrollView(
           physics: const NeverScrollableScrollPhysics(),
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            SliverOverlapAbsorber(handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context)),
+            SliverOverlapAbsorber(
+                handle:
+                    NestedScrollView.sliverOverlapAbsorberHandleFor(context)),
             SliverSafeArea(
               sliver: SliverAppBar(
-                leading:const SizedBox(),
-                backgroundColor:Colors.white,
-                title: const Text("Chats"),
+                leading: const SizedBox(),
+                backgroundColor: Colors.white,
+                title: Text(mytranslate(context, "Chats")),
                 pinned: true,
                 snap: true,
                 floating: true,
@@ -37,14 +38,16 @@ class _ChatsScreenState extends State<ChatsScreen> {
                   tabs: [
                     Tab(
                       child: Text(
-                        "Currently chat",
-                        style: TextStyle(color: myAmber),
+                        mytranslate(context, "chat"),
+                        style: TextStyle(
+                            color: myAmber, fontWeight: FontWeight.w600),
                       ),
                     ),
                     Tab(
                       child: Text(
-                        "History Chat",
-                        style: TextStyle(color:myAmber),
+                        mytranslate(context, "oldchat"),
+                        style: TextStyle(
+                            color: myAmber, fontWeight: FontWeight.w600),
                       ),
                     ),
                   ],
@@ -52,8 +55,8 @@ class _ChatsScreenState extends State<ChatsScreen> {
               ),
             ),
           ],
-          body:TabBarView(
-            physics:  NeverScrollableScrollPhysics(),
+          body: TabBarView(
+            physics: NeverScrollableScrollPhysics(),
             children: [
               newTest(),
               OldChat(),
@@ -63,6 +66,4 @@ class _ChatsScreenState extends State<ChatsScreen> {
       ),
     );
   }
-
-
 }

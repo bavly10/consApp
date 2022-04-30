@@ -114,170 +114,181 @@ class _IntroducerSpecialState extends State<IntroducerSpecial> {
               ],
               body: state is Cons_Loading_Special_intro
                   ? const Center(
-                child: CircularProgressIndicator(),
-              )
+                      child: CircularProgressIndicator(),
+                    )
                   : cubit.isEmpty
-                  ? noIntroducer(context)
-                  : LayoutBuilder(builder: (context, constraint) {
-                return Stack(
-                  children: [
-                    ListView(
-                      physics: BouncingScrollPhysics(),
-                      children: cubit
-                          .map(
-                            (e) => Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              navigateTo(context, Introducer(e.id!));
-                            },
-                            child: Card(
-                              elevation: 8,
-                              child: Padding(
-                                padding:
-                                const EdgeInsets.all(8.0),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 3,
-                                      child: e.introLogo == null
-                                          ? const Image(
-                                        image: ExactAssetImage(
-                                            "assets/logo.png"),
-                                        height: 100,
-                                      )
-                                          : CachedNetworkImage(
-                                        width:
-                                        double.infinity,
-                                        height: 100,
-                                        imageUrl: imgurl +
-                                            e.introLogo!
-                                                .url!,
-                                        placeholder: (context,
-                                            url) =>
-                                        const SpinKitCircle(
-                                          color:
-                                          Colors.green,
+                      ? noIntroducer(context)
+                      : LayoutBuilder(builder: (context, constraint) {
+                          return Stack(
+                            children: [
+                              ListView(
+                                shrinkWrap: true,
+                                physics: BouncingScrollPhysics(),
+                                children: cubit
+                                    .map(
+                                      (e) => Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            navigateTo(
+                                                context, Introducer(e.id!));
+                                          },
+                                          child: Card(
+                                            elevation: 8,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Row(
+                                                children: [
+                                                  Expanded(
+                                                    flex: 3,
+                                                    child: e.introLogo == null
+                                                        ? const Image(
+                                                            image: ExactAssetImage(
+                                                                "assets/logo.png"),
+                                                            height: 100,
+                                                          )
+                                                        : CachedNetworkImage(
+                                                            width:
+                                                                double.infinity,
+                                                            height: 100,
+                                                            imageUrl: imgurl +
+                                                                e.introLogo!
+                                                                    .url!,
+                                                            placeholder: (context,
+                                                                    url) =>
+                                                                const SpinKitCircle(
+                                                              color:
+                                                                  Colors.green,
+                                                            ),
+                                                            errorWidget: (context,
+                                                                    url,
+                                                                    error) =>
+                                                                const Icon(Icons
+                                                                    .error),
+                                                          ),
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 15,
+                                                  ),
+                                                  Expanded(
+                                                    flex: 5,
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            Text(
+                                                              e.username,
+                                                              style: const TextStyle(
+                                                                  fontSize: 18,
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                            Icon(
+                                                              Icons.verified,
+                                                              color: e.typeIntroducer ==
+                                                                      "Company"
+                                                                  ? Colors.blue
+                                                                  : Colors
+                                                                      .green,
+                                                              size: 20,
+                                                            ),
+                                                            const Spacer(),
+                                                            InkWell(
+                                                                onTap: () {
+                                                                  ConsCubit.get(
+                                                                          context)
+                                                                      .getMyShared();
+                                                                  ConsCubit.get(context)
+                                                                              .customerIDStrapi ==
+                                                                          null
+                                                                      ? myToast(
+                                                                          message: mytranslate(
+                                                                              context,
+                                                                              "mustlogin"))
+                                                                      : navigateTo(
+                                                                          context,
+                                                                          ComplianScreen(
+                                                                            user:
+                                                                                e,
+                                                                          ));
+                                                                },
+                                                                child:
+                                                                    const Icon(
+                                                                  Icons.report,
+                                                                  color: Colors
+                                                                      .grey,
+                                                                ))
+                                                          ],
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 8,
+                                                        ),
+                                                        Text(e.typeIntroducer!,
+                                                            style: TextStyle(
+                                                                fontSize: 14,
+                                                                color: e.typeIntroducer ==
+                                                                        "Company"
+                                                                    ? Colors
+                                                                        .blue
+                                                                    : Colors
+                                                                        .green)),
+                                                        const SizedBox(
+                                                          height: 8,
+                                                        ),
+                                                        Row(
+                                                          children: [
+                                                            Icon(
+                                                              Icons
+                                                                  .place_rounded,
+                                                              color: myAmber,
+                                                            ),
+                                                            const SizedBox(
+                                                              width: 8,
+                                                            ),
+                                                            Expanded(
+                                                              child: Text(
+                                                                  e.address ??
+                                                                      "Error"),
+                                                            )
+                                                          ],
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
                                         ),
-                                        errorWidget: (context,
-                                            url,
-                                            error) =>
-                                        const Icon(Icons
-                                            .error),
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      width: 15,
-                                    ),
-                                    Expanded(
-                                      flex: 5,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment
-                                            .start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                e.username,
-                                                style: const TextStyle(
-                                                    fontSize: 18,
-                                                    color: Colors
-                                                        .black,
-                                                    fontWeight:
-                                                    FontWeight
-                                                        .bold),
-                                              ),
-                                              Icon(
-                                                Icons.verified,
-                                                color: e.typeIntroducer ==
-                                                    "Company"
-                                                    ? Colors.blue
-                                                    : Colors
-                                                    .green,
-                                                size: 20,
-                                              ),
-                                              const Spacer(),
-                                              InkWell(
-                                                  onTap: () {
-                                                    ConsCubit.get(context).getMyShared();
-                                                    ConsCubit.get(context).customerIDStrapi==null
-                                                        ? myToast(
-                                                        message: mytranslate(context, "mustlogin"))
-                                                        : navigateTo(
-                                                        context,
-                                                        ComplianScreen(
-                                                          user:
-                                                          e,
-                                                        ));
-                                                  },
-                                                  child:
-                                                  const Icon(
-                                                    Icons.report,
-                                                    color: Colors
-                                                        .grey,
-                                                  ))
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 8,
-                                          ),
-                                          Text(e.typeIntroducer!,
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  color: e.typeIntroducer ==
-                                                      "Company"
-                                                      ? Colors
-                                                      .blue
-                                                      : Colors
-                                                      .green)),
-                                          const SizedBox(
-                                            height: 8,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Icon(
-                                                Icons
-                                                    .place_rounded,
-                                                color: myAmber,
-                                              ),
-                                              const SizedBox(
-                                                width: 8,
-                                              ),
-                                              Text(e.address ??
-                                                  "Error")
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                    )
+                                    .toList(),
                               ),
-                            ),
-                          ),
-                        ),
-                      )
-                          .toList(),
-                    ),
-                    if (state is Cons_Loading_Special_intro) ...[
-                      Positioned(
-                        left: 0,
-                        bottom: 0,
-                        child: SizedBox(
-                          width: constraint.maxWidth,
-                          height: 80,
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              color: myAmber,
-                            ),
-                          ),
-                        ),
-                      )
-                    ]
-                  ],
-                );
-              }),
+                              if (state is Cons_Loading_Special_intro) ...[
+                                Positioned(
+                                  left: 0,
+                                  bottom: 0,
+                                  child: SizedBox(
+                                    width: constraint.maxWidth,
+                                    height: 80,
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                        color: myAmber,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ]
+                            ],
+                          );
+                        }),
             ),
           ),
         );

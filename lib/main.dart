@@ -41,7 +41,8 @@ class MyApp extends StatelessWidget {
               ..checkInternetConnectivity()
               ..getCategories()
               ..getSpecailsts()
-              ..getAds()..getMyShared()),
+              ..getAds()
+              ..getMyShared()),
         BlocProvider(create: (context) => ConsCubitIntro()),
         BlocProvider(
             create: (context) => CustomerCubit()
@@ -67,7 +68,7 @@ class MyApp extends StatelessWidget {
                   return deviceLocal;
                 }
               }
-              return supportedLocales.single;
+              return supportedLocales.first;
             },
             supportedLocales: const [
               Locale('en', 'US'), // English, no country code

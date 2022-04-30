@@ -1,7 +1,7 @@
 class CustomerModel {
   final String username, email, phone;
   String? image;
-  double? walletPoint;
+  dynamic walletPoint = 0.0;
   CustomerModel(
       {required this.username,
       required this.email,
