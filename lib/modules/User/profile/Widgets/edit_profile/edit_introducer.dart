@@ -161,7 +161,7 @@ class EditIntroducer extends StatelessWidget {
                                 initialPage: 0,
                                 scrollDirection: Axis.horizontal))
                       else
-                        const Image(height: 150,image: ExactAssetImage("assets/logo.png"),fit: BoxFit.cover,),
+                        const Image(height:150,image: ExactAssetImage("assets/logo.png"),fit: BoxFit.cover,),
                     Positioned(
                       //top: 190,
                       left: 10,

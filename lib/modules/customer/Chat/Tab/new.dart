@@ -14,14 +14,15 @@ class newTest extends StatefulWidget {
 }
 
 class _newTestState extends State<newTest> {
-  String? senderid,username,introduceimg;
+  String? myid,senderid,username,introduceimg;
   @override
   Widget build(BuildContext context) {
     ConsCubit.get(context).getMyShared();
+    ConsCubit.get(context).getID();
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection("AllChat").where("myID",isEqualTo: ConsCubit.get(context).customerID!).snapshots(),
+        stream: FirebaseFirestore.instance.collection("AllChat").where("myID",isEqualTo: ConsCubit.get(context).localID!).snapshots(),
         builder: (ctx, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const SpinKitCircle(
@@ -34,12 +35,13 @@ class _newTestState extends State<newTest> {
                 InkWell(
                   onTap: (){
                     senderid=docs[index]['senderID'].toString();
-                    username = docs[index]['nameIntroduce'];
-                    introduceimg = docs[index]['imageIntroduce'];
+                    myid=docs[index]['myID'].toString();
+                    username = docs[index]['sendername'];
+                    introduceimg = docs[index]['senderimage'];
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (ctx) => MessagesScreen(ConsCubit.get(context).customerID!,username!,senderid!,introduceimg!)));
+                            builder: (ctx) => MessagesScreen(myid!,username!,senderid!,introduceimg!)));
                     },
                   child: Padding(
                     padding:  const EdgeInsets.symmetric(
@@ -50,7 +52,7 @@ class _newTestState extends State<newTest> {
                           children: [
                             CircleAvatar(
                               radius: 24,
-                              backgroundImage: NetworkImage(docs[index]['imageIntroduce']),
+                              backgroundImage: NetworkImage(docs[index]['senderimage']),
                             ),
                           ],
                         ),
@@ -62,7 +64,7 @@ class _newTestState extends State<newTest> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  docs[index]['nameIntroduce'],
+                                  docs[index]['sendername'],
                                   style:
                                   const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                                 ),

@@ -19,28 +19,27 @@ class ConsChat extends Cubit<ConsChatStates> {
     emit(ConsChatChangeIcon());
   }
 
-  Future<void> sendMessage({context,required String userid,required String username,})async {
+  Future<void> sendMessage({context,required String custid,required String userid,required String username,})async {
     ConsCubit.get(context).getMyShared();
-    final customerid=ConsCubit.get(context).customerID;
-    final customerdata= await FirebaseFirestore.instance.collection('AllChat').doc(userid).get();
+    final customerdata= await FirebaseFirestore.instance.collection('AllChat').doc(custid).get();
     final userdata= await FirebaseFirestore.instance.collection('AllChat').doc(userid).get();
-    await FirebaseFirestore.instance.collection('AllChat').doc(customerid).collection("chats").doc(userid).collection("message").add({
+    await FirebaseFirestore.instance.collection('AllChat').doc(custid).collection("chats").doc(userid).collection("message").add({
       "text":message,
       "senderid":userid,
-      "myid":customerid,
-      "myname":username,
-      "name":customerdata["nameCustomer"],
-      "image":userdata["imageIntroduce"],
+      "myid":custid,
+      "myname":customerdata["myname"],
+      "name":username,
+      "image":userdata["senderimage"],
       "date":Timestamp.now(),
     });
-    await FirebaseFirestore.instance.collection('AllChat').doc(userid).collection("chats").doc(customerid).collection("message").add({
+    await FirebaseFirestore.instance.collection('AllChat').doc(userid).collection("chats").doc(custid).collection("message").add({
       "text":message,
       "senderid":userid,
-      "myid":customerid,
+      "myid":custid,
       "date":Timestamp.now(),
-      "myname":customerdata["nameCustomer"],
-      "username":username,
-      "image":customerdata["imageCustomer"],
+      "myname":customerdata["myname"],
+      "name":username,
+      "image":customerdata["myimage"],
     });
     emit(ConsChatSucessText());
   }

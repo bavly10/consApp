@@ -70,20 +70,20 @@ class PaymentsTest extends StatelessWidget {
     await FirebaseFirestore.instance.collection("AllChat").doc(custId).set({
       "senderID":userid,
       "myID": custId,
-      "nameCustomer": customerdata["username"],
-      "imageIntroduce":userdata["imageIntroduce"],
-      "imageCustomer":customerdata["imageCustomer"],
+      "myname": customerdata["username"],
+      "sendername":username,
+      "myimage":customerdata["imageCustomer"],
+      "senderimage":userdata["imageIntroduce"],
       "time":Timestamp.now(),
-      "nameIntroduce":username,
     }).then((value) => null);
     await FirebaseFirestore.instance.collection("AllChat").doc(userid.toString()).set({
       "myID":userid,
       "senderID": custId,
-      "nameCustomer": customerdata["username"],
-      "imageIntroduce":userdata["imageIntroduce"],
-      "imageCustomer":customerdata["imageCustomer"],
+      "myname":username,
+      "sendername": customerdata["username"],
+      "myimage":userdata["imageIntroduce"],
+      "senderimage":customerdata["imageCustomer"],
       "time":Timestamp.now(),
-      "nameIntroduce":username,
     }).then((value) =>  myToast(message: "تم اضافه الي قائمه الاصدقاء"));
   }
 }

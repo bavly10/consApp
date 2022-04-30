@@ -7,18 +7,17 @@ import 'package:helpy_app/modules/Chat/Message/components/newmessage.dart';
 import 'package:helpy_app/shared/strings.dart';
 
 import 'chat_input_field.dart';
-import 'message.dart';
 
 class BodyMessage extends StatelessWidget {
   final String userid,username,myid;
-  BodyMessage({Key? key,  required this.userid,required this.username,required this.myid}) : super(key: key);
+  BodyMessage({Key? key,required this.userid,required this.username,required this.myid}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection("AllChat").doc(myid).collection("chats").doc(userid).collection("mesage").orderBy("date",descending: true).snapshots(),
-      builder:  (ctx,AsyncSnapshot<QuerySnapshot> snapshot){
+      stream: FirebaseFirestore.instance.collection("AllChat").doc(myid).collection("chats").doc(userid).collection("message").orderBy("date",descending: true).snapshots(),
+      builder:(ctx,AsyncSnapshot<QuerySnapshot> snapshot){
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return SpinKitCircle(
+          return const SpinKitCircle(
             color: Colors.brown,
           );
         }
@@ -34,14 +33,14 @@ class BodyMessage extends StatelessWidget {
                   itemBuilder: (context, index) =>
                       mesagebuble(
                           docs[index]['text'],
-                          docs[index]['username'],
+                          docs[index]['myname'],
                           docs[index]['image'],
                           docs[index]['senderid']==myid
                       ),
                 ),
               ),
             ),
-            ChatInputField(userid:userid,username: username,)
+            ChatInputField(userid:userid,username: username,custid: myid,)
           ],
         );
       },

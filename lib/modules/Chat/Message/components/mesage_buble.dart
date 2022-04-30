@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:helpy_app/shared/strings.dart';
+
+import '../../../../shared/my_colors.dart';
 
 class mesagebuble extends StatelessWidget {
   mesagebuble(this.mesage, this.username, this.useriamg, this.isme);
@@ -8,56 +11,51 @@ class mesagebuble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Row(
-          mainAxisAlignment:
-              isme ? MainAxisAlignment.end : MainAxisAlignment.start,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                  color: !isme ? Colors.black : Colors.lightBlue,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(14),
-                    topRight: Radius.circular(14),
-                    bottomLeft:
-                        !isme ? Radius.circular(0) : Radius.circular(14),
-                    bottomRight:
-                        isme ? Radius.circular(0) : Radius.circular(14),
-                  )),
-              width: 140,
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-              margin: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-              child: Column(
-                crossAxisAlignment:
-                    isme ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Text(
-                    mesage,
-                    style: TextStyle(
-                        color: !isme ? Colors.black : Colors.white,
-                        fontSize: 17),
-                    textAlign: !isme ? TextAlign.end : TextAlign.start,
-                  ),
-                ],
+    return Padding(
+      padding: const EdgeInsets.only(top: kDefaultPadding),
+      child: Row(
+        mainAxisAlignment:
+        isme ? MainAxisAlignment.start : MainAxisAlignment.end,
+        children: [
+          if (isme) ...[
+             CircleAvatar(radius: 12, backgroundImage: NetworkImage(useriamg),),
+            const SizedBox(width: kDefaultPadding / 2),
+          ],
+          Container(
+            padding:const  EdgeInsets.symmetric(
+              horizontal: kDefaultPadding * 0.75,
+              vertical: kDefaultPadding / 2,
+            ),
+            decoration: BoxDecoration(
+              color: kPrimaryColor.withOpacity(isme ? 1 : 0.1),
+              borderRadius: BorderRadius.circular(30),
+            ),
+            child: Text(
+              mesage,
+              style: TextStyle(
+                color: isme
+                    ? Colors.white
+                    : Theme.of(context).textTheme.bodyText1!.color,
               ),
             ),
-          ],
-        ),
-        Positioned(
-          child: CircleAvatar(
-            backgroundImage: NetworkImage(useriamg),
-            radius: 25,
           ),
-          top: -10,
-          right: isme?120:null,
-          left: !isme?120:null,
-        ),
-      ],
-      clipBehavior: Clip.none,
+         if (!isme) Container(
+            margin:const EdgeInsets.only(left: kDefaultPadding / 2),
+            height: 12,
+            width: 12,
+            decoration: const BoxDecoration(
+              color: Colors.grey,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.done,
+              size: 8,
+              color: Theme.of(context).scaffoldBackgroundColor,
+            ),
+          )
+        ],
+      ),
     );
   }
 }
+

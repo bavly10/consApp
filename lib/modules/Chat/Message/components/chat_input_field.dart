@@ -8,9 +8,9 @@ import 'package:helpy_app/shared/my_colors.dart';
 
 
 class ChatInputField extends StatelessWidget {
-  final String userid,username;
+  final String userid,username,custid;
    TextEditingController controller=TextEditingController();
-   ChatInputField({Key? key,  required this.userid,required this.username}) : super(key: key);
+   ChatInputField({Key? key,required this.custid,  required this.userid,required this.username}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ConsChat,ConsChatStates>(
@@ -37,7 +37,10 @@ class ChatInputField extends StatelessWidget {
                 cubit.isopen?IconButton(
                     icon: const Icon(Icons.send,color: kPrimaryColor),
                     onPressed: () {
-                      cubit.message!.trim().isEmpty ? null : cubit.sendMessage(context: context,userid: userid, username: username).then((value) => controller.clear());
+                      cubit.message!.trim().isEmpty ? null : cubit.sendMessage(custid:custid ,context: context,userid: userid, username: username).then((value) =>{
+                        controller.clear(),
+                      FocusScope.of(context).unfocus()
+                      } );
                     }):const
                 Icon(Icons.mic, color: kPrimaryColor),
                 const SizedBox(width: kDefaultPadding),

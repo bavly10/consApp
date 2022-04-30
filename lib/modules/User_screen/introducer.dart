@@ -292,12 +292,13 @@ class Introducer extends StatelessWidget {
                 var model = CustomerCubit.get(context).model;
                 if (model?.walletPoint == null)
                 {
-                  await ConsCubitIntro.get(context).getPay(
-                      user: cubit.username,
-                      name: model!.username,
-                      email: model.email,
-                      phone: model.phone,
-                      amount: cubit.introPrice);
+                  addchat(context,cubit.id.toString(),cubit.username);
+                  // await ConsCubitIntro.get(context).getPay(
+                  //     user: cubit.username,
+                  //     name: model!.username,
+                  //     email: model.email,
+                  //     phone: model.phone,
+                  //     amount: cubit.introPrice);
                 } else {
                   My_CustomAlertDialog(
                     pressTitle: mytranslate(context, "done"),
@@ -333,6 +334,30 @@ class Introducer extends StatelessWidget {
         ),
       );
     });
+  }
+  addchat(context,userid,username)async{
+    ConsCubit.get(context).getMyShared();
+    String? custId=ConsCubit.get(context).customerID;
+    final customerdata = await FirebaseFirestore.instance.collection('customers').doc(custId).get();
+    final userdata = await FirebaseFirestore.instance.collection('users').doc(userid.toString()).get();
+    await FirebaseFirestore.instance.collection("AllChat").doc(custId).set({
+      "senderID":userid,
+      "myID": custId,
+      "myname": customerdata["username"],
+      "sendername":username,
+      "myimage":customerdata["imageCustomer"],
+      "senderimage":userdata["imageIntroduce"],
+      "time":Timestamp.now(),
+    }).then((value) => null);
+    await FirebaseFirestore.instance.collection("AllChat").doc(userid.toString()).set({
+      "myID":userid,
+      "senderID": custId,
+      "myname":username,
+      "sendername": customerdata["username"],
+      "myimage":userdata["imageIntroduce"],
+      "senderimage":customerdata["imageCustomer"],
+      "time":Timestamp.now(),
+    }).then((value) =>  myToast(message: "تم اضافه الي قائمه الاصدقاء"));
   }
 
 }

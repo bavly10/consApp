@@ -265,4 +265,14 @@ class ConsCubit extends Cubit<cons_States> {
     localeLang = CashHelper.getData("locale");
   }
 
+  String? localID;
+  void getID(){
+    if(customerID==null)
+      {
+        localID=userID.toString();
+      }
+    else{
+      localID=customerID;
+    }
+  }
 }
