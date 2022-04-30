@@ -120,7 +120,12 @@ class ComplianScreen extends StatelessWidget {
                               value: value,
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text(value),
+                                child: Text(
+                                  value,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.grey[700]),
+                                ),
                               ));
                         }).toList(),
                         onChanged: (String? val) {

@@ -153,13 +153,17 @@ class CreateFile extends StatelessWidget {
                                           child: Text(
                                             mytranslate(context, "filen"),
                                             style: const TextStyle(
-                                                color: Colors.blueGrey),
+                                                color: Colors.blueGrey,
+                                                fontWeight: FontWeight.w600,
+                                                fontStyle: FontStyle.italic),
                                           ),
                                         ),
                                         Text(
                                           result.files.single.name,
                                           style: const TextStyle(
-                                              color: Colors.blueGrey),
+                                              color: Colors.blueGrey,
+                                              fontWeight: FontWeight.w600,
+                                              fontStyle: FontStyle.italic),
                                         ),
                                       ],
                                     ),
@@ -172,13 +176,17 @@ class CreateFile extends StatelessWidget {
                                           child: Text(
                                             mytranslate(context, "filez"),
                                             style: const TextStyle(
-                                                color: Colors.blueGrey),
+                                                color: Colors.blueGrey,
+                                                fontWeight: FontWeight.w600,
+                                                fontStyle: FontStyle.italic),
                                           ),
                                         ),
                                         Text(
                                           '${result.files.single.size} KB',
                                           style: const TextStyle(
-                                              color: Colors.blueGrey),
+                                              color: Colors.blueGrey,
+                                              fontWeight: FontWeight.w600,
+                                              fontStyle: FontStyle.italic),
                                         ),
                                       ],
                                     ),
@@ -191,14 +199,18 @@ class CreateFile extends StatelessWidget {
                                           child: Text(
                                             mytranslate(context, "fileE"),
                                             style: const TextStyle(
-                                                color: Colors.blueGrey),
+                                                color: Colors.blueGrey,
+                                                fontWeight: FontWeight.w600,
+                                                fontStyle: FontStyle.italic),
                                           ),
                                         ),
                                         Text(
                                           result.files.single.extension
                                               .toString(),
                                           style: const TextStyle(
-                                              color: Colors.blueGrey),
+                                              color: Colors.blueGrey,
+                                              fontWeight: FontWeight.w600,
+                                              fontStyle: FontStyle.italic),
                                         ),
                                       ],
                                     ),
@@ -242,8 +254,10 @@ class CreateFile extends StatelessWidget {
                       },
                       title: Text(
                         mytranslate(context, "uploadfile"),
-                        style:
-                            const TextStyle(fontSize: 14, color: Colors.white),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                       color: HexColor('#C18F3A'))
                 ],

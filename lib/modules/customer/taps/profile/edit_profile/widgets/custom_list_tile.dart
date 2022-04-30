@@ -18,7 +18,8 @@ class CustomListTile extends StatelessWidget {
     return ListTile(
       title: Text(
         mytranslate(context, textTitle),
-        style: TextStyle(fontSize: 14),
+        style: TextStyle(
+            fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey[700]),
       ),
       trailing: Icon(
         trailingIcon,

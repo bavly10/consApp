@@ -146,8 +146,10 @@ class CreatePost extends StatelessWidget {
                       },
                       title: Text(
                         mytranslate(context, "posts"),
-                        style:
-                            const TextStyle(fontSize: 14, color: Colors.white),
+                        style: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600),
                       ),
                       color: HexColor('#C18F3A'))
                 ],

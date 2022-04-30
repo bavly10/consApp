@@ -167,7 +167,7 @@ class EditIntroducer extends StatelessWidget {
                           width: MediaQuery.of(context).size.width),
                     Positioned(
                       //top: 190,
-                      left: 10,
+                      left: MediaQuery.of(context).size.width * .03,
                       child: Center(
                         child: Container(
                           //alignment: AlignmentDirectional.topStart,
@@ -239,8 +239,8 @@ class EditIntroducer extends StatelessWidget {
                                 fit: BoxFit.fill,
                               ),
                             Positioned(
-                              top: 65,
-                              left: 2,
+                              top: MediaQuery.of(context).size.width * .18,
+                              left: MediaQuery.of(context).size.width * .0,
                               child: Center(
                                 child: Container(
                                   //alignment: AlignmentDirectional.topStart,

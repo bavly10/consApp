@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Main_login extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserCubit, cons_login_Register_States>(
@@ -17,14 +16,16 @@ class Main_login extends StatelessWidget {
         final cubit = UserCubit.get(context);
         return Scaffold(
             body: SingleChildScrollView(
-             child: Stack(
-               children: [
-                 SizedBox(height:MediaQuery.of(context).size.height*1,
-                     width: double.infinity,
-                     child:const Image(image: ExactAssetImage("assets/ground.png"))),
-                 Padding(
-                    padding: const EdgeInsets.all(12),
-                  child: Column(
+          child: Stack(
+            children: [
+              SizedBox(
+                  height: MediaQuery.of(context).size.height * 1,
+                  width: double.infinity,
+                  child:
+                      const Image(image: ExactAssetImage("assets/ground.png"))),
+              Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(top: 30),
@@ -32,7 +33,7 @@ class Main_login extends StatelessWidget {
                         child: Image(
                           height: MediaQuery.of(context).size.height * 0.20,
                           width: double.infinity,
-                          image:const ExactAssetImage("assets/logo.png"),
+                          image: const ExactAssetImage("assets/logo.png"),
                         ),
                       ),
                     ),
@@ -51,16 +52,21 @@ class Main_login extends StatelessWidget {
                                     height: 50,
                                     width: 150,
                                     decoration: BoxDecoration(
-                                        borderRadius:const BorderRadius.all(Radius.circular(9.0)),
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(9.0)),
                                         color: myAmber),
                                     child: Center(
                                         child: Text(
                                       mytranslate(context, "buttonLogin2"),
-                                      style:const TextStyle(color: Colors.white),
+                                      style:
+                                          const TextStyle(color: Colors.white),
                                     )))
                                 : Text(
                                     mytranslate(context, "buttonLogin2"),
-                                    style: TextStyle(color: myAmber),
+                                    style: TextStyle(
+                                      color: myAmber,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   )),
                         const SizedBox(
                           width: 20,
@@ -72,28 +78,34 @@ class Main_login extends StatelessWidget {
                             child: cubit.visable
                                 ? Text(
                                     mytranslate(context, "buttonLogin1"),
-                                    style: TextStyle(color: myAmber),
+                                    style: TextStyle(
+                                      color: myAmber,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   )
                                 : Container(
                                     height: 50,
                                     width: 150,
                                     decoration: BoxDecoration(
-                                        borderRadius:
-                                        const  BorderRadius.all(Radius.circular(9.0)),
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(9.0)),
                                         color: myAmber),
                                     child: Center(
                                         child: Text(
-                                      mytranslate(context, "buttonLogin1"),
-                                      style:const TextStyle(color: Colors.white),
-                                    )))),
+                                            mytranslate(
+                                                context, "buttonLogin1"),
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w600,
+                                            ))))),
                       ],
                     ),
-                    cubit.visable? LoginUser() : LoginIntro(),
+                    cubit.visable ? LoginUser() : LoginIntro(),
                   ],
+                ),
               ),
-            ),
-               ],
-             ),
+            ],
+          ),
         ));
       },
     );

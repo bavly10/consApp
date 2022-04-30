@@ -154,8 +154,10 @@ class UserProfileScreen extends StatelessWidget {
                       },
                       hint: Text(
                         mytranslate(context, "lang"),
-                        style: const TextStyle(
-                            color: Colors.black87, fontSize: 15),
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.grey[700]),
                       ),
                       // value: lanugage.lang_list[0],
                       items: lanugage.lang_list
@@ -168,7 +170,13 @@ class UserProfileScreen extends StatelessWidget {
                                         const SizedBox(
                                           width: 10,
                                         ),
-                                        Text(lang.name!)
+                                        Text(
+                                          lang.name!,
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.grey[700]),
+                                        )
                                       ],
                                     ),
                                   ))

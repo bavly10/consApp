@@ -233,6 +233,9 @@ class _IntroducerSpecialState extends State<IntroducerSpecial> {
                                                         Text(e.typeIntroducer!,
                                                             style: TextStyle(
                                                                 fontSize: 14,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
                                                                 color: e.typeIntroducer ==
                                                                         "Company"
                                                                     ? Colors
@@ -254,8 +257,16 @@ class _IntroducerSpecialState extends State<IntroducerSpecial> {
                                                             ),
                                                             Expanded(
                                                               child: Text(
-                                                                  e.address ??
-                                                                      "Error"),
+                                                                e.address ??
+                                                                    "Error",
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                    color: Colors
+                                                                            .grey[
+                                                                        700]),
+                                                              ),
                                                             )
                                                           ],
                                                         )

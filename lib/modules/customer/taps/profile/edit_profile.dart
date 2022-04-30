@@ -67,7 +67,11 @@ class EditProfile extends StatelessWidget {
                           context: context,
                           title: Text(
                             mytranslate(context, "upd"),
-                            style: const TextStyle(color: Colors.white),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                           onPress: () {
                             FocusScope.of(context).requestFocus(FocusNode());
@@ -98,7 +102,10 @@ class EditProfile extends StatelessWidget {
                               right: 10, bottom: 8, top: 8, left: 5),
                           child: Text(
                             mytranslate(context, "phoneno"),
-                            style: TextStyle(fontSize: 14),
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.grey[700]),
                           ),
                         ),
                         Padding(
@@ -141,7 +148,10 @@ class EditProfile extends StatelessWidget {
                               right: 10, bottom: 8, top: 8, left: 5),
                           child: Text(
                             mytranslate(context, "name"),
-                            style: const TextStyle(fontSize: 14),
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.grey[700]),
                           ),
                         ),
                         const SizedBox(
