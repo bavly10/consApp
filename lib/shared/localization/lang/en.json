@@ -172,5 +172,6 @@
    "typemessage": "Type message",
    "nothing": "No New Chats",
    "hischat": "NO History Chats",
-   "Chats": "Chats"
+   "Chats": "Chats",
+   "typing": "typing..."
 }

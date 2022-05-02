@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:helpy_app/shared/my_colors.dart';
 import 'package:helpy_app/shared/strings.dart';
 
-import '../../../../shared/my_colors.dart';
 
 class mesagebuble extends StatelessWidget {
   mesagebuble(this.mesage, this.username, this.useriamg, this.isme);
@@ -21,7 +21,7 @@ class mesagebuble extends StatelessWidget {
              CircleAvatar(radius: 12, backgroundImage: NetworkImage(useriamg),),
             const SizedBox(width: kDefaultPadding / 2),
           ],
-          Container(
+         Container(
             padding:const  EdgeInsets.symmetric(
               horizontal: kDefaultPadding * 0.75,
               vertical: kDefaultPadding / 2,

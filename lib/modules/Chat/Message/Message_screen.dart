@@ -1,50 +1,45 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helpy_app/modules/Chat/Message/components/body.dart';
+import 'package:helpy_app/modules/Chat/cubit.dart';
+import 'package:helpy_app/modules/Chat/states.dart';
+import 'package:helpy_app/shared/localization/translate.dart';
 import 'package:helpy_app/shared/strings.dart';
 
 
-class MessagesScreen extends StatefulWidget {
+class MessagesScreen extends StatelessWidget {
    final String myid,username,senderid,imageIntroduce;
   const MessagesScreen(this.myid,this.username, this.senderid,this.imageIntroduce);
 
   @override
-  State<MessagesScreen> createState() => _MessagesScreenState();
-}
-
-class _MessagesScreenState extends State<MessagesScreen> {
-  @override
-  void initState() {
-    super.initState();
+  Widget build(BuildContext context) {
     final fcm=FirebaseMessaging.instance;
     fcm.subscribeToTopic("AllChat");
-  }
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(),
-      body: BodyMessage(userid:widget.senderid,username: widget.username,myid:widget.myid ),
+      appBar: buildAppBar(context),
+      body: BodyMessage(userid:senderid,username:username,myid:myid ),
     );
   }
 
-  AppBar buildAppBar() {
+  AppBar buildAppBar(context) {
     return AppBar(
       automaticallyImplyLeading: false,
       title: Row(
         children: [
           const BackButton(),
-           CircleAvatar(backgroundImage: NetworkImage(widget.imageIntroduce),),
+           CircleAvatar(backgroundImage: NetworkImage(imageIntroduce),),
           const SizedBox(width: kDefaultPadding * 0.75),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
                Text(
-                 widget.username,
+                username,
                 style: const TextStyle(fontSize: 16),
               ),
-                const Text(
-                "Active 1m ago",
-                style: TextStyle(fontSize: 12),
+               Text(
+                "Active Now",
+                style: TextStyle(fontSize: 12,color: Colors.grey[500]),
               )
             ],
           )

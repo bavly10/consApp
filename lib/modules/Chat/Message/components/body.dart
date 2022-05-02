@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:helpy_app/model/ChatMessage.dart';
 import 'package:helpy_app/modules/Chat/Message/components/mesage_buble.dart';
-import 'package:helpy_app/modules/Chat/Message/components/newmessage.dart';
 import 'package:helpy_app/shared/strings.dart';
 
 import 'chat_input_field.dart';

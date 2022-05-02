@@ -40,6 +40,8 @@ class ConsChat extends Cubit<ConsChatStates> {
       "myname":customerdata["myname"],
       "name":username,
       "image":customerdata["myimage"],
+    }).catchError((onError){
+
     });
     emit(ConsChatSucessText());
   }
