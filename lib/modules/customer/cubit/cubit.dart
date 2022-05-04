@@ -161,14 +161,16 @@ class CustomerCubit extends Cubit<Customer_States> {
     }
   }
 
+  int? walletcustomer;
   Future<void> getCustomerStrapi(email) async {
     final url = Uri.parse("$base_api/Customers?_where[email]=$email");
     final http.Response res = await http.get(url);
     if (res.statusCode == 200) {
       print(res.body.toString());
-      var user = jsonDecode(res.body);
-      for (var x in user) {
+      var customer = jsonDecode(res.body);
+      for (var x in customer) {
         xmyId = x['id'];
+        walletcustomer=x['walletPoint'];
       }
       CashHelper.putData("customer_idStrapi", xmyId);
     }
@@ -204,6 +206,7 @@ class CustomerCubit extends Cubit<Customer_States> {
         .get()
         .then((value) {
       model = CustomerModel.fromJson(value.data()!);
+      getCustomerStrapi(model!.email);
       emit(CustomerSuccessState());
     }).catchError((error) {
       print(error.toString());

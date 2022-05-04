@@ -257,7 +257,7 @@ class _IntroducerSpecialState extends State<IntroducerSpecial> {
                                                             ),
                                                             Expanded(
                                                               child: Text(
-                                                                e.address ??
+                                                                e.city ??
                                                                     "Error",
                                                                 style: TextStyle(
                                                                     fontWeight:

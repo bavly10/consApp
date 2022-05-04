@@ -28,32 +28,40 @@ class ConsCubit extends Cubit<cons_States> {
 
   // ignore: non_constant_identifier_names
   Locale? locale_cubit;
+  String? lang;
   static bool xtranslate = false;
-  void changeLang(lang) {
-    switch (lang.lang_Code) {
+  void changeLang(lang) async {
+    Locale currentLocale = await setLocale(lang.lang_Code);
+    changLocale(currentLocale);
+  }
+  changLocale(Locale currentLocale) {
+    locale_cubit = currentLocale;
+  }
+  Future<Locale> locale(String lang) async {
+    switch (lang) {
       case "en":
         xtranslate = false;
-        locale_cubit = Locale(lang.lang_Code, "US");
-        CashHelper.putData("locale","en");
+        locale_cubit = Locale(lang, "US");
         break;
       case "ar":
         xtranslate = true;
-        locale_cubit = Locale(lang.lang_Code, "SA");
-        CashHelper.putData("locale", "ar");
+        locale_cubit = Locale(lang, "SA");
+
         break;
       default:
         locale_cubit = const Locale("ar", "SA");
     }
-    // CashHelper.putData("locale", xtranslate);
     emit(cons_Change_Language());
+    return locale_cubit!;
   }
-
-  void getMyLang() {
-   String mylanguage = CashHelper.getData("locale")??'en';
-   print(mylanguage);
-   return changeLang(mylanguage);
+  Future<Locale> setLocale(String langCode) async {
+    await CashHelper.putData("locale", langCode);
+    return locale(langCode);
   }
-
+  Future<Locale> getLocale() async {
+    lang = CashHelper.getData("locale");
+    return locale(lang!);
+  }
 
   bool isConnected = true;
   Future<bool> checkInternetConnectivity() async {

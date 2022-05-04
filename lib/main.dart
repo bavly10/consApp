@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+
 import 'package:helpy_app/Cubit/my_observer.dart';
 import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/model/user_model.dart';
@@ -42,10 +43,10 @@ class MyApp extends StatelessWidget {
               ..getCategories()
               ..getSpecailsts()
               ..getAds()
-              ..getMyShared()),
+              ..getMyShared()
+              ..getLocale()),
         BlocProvider(create: (context) => ConsCubitIntro()),
-        BlocProvider(
-            create: (context) => CustomerCubit()
+        BlocProvider(create: (context) => CustomerCubit()
               ..getCustomerData(ConsCubit.get(context).customerID)),
         BlocProvider(create: (context) => UserCubit()),
         BlocProvider(create: (context) => ConsChat()),

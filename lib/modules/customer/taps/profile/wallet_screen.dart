@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:helpy_app/model/customer_model.dart';
+import 'package:helpy_app/modules/customer/cubit/cubit.dart';
 import 'package:helpy_app/shared/compononet/custom_clip_slider.dart';
 import 'package:helpy_app/shared/compononet/custom_text.dart';
 import 'package:helpy_app/shared/localization/translate.dart';
@@ -64,11 +65,7 @@ class WalletScreenCustomer extends StatelessWidget {
               ),
               CustomText(
                 fontsize: 29,
-                text: model?.walletPoint != 0.0
-                    ? model!.walletPoint.toString() +
-                        "  " +
-                        mytranslate(context, "SR")
-                    : "0.0  " + mytranslate(context, "SR"),
+                text:CustomerCubit.get(context).walletcustomer.toString()+" "+mytranslate(context, "SR"),
                 alignment: Alignment.center,
                 color: Colors.blueGrey[700],
                 isBold: true,
