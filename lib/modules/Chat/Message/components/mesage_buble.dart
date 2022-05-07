@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:helpy_app/modules/Chat/Message/components/message.dart';
 import 'package:helpy_app/shared/my_colors.dart';
 import 'package:helpy_app/shared/strings.dart';
 import 'package:intl/intl.dart' as intl;
+
+import '../../../../shared/compononet/read_more.dart';
 
 class mesagebuble extends StatelessWidget {
   mesagebuble(
@@ -73,8 +76,12 @@ class mesagebuble extends StatelessWidget {
                       //  crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(top: 5.0),
-                          child: Text(
+                          padding: EdgeInsets.only(top: 5.0),
+                          child: ExpandableText(mesage,
+                              textColor: isme
+                                  ? Colors.white
+                                  : Colors
+                                      .blueGrey), /*Text(
                             mesage,
                             textHeightBehavior: const TextHeightBehavior(
                                 applyHeightToFirstAscent: true),
@@ -90,7 +97,7 @@ class mesagebuble extends StatelessWidget {
                               fontSize: 16,
                               color: isme ? Colors.white : Colors.blueGrey,
                             ),
-                          ),
+                          ),*/
                         ),
                         SizedBox(
                           width: 10,

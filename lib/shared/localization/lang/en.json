@@ -173,5 +173,7 @@
    "nothing": "No New Chats",
    "hischat": "NO History Chats",
    "Chats": "Chats",
-   "typing": "typing..."
+   "typing": "typing...",
+   "readmore": "... read more",
+   "readless": " read less"
 }
