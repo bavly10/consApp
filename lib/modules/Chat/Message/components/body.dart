@@ -10,46 +10,61 @@ import 'package:helpy_app/shared/strings.dart';
 import 'chat_input_field.dart';
 
 class BodyMessage extends StatelessWidget {
-  final String userid,username,myid;
-  BodyMessage({Key? key,required this.userid,required this.username,required this.myid}) : super(key: key);
+  final String userid, username, myid;
+  BodyMessage(
+      {Key? key,
+      required this.userid,
+      required this.username,
+      required this.myid})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection("AllChat").doc(myid).collection("chats").doc(userid).collection("message").orderBy("date",descending: true).snapshots(),
-      builder:(ctx,AsyncSnapshot<QuerySnapshot> snapshot){
+      stream: FirebaseFirestore.instance
+          .collection("AllChat")
+          .doc(myid)
+          .collection("chats")
+          .doc(userid)
+          .collection("message")
+          .orderBy("date", descending: true)
+          .snapshots(),
+      builder: (ctx, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const SpinKitCircle(
             color: Colors.brown,
           );
         }
-        final docs=snapshot.requireData.docs;
+        final docs = snapshot.requireData.docs;
         return Column(
+          mainAxisSize: MainAxisSize.max,
           children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                child: ListView.builder(
-                  reverse: true,
-                  itemCount: docs.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) =>
-                      BlocBuilder<ConsChat,ConsChatStates>(
-                        builder: (ctx,state){
-                          final cubit=ConsChat.get(context);
-                          return mesagebuble(
-                            username: docs[index]['myname'],
-                              mesage: docs[index]['text'],
-                              useriamg: docs[index]['image'],
-                              date: docs[index]['date'],
-                              isme: docs[index]['senderid']==myid,
-                              isopen: cubit.isopen,
-                          );
-                        },
-                      ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+              child: ListView.builder(
+                reverse: true,
+                itemCount: docs.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) =>
+                    BlocBuilder<ConsChat, ConsChatStates>(
+                  builder: (ctx, state) {
+                    final cubit = ConsChat.get(context);
+                    return mesagebuble(
+                      username: docs[index]['myname'],
+                      mesage: docs[index]['text'],
+                      useriamg: docs[index]['image'],
+                      date: docs[index]['date'],
+                      isme: docs[index]['senderid'] == myid,
+                      isopen: cubit.isopen,
+                    );
+                  },
                 ),
               ),
             ),
-            ChatInputField(userid:userid,username: username,custid: myid,)
+            ChatInputField(
+              userid: userid,
+              username: username,
+              custid: myid,
+            )
           ],
         );
       },

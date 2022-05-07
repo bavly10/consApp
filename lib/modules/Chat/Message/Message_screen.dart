@@ -4,10 +4,10 @@ import 'package:helpy_app/modules/Chat/Message/components/body.dart';
 import 'package:helpy_app/shared/my_colors.dart';
 import 'package:helpy_app/shared/strings.dart';
 
-
 class MessagesScreen extends StatefulWidget {
-   final String myid,username,senderid,imageIntroduce;
-  const MessagesScreen(this.myid,this.username, this.senderid,this.imageIntroduce);
+  final String myid, username, senderid, imageIntroduce;
+  const MessagesScreen(
+      this.myid, this.username, this.senderid, this.imageIntroduce);
 
   @override
   State<MessagesScreen> createState() => _MessagesScreenState();
@@ -16,11 +16,16 @@ class MessagesScreen extends StatefulWidget {
 class _MessagesScreenState extends State<MessagesScreen> {
   @override
   Widget build(BuildContext context) {
-    final fcm=FirebaseMessaging.instance;
+    final fcm = FirebaseMessaging.instance;
     fcm.subscribeToTopic("AllChat");
     return Scaffold(
       appBar: buildAppBar(context),
-      body: BodyMessage(userid:widget.senderid,username:widget.username,myid:widget.myid ),
+      body: SingleChildScrollView(
+        child: BodyMessage(
+            userid: widget.senderid,
+            username: widget.username,
+            myid: widget.myid),
+      ),
     );
   }
 
@@ -30,18 +35,20 @@ class _MessagesScreenState extends State<MessagesScreen> {
       title: Row(
         children: [
           const BackButton(),
-           CircleAvatar(backgroundImage: NetworkImage(widget.imageIntroduce),),
+          CircleAvatar(
+            backgroundImage: NetworkImage(widget.imageIntroduce),
+          ),
           const SizedBox(width: kDefaultPadding * 0.75),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               Text(
+              Text(
                 widget.username,
                 style: const TextStyle(fontSize: 16),
               ),
-               Text(
+              Text(
                 "Active Now",
-                style: TextStyle(fontSize: 12,color: Colors.grey[500]),
+                style: TextStyle(fontSize: 12, color: Colors.grey[500]),
               )
             ],
           ),

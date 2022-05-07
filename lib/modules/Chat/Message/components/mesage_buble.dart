@@ -22,14 +22,15 @@ class mesagebuble extends StatelessWidget {
     var datee = firebaseTimestamp.toDate();
     var formattedData = intl.DateFormat('h:mm a').format(datee);
     return Padding(
-      padding: const EdgeInsets.only(bottom:kDefaultPadding ,top: kDefaultPadding),
+      padding:
+          const EdgeInsets.only(bottom: kDefaultPadding, top: kDefaultPadding),
       child: Column(
         crossAxisAlignment:
             isme ? CrossAxisAlignment.start : CrossAxisAlignment.end,
         children: [
           Row(
             mainAxisAlignment:
-            isme ? MainAxisAlignment.start : MainAxisAlignment.end,
+                isme ? MainAxisAlignment.start : MainAxisAlignment.end,
             children: [
               if (isme) ...[
                 CircleAvatar(
@@ -38,52 +39,77 @@ class mesagebuble extends StatelessWidget {
                 ),
                 const SizedBox(width: kDefaultPadding / 2),
               ],
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: kDefaultPadding * 0.90,
-                  vertical: kDefaultPadding / 6,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10),
-                    bottomLeft:
-                        isme ? const Radius.circular(0) : const Radius.circular(10),
-                    bottomRight:
-                        !isme ? const Radius.circular(0) : Radius.circular(10),
+              Flexible(
+                child: Container(
+                  //  width: 100,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: kDefaultPadding * 0.90,
+                    vertical: kDefaultPadding / 6,
                   ),
-                  color:   isme?myAmber:Colors.grey[300],
-                ),
-                child: Row(
-                  textDirection: isme ? TextDirection.rtl : TextDirection.ltr,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      mesage,
-                      softWrap: true,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 5,
-                      style: TextStyle(
-                        height: 1,
-                        wordSpacing: 2,
-                        fontSize: 19,
-                        color: isme
-                            ? Colors.white
-                            : Theme.of(context).textTheme.bodyText1!.color,
-                      ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                      bottomLeft: isme
+                          ? const Radius.circular(0)
+                          : const Radius.circular(10),
+                      bottomRight: !isme
+                          ? const Radius.circular(0)
+                          : Radius.circular(10),
                     ),
-                  SizedBox(width: 10,),
-                    Text(
-                      formattedData,
-                      style: TextStyle(
-                          fontSize: 13,
-                          color: isme ? Colors.white : Colors.black),
+                    color: isme ? myAmber : Colors.grey[300],
+                  ),
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      minWidth: 50.0,
+                      maxWidth: 190,
+                      minHeight: 30.0,
+                      maxHeight: 250.0,
                     ),
-                  ],
+                    child: Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.end,
+                      textDirection:
+                          isme ? TextDirection.rtl : TextDirection.ltr,
+                      //  crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 5.0),
+                          child: Text(
+                            mesage,
+                            textHeightBehavior: const TextHeightBehavior(
+                                applyHeightToFirstAscent: true),
+                            textWidthBasis: TextWidthBasis.longestLine,
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.start,
+                            maxLines: 5,
+                            style: TextStyle(
+                              height: 1,
+                              wordSpacing: 1,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                              color: isme ? Colors.white : Colors.blueGrey,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          formattedData,
+                          style: TextStyle(
+                              fontSize: 13,
+                              color: isme ? Colors.white : Colors.black),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-              if (!isme) Container(
-                margin: EdgeInsetsDirectional.only(top: MediaQuery.of(context).size.height*.04),
+              if (!isme)
+                Container(
+                  margin: EdgeInsetsDirectional.only(
+                      top: MediaQuery.of(context).size.height * .04),
                   height: 14,
                   width: 14,
                   decoration: const BoxDecoration(
@@ -121,7 +147,7 @@ class mesagebuble extends StatelessWidget {
                       borderRadius: BorderRadius.circular(30),
                     ),
                     child: Text(
-                      "Typing...",
+                      "$username Typing...",
                       style: TextStyle(
                         color: isme
                             ? Colors.white

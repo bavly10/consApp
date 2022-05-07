@@ -6,18 +6,43 @@ import 'package:helpy_app/shared/localization/translate.dart';
 import 'package:helpy_app/shared/strings.dart';
 import 'package:helpy_app/shared/my_colors.dart';
 
+class ChatInputField extends StatefulWidget {
+  final String userid, username, custid;
 
-class ChatInputField extends StatelessWidget {
-  final String userid,username,custid;
-   TextEditingController controller=TextEditingController();
-   ChatInputField({Key? key,required this.custid,  required this.userid,required this.username}) : super(key: key);
+  ChatInputField(
+      {Key? key,
+      required this.custid,
+      required this.userid,
+      required this.username})
+      : super(key: key);
+
+  @override
+  State<ChatInputField> createState() => _ChatInputFieldState();
+}
+
+class _ChatInputFieldState extends State<ChatInputField> {
+  TextEditingController controller = TextEditingController();
+  void initState() {
+    controller.addListener(() {
+      if (widget.custid.isEmpty)
+        //here you have the changes of your textfield
+        print("value: ${controller}}");
+      else {
+        print("true");
+      }
+      //use setState to rebuild the widget
+      setState(() {});
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ConsChat,ConsChatStates>(
-      builder: (ctx,state){
-        final cubit=ConsChat.get(context);
+    return BlocBuilder<ConsChat, ConsChatStates>(
+      builder: (ctx, state) {
+        final cubit = ConsChat.get(context);
         return Container(
-          padding:const EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             horizontal: kDefaultPadding,
             vertical: kDefaultPadding / 6,
           ),
@@ -25,60 +50,84 @@ class ChatInputField extends StatelessWidget {
             color: Theme.of(context).scaffoldBackgroundColor,
             boxShadow: [
               BoxShadow(
-                offset:const Offset(0, 4),
+                offset: const Offset(0, 4),
                 blurRadius: 32,
-                color:const Color(0xFF087949).withOpacity(0.08),
+                color: const Color(0xFF087949).withOpacity(0.08),
               ),
             ],
           ),
           child: SafeArea(
-            child: Row(
+            child: Column(
               children: [
-                cubit.isopen?IconButton(
-                    icon: const Icon(Icons.send,color: kPrimaryColor),
-                    onPressed: () {
-                      cubit.message!.trim().isEmpty ? null : cubit.sendMessage(custid:custid ,context: context,userid: userid, username: username).then((value) =>{
-                        controller.clear(),
-                      FocusScope.of(context).unfocus(),
-                        cubit.isopen=false,
-                      } );
-                    }):const
-                Icon(Icons.mic, color: kPrimaryColor),
-                const SizedBox(width: kDefaultPadding),
-                Expanded(
-                  child: Container(
-                    padding:const EdgeInsets.symmetric(
-                      horizontal: kDefaultPadding * 0.75,
-                    ),
-                    decoration: BoxDecoration(
-                      color: kPrimaryColor.withOpacity(0.05),
-                      borderRadius: BorderRadius.circular(40),
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child:TextField(
-                            controller:controller,
-                            onChanged: (s){
-                              cubit.changeIcon(s);
-                            },
-                            decoration: InputDecoration(
-                              hintText: mytranslate(context, "typemessage"),
-                              border: InputBorder.none,
+                Row(
+                  children: [
+                    cubit.isopen
+                        ? IconButton(
+                            icon: const Icon(Icons.send, color: kPrimaryColor),
+                            onPressed: () {
+                              cubit.message!.trim().isEmpty
+                                  ? null
+                                  : cubit
+                                      .sendMessage(
+                                          custid: widget.custid,
+                                          context: context,
+                                          userid: widget.userid,
+                                          username: widget.username)
+                                      .then((value) => {
+                                            controller.clear(),
+                                            FocusScope.of(context).unfocus(),
+                                            cubit.isopen = false,
+                                          });
+                            })
+                        : const Icon(Icons.mic, color: kPrimaryColor),
+                    const SizedBox(width: kDefaultPadding),
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: kDefaultPadding * 0.75,
+                        ),
+                        decoration: BoxDecoration(
+                          color: kPrimaryColor.withOpacity(0.05),
+                          borderRadius: BorderRadius.circular(40),
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                controller: controller,
+                                onChanged: (s) {
+                                  cubit.changeIcon(s);
+                                },
+                                decoration: InputDecoration(
+                                  hintText: mytranslate(context, "typemessage"),
+                                  border: InputBorder.none,
+                                ),
+                              ),
                             ),
-                          ),
+                            Icon(
+                              Icons.attach_file,
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1!
+                                  .color!
+                                  .withOpacity(0.64),
+                            ),
+                            const SizedBox(width: kDefaultPadding / 4),
+                            Icon(
+                              Icons.camera_alt_outlined,
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1!
+                                  .color!
+                                  .withOpacity(0.64),
+                            ),
+                          ],
                         ),
-                        Icon(
-                          Icons.attach_file,
-                          color: Theme.of(context).textTheme.bodyText1!.color!.withOpacity(0.64),
-                        ),
-                        const SizedBox(width: kDefaultPadding / 4),
-                        Icon(Icons.camera_alt_outlined, color: Theme.of(context).textTheme.bodyText1!.color!.withOpacity(0.64),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
+                Text("isTyping..."),
               ],
             ),
           ),
