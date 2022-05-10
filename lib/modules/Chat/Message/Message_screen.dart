@@ -4,6 +4,8 @@ import 'package:helpy_app/modules/Chat/Message/components/body.dart';
 
 import 'package:helpy_app/shared/strings.dart';
 
+import 'components/typing.dart';
+
 
 class MessagesScreen extends StatelessWidget {
    final String myid,username,senderid,imageIntroduce;
@@ -34,10 +36,7 @@ class MessagesScreen extends StatelessWidget {
                username,
                 style: const TextStyle(fontSize: 16),
               ),
-               Text(
-                "Online",
-                style: TextStyle(fontSize: 12,color: Colors.grey[500]),
-              )
+              TypingMessage(myid: myid,)
             ],
           ),
         ],

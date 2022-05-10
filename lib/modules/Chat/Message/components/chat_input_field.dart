@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/modules/Chat/cubit.dart';
 import 'package:helpy_app/modules/Chat/states.dart';
 import 'package:helpy_app/shared/localization/translate.dart';
@@ -14,6 +15,7 @@ class ChatInputField extends StatelessWidget {
    ChatInputField({Key? key,required this.custid,  required this.userid,required this.username,required this.listController}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    ConsCubit.get(context).getMyShared();
     return BlocBuilder<ConsChat,ConsChatStates>(
       builder: (ctx,state){
         final cubit=ConsChat.get(context);
@@ -68,7 +70,12 @@ class ChatInputField extends StatelessWidget {
                             },
                             controller:controller,
                             onChanged: (s){
-                              cubit.changeIcon(s);
+                             if(ConsCubit.get(context).customerID==custid){
+                               cubit.changeIcon(s,userid);
+                             }else{
+                               cubit.changeIcon(s,userid);
+                             }
+
                             },
                             decoration: InputDecoration(
                               hintText: mytranslate(context, "typemessage"),

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/modules/Chat/Message/components/mesage_buble.dart';
 import 'package:helpy_app/modules/Chat/Message/components/typing.dart';
 import 'package:helpy_app/modules/Chat/cubit.dart';
@@ -46,7 +47,6 @@ class BodyMessage extends StatelessWidget {
                       BlocBuilder<ConsChat, ConsChatStates>(
                     builder: (ctx, state) {
                       final cubit = ConsChat.get(context);
-                      anotherid= docs[index]['name'];
                       return mesagebuble(
                         username: docs[index]['myname'],
                         mesage: docs[index]['text'],
@@ -61,7 +61,6 @@ class BodyMessage extends StatelessWidget {
                 ),
               ),
             ),
-             TypingMessage(username: username),
             ChatInputField(
               userid: userid,
               username: username,

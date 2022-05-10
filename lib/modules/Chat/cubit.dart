@@ -9,12 +9,16 @@ class ConsChat extends Cubit<ConsChatStates> {
 
    bool isopen=false;
    String? message;
-  void changeIcon(String s){
+  void changeIcon(String s,randomID){
     if(s.isEmpty){
+      typingMessageError(randomID);
       isopen=false;
     }else{
       isopen=true;
       message=s;
+      if(s.length>3){
+        typingMessageDone(randomID);
+      }
     }
     emit(ConsChatChangeIcon());
   }
@@ -43,8 +47,15 @@ class ConsChat extends Cubit<ConsChatStates> {
       "date":Timestamp.now(),
       "status":"Arrived"
     }).catchError((onError){
-
     });
+    if(ConsCubit.get(context).customerID==custid){
+      print(custid);
+      typingMessageError(userid);
+    }else{
+      print(userid);
+      typingMessageError(userid);
+    }
+
     emit(ConsChatSucessText());
   }
   Future<void> updateMessageView({required String custid,required String userid})async {
@@ -66,5 +77,27 @@ class ConsChat extends Cubit<ConsChatStates> {
       print(onError.toString());
       emit(ConsErrorUserViewedMessage());
     });
+  }
+  Future<void> typingMessageDone(randomID)async{
+    await FirebaseFirestore.instance
+        .collection("AllChat")
+        .doc(randomID).update({'typing': "true"}).then((value) {
+      emit(ConsViewedMessage());
+    }).catchError((onError) {
+      print(onError.toString());
+      emit(ConsErrorViewedMessage());
+    });
+
+  }
+  Future<void> typingMessageError(randomID)async{
+    await FirebaseFirestore.instance
+        .collection("AllChat")
+        .doc(randomID).update({'typing': "false"}).then((value) {
+      emit(ConsViewedMessage());
+    }).catchError((onError) {
+      print(onError.toString());
+      emit(ConsErrorViewedMessage());
+    });
+
   }
 }
