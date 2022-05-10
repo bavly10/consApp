@@ -31,18 +31,40 @@ class ConsChat extends Cubit<ConsChatStates> {
       "name":username,
       "image":userdata["senderimage"],
       "date":Timestamp.now(),
+      "status":"Arrived"
     });
     await FirebaseFirestore.instance.collection('AllChat').doc(userid).collection("chats").doc(custid).collection("message").add({
       "text":message,
       "senderid":userid,
       "myid":custid,
-      "date":Timestamp.now(),
       "myname":customerdata["myname"],
       "name":username,
       "image":customerdata["myimage"],
+      "date":Timestamp.now(),
+      "status":"Arrived"
     }).catchError((onError){
 
     });
     emit(ConsChatSucessText());
+  }
+  Future<void> updateMessageView({required String custid,required String userid})async {
+    await FirebaseFirestore.instance
+        .collection("AllChat")
+        .doc(custid).collection("chats").doc(userid).collection("message").doc()
+        .update({'status': "viewed"}).then((value) {
+      emit(ConsViewedMessage());
+    }).catchError((onError) {
+      print(onError.toString());
+      emit(ConsErrorViewedMessage());
+    });
+    await FirebaseFirestore.instance
+        .collection("AllChat")
+        .doc(userid).collection("chats").doc(custid).collection("message").doc()
+        .update({'status': "viewed"}).then((value) {
+      emit(ConsViewedUserMessage());
+    }).catchError((onError) {
+      print(onError.toString());
+      emit(ConsErrorUserViewedMessage());
+    });
   }
 }

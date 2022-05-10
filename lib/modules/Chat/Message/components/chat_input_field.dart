@@ -9,8 +9,9 @@ import 'package:helpy_app/shared/my_colors.dart';
 
 class ChatInputField extends StatelessWidget {
   final String userid,username,custid;
+  final ScrollController listController;
    TextEditingController controller=TextEditingController();
-   ChatInputField({Key? key,required this.custid,  required this.userid,required this.username}) : super(key: key);
+   ChatInputField({Key? key,required this.custid,  required this.userid,required this.username,required this.listController}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ConsChat,ConsChatStates>(
@@ -58,6 +59,13 @@ class ChatInputField extends StatelessWidget {
                       children: [
                         Expanded(
                           child:TextField(
+                            onTap: (){
+                              listController.animateTo(
+                                0.0,
+                                curve: Curves.easeOut,
+                                duration: const Duration(milliseconds: 500),
+                              );
+                            },
                             controller:controller,
                             onChanged: (s){
                               cubit.changeIcon(s);
