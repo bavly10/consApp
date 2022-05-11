@@ -6,18 +6,18 @@ import 'package:helpy_app/shared/strings.dart';
 
 import 'components/typing.dart';
 
-
 class MessagesScreen extends StatelessWidget {
-   final String myid,username,senderid,imageIntroduce;
-  const MessagesScreen(this.myid,this.username, this.senderid,this.imageIntroduce);
+  final String myid, username, senderid, imageIntroduce;
+  const MessagesScreen(
+      this.myid, this.username, this.senderid, this.imageIntroduce);
 
   @override
   Widget build(BuildContext context) {
-    final fcm=FirebaseMessaging.instance;
+    final fcm = FirebaseMessaging.instance;
     fcm.subscribeToTopic("AllChat");
     return Scaffold(
       appBar: buildAppBar(context),
-      body: BodyMessage(userid:senderid,username:username,myid:myid ),
+      body: BodyMessage(userid: senderid, username: username, myid: myid),
     );
   }
 
@@ -27,17 +27,23 @@ class MessagesScreen extends StatelessWidget {
       title: Row(
         children: [
           const BackButton(),
-           CircleAvatar(backgroundImage: NetworkImage(imageIntroduce),),
+          CircleAvatar(
+            backgroundImage: NetworkImage(imageIntroduce),
+          ),
           const SizedBox(width: kDefaultPadding * 0.75),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-               Text(
-               username,
-                style: const TextStyle(fontSize: 16),
-              ),
-              TypingMessage(myid: myid,)
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  username,
+                  style: const TextStyle(fontSize: 16),
+                ),
+                TypingMessage(
+                  myid: myid,
+                )
+              ],
+            ),
           ),
         ],
       ),
