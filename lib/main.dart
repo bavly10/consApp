@@ -27,6 +27,7 @@ void main() async {
   Bloc.observer = MyBlocObserver();
   await Firebase.initializeApp();
   await CashHelper.init();
+
   runApp(MyApp());
 }
 
@@ -46,10 +47,11 @@ class MyApp extends StatelessWidget {
               ..getMyShared()
               ..getLocale()),
         BlocProvider(create: (context) => ConsCubitIntro()),
-        BlocProvider(create: (context) => CustomerCubit()
+        BlocProvider(
+            create: (context) => CustomerCubit()
               ..getCustomerData(ConsCubit.get(context).customerID)),
         BlocProvider(create: (context) => UserCubit()),
-        BlocProvider(create: (context) => ConsChat()),
+        BlocProvider(create: (context) => ConsChat()..labelTimer()),
       ],
       child: BlocBuilder<ConsCubit, cons_States>(
         builder: (context, state) {
