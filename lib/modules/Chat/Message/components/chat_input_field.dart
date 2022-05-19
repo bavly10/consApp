@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/modules/Chat/cubit.dart';
 import 'package:helpy_app/modules/Chat/states.dart';
+import 'package:helpy_app/shared/componotents.dart';
 import 'package:helpy_app/shared/localization/translate.dart';
 import 'package:helpy_app/shared/strings.dart';
 import 'package:helpy_app/shared/my_colors.dart';
@@ -40,11 +42,16 @@ class ChatInputField extends StatelessWidget {
                 cubit.isopen?IconButton(
                     icon: const Icon(Icons.send,color: kPrimaryColor),
                     onPressed: () {
-                      cubit.message!.trim().isEmpty ? null : cubit.sendMessage(custid:custid ,context: context,userid: userid, username: username).then((value) =>{
-                        controller.clear(),
-                      FocusScope.of(context).unfocus(),
-                        cubit.isopen=false,
-                      } );
+                      try{
+                        cubit.message!.trim().isEmpty ? null : cubit.sendMessage(custid:custid ,context: context,userid: userid, username: username).then((value) =>{
+                          controller.clear(),
+                          FocusScope.of(context).unfocus(),
+                          cubit.isopen=false,
+                        });
+                      }on FirebaseException catch(e){
+                        myToast(message: mytranslate(context, "errorMessage"));
+                        print(e.message);
+                      }
                     }):const
                 Icon(Icons.mic, color: kPrimaryColor),
                 const SizedBox(width: kDefaultPadding),

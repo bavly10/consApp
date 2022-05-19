@@ -74,6 +74,7 @@ class PaymentsTest extends StatelessWidget {
       "sendername":username,
       "myimage":customerdata["imageCustomer"],
       "senderimage":userdata["imageIntroduce"],
+      "typing":"false",
       "time":Timestamp.now(),
     }).then((value) => null);
     await FirebaseFirestore.instance.collection("AllChat").doc(userid.toString()).set({
@@ -83,6 +84,7 @@ class PaymentsTest extends StatelessWidget {
       "sendername": customerdata["username"],
       "myimage":userdata["imageIntroduce"],
       "senderimage":customerdata["imageCustomer"],
+      "typing":"false",
       "time":Timestamp.now(),
     }).then((value) =>  myToast(message: "تم اضافه الي قائمه الاصدقاء"));
   }

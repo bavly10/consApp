@@ -173,5 +173,8 @@
    "nothing": "No New Chats",
    "hischat": "NO History Chats",
    "Chats": "Chats",
-   "typing": "typing..."
+   "typing": "typing...",
+   "offline": "offline",
+   "errorMessage": "Sorry This message not sent Try again later"
+
 }

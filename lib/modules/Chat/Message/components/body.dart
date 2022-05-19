@@ -54,7 +54,7 @@ class BodyMessage extends StatelessWidget {
                         date: docs[index]['date'],
                         isme: docs[index]['senderid'] == myid,
                         isopen: cubit.isopen,
-                        viewd: docs[index]['status'] == "viewed",
+                        read: docs[index]['read'],
                       );
                     },
                   ),

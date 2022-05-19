@@ -9,3 +9,5 @@ class ConsViewedMessage extends ConsChatStates {}
 class ConsViewedUserMessage extends ConsChatStates {}
 class ConsErrorViewedMessage extends ConsChatStates {}
 class ConsErrorUserViewedMessage extends ConsChatStates {}
+class ConsDoneViewedMessage extends ConsChatStates {}
+class ConsErrorVieweMessage extends ConsChatStates {}

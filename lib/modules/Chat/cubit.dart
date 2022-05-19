@@ -8,6 +8,7 @@ class ConsChat extends Cubit<ConsChatStates> {
   static ConsChat get(context) => BlocProvider.of(context);
 
    bool isopen=false;
+
    String? message;
   void changeIcon(String s,randomID){
     if(s.isEmpty){
@@ -25,53 +26,67 @@ class ConsChat extends Cubit<ConsChatStates> {
 
   Future<void> sendMessage({context,required String custid,required String userid,required String username,})async {
     ConsCubit.get(context).getMyShared();
-    final customerdata= await FirebaseFirestore.instance.collection('AllChat').doc(custid).get();
-    final userdata= await FirebaseFirestore.instance.collection('AllChat').doc(userid).get();
-    await FirebaseFirestore.instance.collection('AllChat').doc(custid).collection("chats").doc(userid).collection("message").add({
-      "text":message,
-      "senderid":userid,
-      "myid":custid,
-      "myname":customerdata["myname"],
-      "name":username,
-      "image":userdata["senderimage"],
-      "date":Timestamp.now(),
-      "status":"Arrived"
-    });
-    await FirebaseFirestore.instance.collection('AllChat').doc(userid).collection("chats").doc(custid).collection("message").add({
-      "text":message,
-      "senderid":userid,
-      "myid":custid,
-      "myname":customerdata["myname"],
-      "name":username,
-      "image":customerdata["myimage"],
-      "date":Timestamp.now(),
-      "status":"Arrived"
-    }).catchError((onError){
-    });
-    if(ConsCubit.get(context).customerID==custid){
-      print(custid);
-      typingMessageError(userid);
-    }else{
-      print(userid);
-      typingMessageError(userid);
+    try{
+      final customerdata= await FirebaseFirestore.instance.collection('AllChat').doc(custid).get();
+      final userdata= await FirebaseFirestore.instance.collection('AllChat').doc(userid).get();
+      await FirebaseFirestore.instance.collection('AllChat').doc(custid).collection("chats").doc(userid).collection("message").add({
+          "text":message,
+          "senderid":userid,
+          "myid":custid,
+          "myname":customerdata["myname"],
+          "name":username,
+          "image":userdata["senderimage"],
+          "date":Timestamp.now(),
+          "read":"false"
+        });
+      await FirebaseFirestore.instance.collection('AllChat').doc(userid).collection("chats").doc(custid).collection("message").add({
+        "text":message,
+        "senderid":userid,
+        "myid":custid,
+        "myname":customerdata["myname"],
+        "name":username,
+        "image":customerdata["myimage"],
+        "date":Timestamp.now(),
+        "read":"false"
+      });
+      if(ConsCubit.get(context).customerID==custid){
+        print(custid);
+        typingMessageError(userid);
+      }else{
+        print(userid);
+        typingMessageError(userid);
+      }
+    }on FirebaseException catch (y) {
+      rethrow;
     }
-
     emit(ConsChatSucessText());
   }
   Future<void> updateMessageView({required String custid,required String userid})async {
+     String? docId;
+    final x=await FirebaseFirestore.instance.collection("AllChat").doc(custid).collection("chats").doc(userid).collection("message").get();
+    x.docs.forEach((element) {
+      docId=element.id;
+      print(element.id);
+    });
     await FirebaseFirestore.instance
         .collection("AllChat")
-        .doc(custid).collection("chats").doc(userid).collection("message").doc()
-        .update({'status': "viewed"}).then((value) {
+        .doc(custid).collection("chats").doc(userid).collection("message").doc(docId)
+        .update({'read': "true"}).then((value) {
       emit(ConsViewedMessage());
     }).catchError((onError) {
       print(onError.toString());
       emit(ConsErrorViewedMessage());
     });
+    String? anotherid;
+    final w=await FirebaseFirestore.instance.collection("AllChat").doc(userid).collection("chats").doc(custid).collection("message").get();
+    w.docs.forEach((element) {
+      anotherid=element.id;
+      print(element.id);
+    });
     await FirebaseFirestore.instance
         .collection("AllChat")
-        .doc(userid).collection("chats").doc(custid).collection("message").doc()
-        .update({'status': "viewed"}).then((value) {
+        .doc(userid).collection("chats").doc(custid).collection("message").doc(anotherid)
+        .update({'read': "true"}).then((value) {
       emit(ConsViewedUserMessage());
     }).catchError((onError) {
       print(onError.toString());
@@ -100,4 +115,9 @@ class ConsChat extends Cubit<ConsChatStates> {
     });
 
   }
+  List read=[];
+  int get itemCount {
+    return read.length;
+  }
+  bool isread=false;
 }
