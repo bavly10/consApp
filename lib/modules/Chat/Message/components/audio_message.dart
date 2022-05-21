@@ -86,11 +86,11 @@ class AudioMessage extends StatelessWidget {
                                 },
                                 icon: ConsChat.get(context).isPlaying
                                     ? Icon(
-                                        Icons.play_arrow,
+                                        Icons.pause_circle,
                                         color: myAmber,
                                       )
                                     : Icon(
-                                        Icons.pause,
+                                        Icons.play_arrow_rounded,
                                         color: myAmber,
                                       )),
                             SizedBox(

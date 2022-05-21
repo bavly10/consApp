@@ -90,11 +90,13 @@ class ChatInputField extends StatelessWidget {
                             : const Icon(Icons.mic, color: kPrimaryColor),
                         onDragStarted: () async {
                           cubit.isRecording = true;
+                          print(cubit.isRecording);
                           ConsChat.get(context).startRecording(context);
-                          var timerStream =
+                          print(cubit.isRecording);
+                          cubit.timerStream =
                               ConsChat.get(context).stopWatchStream();
-                          var timerSubscription =
-                              timerStream.listen((int newTick) {
+                          cubit.timerSubscription =
+                              cubit.timerStream.listen((int newTick) {
                             cubit.changeTime(newTick);
                           });
 
@@ -103,6 +105,7 @@ class ChatInputField extends StatelessWidget {
                         onDragEnd: (a) async {
                           if (a.offset.dx < 3000 - 10 / 5) {
                             cubit.StopRecord();
+                            cubit.changeStopTimer();
                             //   cubit.audioPlayer = AudioPlayer(
                             //   mode: PlayerMode.MEDIA_PLAYER,
                             // );
@@ -133,8 +136,24 @@ class ChatInputField extends StatelessWidget {
                     child: cubit.isRecording
                         ? Container(
                             color: Colors.white,
-                            child: Text(
-                                "Recording Now ...${cubit.hoursStr}:${cubit.minutesStr}:${cubit.secondsStr}"))
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.circle,
+                                  color: Colors.red,
+                                  size: 14,
+                                ),
+                                const SizedBox(
+                                  width: 3,
+                                ),
+                                Text(
+                                  "Recording Now ...${cubit.minutesStr}:${cubit.secondsStr}",
+                                  style: TextStyle(
+                                      color: myAmber,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
+                            ))
                         : Row(
                             children: [
                               Expanded(

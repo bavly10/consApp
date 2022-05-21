@@ -8,6 +8,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/modules/Chat/states.dart';
+import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
 // Import package
 import 'package:record/record.dart';
@@ -34,13 +35,15 @@ class ConsChat extends Cubit<ConsChatStates> {
   int? maxDurationInmilliseconds;
   var maxDuration;
   int? seekval;
-  var hoursStr;
-  var secondsStr;
-  var minutesStr;
+  var hoursStr = '0';
+  var secondsStr = '0';
+  var minutesStr = '0';
   StreamController<int>? streamController;
   Timer? timer;
-  Duration timerInterval = Duration(seconds: 1);
+  Duration timerInterval = Duration(milliseconds: 1);
   int counter = 0;
+  var timerStream;
+  var timerSubscription;
 
 //  var duration1 = Duration(milliseconds: 500);
   void changeIcon(String s, randomID) {
@@ -266,17 +269,17 @@ class ConsChat extends Cubit<ConsChatStates> {
 
   ///////////////Load File/////////////////////////////
   Future loadFile(context) async {
-    //final bytes = await readBytes(url);
+    // final bytes = await readBytes(url);
     tempDir = await getExternalStorageDirectory();
     filePath =
         File('${ConsChat.get(context).tempDir?.path}/audio${count++}.mp3');
-    //await filePath?.writeAsBytes();
+    //  await filePath?.writeAsBytes(url);
     if (await filePath!.exists()) {
       print(filePath);
       audioPath = filePath!.path;
       // isPlaying = true;
       await play();
-      // isPlaying = false;
+      isPlaying = false;
       emit(ConsChatLoadAudioPlayerChatSucess());
     }
   }
@@ -285,10 +288,7 @@ class ConsChat extends Cubit<ConsChatStates> {
   Future<void> play() async {
     if (audioPath != null && File(audioPath!).existsSync()) {
       await audioPlayer
-          ?.play(
-        audioPath!,
-        isLocal: true,
-      )
+          ?.play(audioPath!, isLocal: true, volume: 0.1)
           .then((value) {
         isPlaying = true;
         audioPlayer?.onDurationChanged.listen((Duration duration) {
@@ -297,6 +297,7 @@ class ConsChat extends Cubit<ConsChatStates> {
 
         emit(ChatAudioIsPlaying());
       });
+      isPlaying = false;
       audioPlayer?.onDurationChanged.listen((Duration duration) {
         print('max duration: ${duration.inSeconds}');
       });
@@ -311,14 +312,14 @@ class ConsChat extends Cubit<ConsChatStates> {
 ////////////////////record Audio/////////////
   void startRecording(context) async {
     if (await record.hasPermission()) {
-      print(record.hasPermission());
+      print(record.hasPermission().toString());
       //  loadFile(context);
       tempDir = await getExternalStorageDirectory();
       filePath =
-          File('${ConsChat.get(context).tempDir?.path}/audio${count++}.mp4');
+          File('${ConsChat.get(context).tempDir?.path}/audio${count++}.mp3');
       //await filePath?.writeAsBytes();
       if (await filePath!.exists()) {
-        print(FieldPath);
+        print(filePath.toString());
         audioPath = filePath!.path;
 
         print(filePath?.path);
@@ -327,13 +328,15 @@ class ConsChat extends Cubit<ConsChatStates> {
             .start(
           samplingRate: 44100,
           path: filePath?.path,
-          encoder: AudioEncoder.aacLc, // by default
+          encoder: AudioEncoder.wav, // by default
           bitRate: 128000, // by default
           // by default
         )
             .then((value) {
           isRecording = true;
           emit(RecordingVoiceNoW());
+        }).catchError((onError) {
+          print("error recording is ${onError.toString()}");
         });
       }
     }
@@ -364,7 +367,7 @@ class ConsChat extends Cubit<ConsChatStates> {
   }
 
   Future<Duration> durationS() async {
-    await Future.delayed(const Duration(milliseconds: 200));
+    await Future.delayed(const Duration(milliseconds: 2));
 
     maxDurationInmilliseconds = await audioPlayer!.getDuration();
 
@@ -404,5 +407,14 @@ class ConsChat extends Cubit<ConsChatStates> {
     hoursStr = ((newTick / (60 * 60)) % 60).floor().toString().padLeft(2, '0');
     minutesStr = ((newTick / 60) % 60).floor().toString().padLeft(2, '0');
     secondsStr = (newTick % 60).floor().toString().padLeft(2, '0');
+  }
+
+  void changeStopTimer() {
+    if (timer != null) {
+      timer!.cancel();
+      timer = null;
+      counter = 0;
+      streamController!.close();
+    }
   }
 }
