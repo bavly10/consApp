@@ -82,58 +82,59 @@ class AudioMessage extends StatelessWidget {
                           children: [
                             IconButton(
                                 onPressed: () {
-                                  ConsChat.get(context).loadFile(context);
+                                  ConsChat.get(context)
+                                      .loadFile(context, mesage);
+                                  ConsChat.get(context).play(mesage);
                                 },
-                                icon: ConsChat.get(context).isPlaying
+                                icon: ConsChat.get(context).changeIsPlaying(
+                                        ConsChat.get(context).isPlaying)
                                     ? Icon(
                                         Icons.pause_circle,
-                                        color: myAmber,
+                                        color: isme ? Colors.blueGrey : myAmber,
                                       )
                                     : Icon(
                                         Icons.play_arrow_rounded,
-                                        color: myAmber,
+                                        color: isme ? Colors.blueGrey : myAmber,
                                       )),
                             SizedBox(
                               /// height: 20,
                               width: MediaQuery.of(context).size.width * .25,
-                              child: Slider(
-                                activeColor: Colors.blueGrey,
-                                autofocus: true,
-                                thumbColor: myAmber,
-                                value: double.parse(ConsChat.get(context)
-                                    .currentpos
-                                    .toString()),
-                                min: 0.0,
-                                max: double.parse(ConsChat.get(context)
-                                    .maxduration
-                                    .toString()),
-                                divisions: ConsChat.get(context).maxduration,
-                                label: ConsChat.get(context).currentpostlabel,
-                                onChanged: (double value) async {
-                                  ConsChat.get(context).labelTimer();
-                                  ConsChat.get(context).seekval = value.round();
-                                  ConsChat.get(context).result =
-                                      await ConsChat.get(context)
-                                          .audioPlayer!
-                                          .seek(Duration(
-                                              milliseconds:
-                                                  ConsChat.get(context)
-                                                      .seekval!));
-                                  if (ConsChat.get(context).result == 1) {
-                                    //seek successful
-                                    ConsChat.get(context).currentpos =
-                                        ConsChat.get(context).seekval!;
-                                    print(
-                                        "seekval${ConsChat.get(context).seekval}");
-                                  } else {
-                                    print("Seek unsuccessful.");
-                                  }
-                                },
+                              child: SliderTheme(
+                                data: SliderTheme.of(context).copyWith(
+                                  activeTrackColor:
+                                      isme ? Colors.white : Colors.blueGrey,
+                                  inactiveTrackColor:
+                                      isme ? Colors.blueGrey : Colors.white,
+                                  trackHeight: 3.0,
+                                  thumbColor: Colors.yellow,
+                                  thumbShape: const RoundSliderThumbShape(
+                                      enabledThumbRadius: 8.0),
+                                  overlayColor: Colors.purple.withAlpha(32),
+                                  overlayShape: const RoundSliderOverlayShape(
+                                      overlayRadius: 14.0),
+                                ),
+                                child: Slider(
+                                  autofocus: true,
+                                  thumbColor: isme ? Colors.blueGrey : myAmber,
+                                  value: double.parse(ConsChat.get(context)
+                                      .currentpos
+                                      .toString()),
+                                  min: 0.0,
+                                  max: double.parse(ConsChat.get(context)
+                                      .maxduration
+                                      .toString()),
+                                  divisions: ConsChat.get(context).maxduration,
+                                  label: ConsChat.get(context).currentpostlabel,
+                                  onChanged: (double value) async {
+                                    ConsChat.get(context).seekAudio(value);
+                                  },
+                                ),
                               ),
                             ),
                             Text(
                               ConsChat.get(context).currentpostlabel,
-                              style: const TextStyle(color: Colors.blueGrey),
+                              style: TextStyle(
+                                  color: isme ? Colors.white : Colors.blueGrey),
                             ),
                             const SizedBox(
                               width: 5,

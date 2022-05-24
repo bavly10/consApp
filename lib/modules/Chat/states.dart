@@ -31,3 +31,9 @@ class ChatAudioIsPlaying extends ConsChatStates {}
 class RecordingVoiceNoW extends ConsChatStates {}
 
 class StopRecordingNow extends ConsChatStates {}
+
+class SeekAudioState extends ConsChatStates {}
+
+class ChangePlaying extends ConsChatStates {}
+
+class GettinglengthAudio extends ConsChatStates {}
