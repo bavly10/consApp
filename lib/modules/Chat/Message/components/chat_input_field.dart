@@ -33,13 +33,6 @@ class ChatInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ConsCubit.get(context).getMyShared();
-    // final stopWatchTimer = StopWatchTimer(
-    //   mode: StopWatchMode.countUp,
-    //  presetMillisecond: StopWatchTimer.getMinute(60), // millisecond => minute.
-    //  onChange: (value) => print('onChange $value'),
-    // onChangeRawSecond: (value) => print('onChangeRawSecond $value'),
-    // onChangeRawMinute: (value) => print('onChangeRawMinute $value'),
-    //);
 
     return BlocBuilder<ConsChat, ConsChatStates>(
       builder: (ctx, state) {
@@ -81,10 +74,7 @@ class ChatInputField extends StatelessWidget {
                                       });
                         })
                     : LongPressDraggable(
-                        feedback: const Icon(
-                          Icons.delete,
-                          color: Colors.black54,
-                        ),
+                        feedback: const Icon(Icons.mic, color: kPrimaryColor),
                         child: cubit.isRecording
                             ? const RipplesMicAnimation()
                             : const Icon(Icons.mic, color: kPrimaryColor),
@@ -103,24 +93,17 @@ class ChatInputField extends StatelessWidget {
                           // Start recording
                         },
                         onDragEnd: (a) async {
-                          if (a.offset.dx < 3000 - 10 / 5) {
-                            cubit.StopRecord();
-                            cubit.changeStopTimer();
-                            //   cubit.audioPlayer = AudioPlayer(
-                            //   mode: PlayerMode.MEDIA_PLAYER,
-                            // );
-                            // cubit.result = await cubit.audioPlayer?.play(
-                            // cubit.audioPath!,
-                            //  isLocal: true,
-                            //  stayAwake: true);
+                          // if (a.offset.dx < 3000 - 10 / 5) {
+                          cubit.StopRecord();
+                          cubit.changeStopTimer();
 
-                            cubit.uploadAudio(
-                              context: context,
-                              custid: custid,
-                              userid: userid,
-                              username: username,
-                            );
-                          }
+                          cubit.uploadAudio(
+                            context: context,
+                            custid: custid,
+                            userid: userid,
+                            username: username,
+                          );
+                          // }
                         },
                       ),
                 const SizedBox(width: kDefaultPadding),

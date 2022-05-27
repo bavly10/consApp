@@ -25,7 +25,7 @@ class ConsChat extends Cubit<ConsChatStates> {
   bool isRecording = false;
   bool isPlaying = false;
   final record = Record();
-  late int duration;
+  int duration = 2000;
   AudioPlayer? audioPlayer = AudioPlayer(mode: PlayerMode.MEDIA_PLAYER);
   int? result;
   int count = 0;
@@ -294,11 +294,12 @@ class ConsChat extends Cubit<ConsChatStates> {
 
   //////////play audio/////////////////
   Future<void> play(url) async {
+    labelTimer();
     isPlaying = true;
-    // if (audioPath != null && File(audioPath!).existsSync()) {
+
     final bytes = await readBytes(Uri.parse(url));
     await filePath?.writeAsBytes(bytes);
-    // audioPath = mesage;
+
     print("playyy this audio${audioPath.toString()}");
     await audioPlayer
         ?.play(
@@ -310,22 +311,20 @@ class ConsChat extends Cubit<ConsChatStates> {
       maxDuration = audioPlayer?.onDurationChanged.listen((Duration duration) {
         print('max duration: ${duration.inSeconds}');
         maxDuration = duration;
+        labelTimer();
         emit(GettinglengthAudio());
       });
 
       emit(ChatAudioIsPlaying());
     });
     isPlaying = false;
-    audioPlayer?.onDurationChanged.listen((Duration duration) {
-      print('max duration: ${duration.inSeconds}');
-      labelTimer();
-    });
+    //  audioPlayer!.setReleaseMode(ReleaseMode.RELEASE);
+    // audioPlayer?.onDurationChanged.listen((Duration duration) {
+    //  print('max duration: ${duration.inSeconds}');
+
+    //  });
     duration = await audioPlayer!.getDuration();
     print("Duaration is $duration");
-    // isPlaying = false;
-    // } else {
-    //isPlaying = false;
-    // }
   }
 
 ////////////////////record Audio/////////////
@@ -333,11 +332,10 @@ class ConsChat extends Cubit<ConsChatStates> {
     //isRecording = true;
     if (await record.hasPermission()) {
       print(record.hasPermission().toString());
-      //  loadFile(context);
+
       tempDir = await getExternalStorageDirectory();
       filePath = File('${tempDir?.path}/audio${count++}.mp3');
-      //await filePath?.writeAsBytes();
-      // if (await filePath!.exists()) {
+
       print(filePath.toString());
       audioPath = filePath!.path;
 
@@ -382,6 +380,7 @@ class ConsChat extends Cubit<ConsChatStates> {
       rseconds = sseconds! - (sminutes! * 60 + shours! * 60 * 60);
 
       currentpostlabel = "$rhours:$rminutes:$rseconds";
+      emit(ChangeCurrentPostLabel());
     });
   }
 
@@ -420,6 +419,7 @@ class ConsChat extends Cubit<ConsChatStates> {
       onResume: startTimer,
       onPause: stopTimer,
     );
+    emit(StartingTimerOfRecord());
     return streamController!.stream;
   }
 
@@ -435,6 +435,7 @@ class ConsChat extends Cubit<ConsChatStates> {
       timer = null;
       counter = 0;
       streamController!.close();
+      emit(StopTimerOfRecord());
     }
   }
 
@@ -452,8 +453,27 @@ class ConsChat extends Cubit<ConsChatStates> {
     }
   }
 
-  bool changeIsPlaying(bool isPlay) {
+  // bool changeIsPlaying(bool isPlay) {
+  // emit(ChangePlaying());
+  // return isPlaying = isPlay;
+  // }
+  void changePlayed(context, bool v, url) {
+    isPlaying = !isPlaying;
     emit(ChangePlaying());
-    return isPlaying = isPlay;
+    if (isPlaying) {
+      loadFile(context, url);
+      play(url);
+    } else {
+      pausPlay(url);
+    }
+  }
+
+  Future<void> pausPlay(url) async {
+    final bytes = await readBytes(Uri.parse(url));
+    await filePath?.writeAsBytes(bytes);
+
+    await audioPlayer!.pause().then((value) {
+      emit(ChatAudioIsPause());
+    });
   }
 }

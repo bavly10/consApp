@@ -37,3 +37,11 @@ class SeekAudioState extends ConsChatStates {}
 class ChangePlaying extends ConsChatStates {}
 
 class GettinglengthAudio extends ConsChatStates {}
+
+class StopTimerOfRecord extends ConsChatStates {}
+
+class StartingTimerOfRecord extends ConsChatStates {}
+
+class ChatAudioIsPause extends ConsChatStates {}
+
+class ChangeCurrentPostLabel extends ConsChatStates {}

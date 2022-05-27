@@ -57,14 +57,14 @@ class AudioMessage extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.only(
-                          topLeft: const Radius.circular(10),
-                          topRight: const Radius.circular(10),
+                          topLeft: const Radius.circular(20),
+                          topRight: const Radius.circular(20),
                           bottomLeft: isme
                               ? const Radius.circular(0)
-                              : const Radius.circular(10),
+                              : const Radius.circular(20),
                           bottomRight: !isme
                               ? const Radius.circular(0)
-                              : const Radius.circular(10),
+                              : const Radius.circular(20),
                         ),
                         color: isme ? myAmber : Colors.grey[300],
                       ),
@@ -82,12 +82,12 @@ class AudioMessage extends StatelessWidget {
                           children: [
                             IconButton(
                                 onPressed: () {
-                                  ConsChat.get(context)
-                                      .loadFile(context, mesage);
-                                  ConsChat.get(context).play(mesage);
+                                  ConsChat.get(context).labelTimer();
+
+                                  ConsChat.get(context).changePlayed(context,
+                                      ConsChat.get(context).isPlaying, mesage);
                                 },
-                                icon: ConsChat.get(context).changeIsPlaying(
-                                        ConsChat.get(context).isPlaying)
+                                icon: ConsChat.get(context).isPlaying
                                     ? Icon(
                                         Icons.pause_circle,
                                         color: isme ? Colors.blueGrey : myAmber,
@@ -123,7 +123,7 @@ class AudioMessage extends StatelessWidget {
                                   max: double.parse(ConsChat.get(context)
                                       .maxduration
                                       .toString()),
-                                  divisions: ConsChat.get(context).maxduration,
+                                  // divisions: ConsChat.get(context).duration,
                                   label: ConsChat.get(context).currentpostlabel,
                                   onChanged: (double value) async {
                                     ConsChat.get(context).seekAudio(value);
@@ -182,53 +182,4 @@ class AudioMessage extends StatelessWidget {
           ));
     });
   }
-
-  /* Column(
-      child
-        Container(
-          width: MediaQuery.of(context).size.width * 0.55,
-          padding: const EdgeInsets.symmetric(
-            horizontal: kDefaultPadding * 0.75,
-            vertical: kDefaultPadding / 2.5,
-          ),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30),
-            color: kPrimaryColor.withOpacity(isme ? 1 : 0.1),
-          ),
-          child: Row(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  ConsChat.get(context).loadFile(context);
-                  print(ConsChat.get(context).isPlaying);
-                },
-                onSecondaryTap: () {},
-                child: Icon(
-                  ConsChat.get(context).isPlaying
-                      ? Icons.pause
-                      : Icons.play_arrow,
-                  color: isme ? Colors.white : kPrimaryColor,
-                ),
-              ),
-              Text(
-                "0.37",
-                style:
-                    TextStyle(fontSize: 12, color: isme ? Colors.white : null),
-              ),
-            ],
-          ),
-        ),
-        ConstrainedBox(
-          constraints: const BoxConstraints(
-            minHeight: 5,
-            maxHeight: 14,
-          ),
-          child: Text(
-            formattedData,
-            style: TextStyle(
-                fontSize: 11, color: isme ? Colors.white : Colors.black),
-          ),
-        ),
-      ],
-    );*/
 }
