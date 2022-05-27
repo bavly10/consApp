@@ -13,9 +13,9 @@ class mesagebuble extends StatelessWidget {
         required this.isme,
         required this.isopen,
         required this.date,
-        required this.read});
+       });
 
-  final String mesage, username, useriamg,read;
+  final String mesage, username, useriamg;
   final bool isme, isopen;
   Timestamp date;
   @override
@@ -117,7 +117,7 @@ class mesagebuble extends StatelessWidget {
                   height: 14,
                   width: 14,
                   decoration:  BoxDecoration(
-                    color: read.contains("true")?Colors.orange:Colors.grey,
+                    color:Colors.grey,
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
