@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:helpy_app/Cubit/cubit.dart';
+import 'package:helpy_app/model/audio_model.dart';
+import 'package:helpy_app/modules/Chat/Message/components/audio_mes.dart';
 import 'package:helpy_app/modules/Chat/Message/components/audio_message.dart';
 import 'package:helpy_app/modules/Chat/Message/components/mesage_buble.dart';
 import 'package:helpy_app/modules/Chat/Message/components/typing.dart';
@@ -34,7 +36,7 @@ class BodyMessage extends StatelessWidget {
           .collection("message")
           .orderBy("date", descending: true)
           .snapshots(),
-      builder: (ctx, AsyncSnapshot<QuerySnapshot> snapshot) {
+      builder: (ctx, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const SpinKitCircle(
             color: Colors.brown,
@@ -56,8 +58,27 @@ class BodyMessage extends StatelessWidget {
                       BlocBuilder<ConsChat, ConsChatStates>(
                     builder: (ctx, state) {
                       final cubit = ConsChat.get(context);
-                      return docs[index]["type"] == "text"
-                          ? mesagebuble(
+                      // cubit.audioModel = AudioModel.fromJson(docs);
+                      cubit.doc = docs;
+                      cubit.doc!.length = docs.length;
+                      return AudioMes(
+                        document: docs[index],
+                        isme: docs[index]['senderid'] == myid,
+                        index: index,
+                        length: docs.length,
+                      ); /*AudioMessage(
+                        index: index,
+                        username: docs[index]['myname'],
+                        mesage: docs[index]['vurl'],
+                        useriamg: docs[index]['image'],
+                        date: docs[index]['date'],
+                        isme: docs[index]['senderid'] == myid,
+                        isopen: cubit.isopen,
+                        viewd: docs[index]['status'] == "viewed",
+                      );*/
+
+                      //docs[index]["type"] == "text"
+                      /* mesagebuble(
                               username: docs[index]['myname'],
                               mesage: docs[index]['text'],
                               useriamg: docs[index]['image'],
@@ -65,16 +86,11 @@ class BodyMessage extends StatelessWidget {
                               isme: docs[index]['senderid'] == myid,
                               isopen: cubit.isopen,
                               viewd: docs[index]['status'] == "viewed",
-                            )
-                          : AudioMessage(
-                              username: docs[index]['myname'],
-                              mesage: docs[index]['vurl'],
-                              useriamg: docs[index]['image'],
-                              date: docs[index]['date'],
-                              isme: docs[index]['senderid'] == myid,
-                              isopen: cubit.isopen,
-                              viewd: docs[index]['status'] == "viewed",
-                            );
+                            )*/
+                      //  AudioMes(
+                      // document: docs[index],
+                      // isme: docs[index]['senderid'] == myid,
+                      //);
                     },
                   ),
                 ),

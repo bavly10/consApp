@@ -22,13 +22,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.8.2"
-  audioplayers:
-    dependency: "direct main"
+  audio_session:
+    dependency: transitive
     description:
-      name: audioplayers
+      name: audio_session
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.20.1"
+    version: "0.1.7"
   bloc:
     dependency: "direct main"
     description:
@@ -300,13 +300,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_audio_waveforms:
-    dependency: "direct main"
-    description:
-      name: flutter_audio_waveforms
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.2.1+5"
   flutter_bloc:
     dependency: "direct main"
     description:
@@ -497,6 +490,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.3"
+  just_audio:
+    dependency: "direct main"
+    description:
+      name: just_audio
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.9.22"
+  just_audio_platform_interface:
+    dependency: transitive
+    description:
+      name: just_audio_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.1.0"
+  just_audio_web:
+    dependency: transitive
+    description:
+      name: just_audio_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.7"
   lints:
     dependency: transitive
     description:
@@ -560,6 +574,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
+  music_visualizer:
+    dependency: "direct main"
+    description:
+      name: music_visualizer
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
   nested:
     dependency: transitive
     description:

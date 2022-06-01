@@ -1,38 +1,32 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:helpy_app/model/ChatMessage.dart';
-import 'package:helpy_app/model/audio_model.dart';
 import 'package:helpy_app/modules/Chat/cubit.dart';
 import 'package:helpy_app/modules/Chat/states.dart';
-import 'package:helpy_app/shared/my_colors.dart';
 import 'package:helpy_app/shared/strings.dart';
 import 'package:intl/intl.dart' as intl;
 
-class AudioMessage extends StatelessWidget {
-  // final ChatMessage? message;
+import '../../../../shared/my_colors.dart';
+import 'package:music_visualizer/music_visualizer.dart';
 
-  AudioMessage({
-    Key? key,
-    required this.mesage,
-    required this.username,
-    required this.useriamg,
-    required this.isme,
-    required this.isopen,
-    required this.date,
-    required this.viewd,
-    required this.index,
-  }) : super(key: key);
-  QueryDocumentSnapshot? documentSnapshot;
-  //AudioModel audioModel=AudioModel(index: index, date: date)
-  final String mesage, username, useriamg;
-  final bool isme, isopen, viewd;
-  Timestamp date;
-  int index;
+class AudioMes extends StatelessWidget {
+  final DocumentSnapshot document;
+  int? index, length;
+  var isme;
+  AudioMes(
+      {Key? key, required this.document, this.isme, this.index, this.length})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Timestamp firebaseTimestamp = date;
+    final List<Color> colors = [
+      myAmber,
+      Colors.white,
+      Colors.blueGrey[400]!,
+      Colors.brown[900]!
+    ];
+    final List<int> duration = [950, 750, 650, 850, 550];
+    Timestamp firebaseTimestamp = document['date'];
     var datee = firebaseTimestamp.toDate();
     var formattedData = intl.DateFormat('h:mm a').format(datee);
     return BlocConsumer<ConsChat, ConsChatStates>(
@@ -52,7 +46,7 @@ class AudioMessage extends StatelessWidget {
                       if (isme) ...[
                         CircleAvatar(
                           radius: 12,
-                          backgroundImage: NetworkImage(useriamg),
+                          backgroundImage: NetworkImage(document.get('image')),
                         ),
                         const SizedBox(width: kDefaultPadding / 2),
                       ],
@@ -79,9 +73,9 @@ class AudioMessage extends StatelessWidget {
                           child: ConstrainedBox(
                             constraints: const BoxConstraints(
                               minWidth: 100.0,
-                              maxWidth: 190,
+                              maxWidth: 300,
                               minHeight: 20.0,
-                              maxHeight: 150.0,
+                              maxHeight: 170.0,
                             ),
                             child: Wrap(
                               //spacing: 0.0,
@@ -91,26 +85,57 @@ class AudioMessage extends StatelessWidget {
                                 if (state is WaithingToOPenAudio)
                                   SizedBox(
                                       height: 10,
+                                      width: 10,
                                       child: CircularProgressIndicator(
                                         color: myAmber,
                                       )),
                                 // if (ConsChat.get(context).isPlaying == true)
                                 IconButton(
                                   onPressed: () {
-                                    // ConsChat.get(context).labelTimer();
+                                    print(ConsChat.get(context).isRecording);
+                                    ConsChat.get(context).labelTimer(index);
 
-                                    //ConsChat.get(context).changePlayed(
-                                    //   context,
-                                    //   ConsChat.get(context).isPlaying,
-                                    //  mesage);
+                                    // ConsChat.get(context).changePlayed(
+                                    //  context,
+                                    //  ConsChat.get(context).isPlaying,
+                                    //  document.get('vurl'));
+                                    ConsChat.get(context).selected(
+                                        index,
+                                        length,
+                                        document.data(),
+                                        context,
+                                        document['vurl']);
                                   },
                                   icon: Icon(
-                                    ConsChat.get(context).isPlaying
+                                    ConsChat.get(context)
+                                                .audioSelectedList[index!] ||
+                                            ConsChat.get(context).isRecording
                                         ? Icons.pause_circle_rounded
                                         : Icons.play_arrow_rounded,
                                     color: isme ? Colors.blueGrey : myAmber,
                                   ),
                                 ),
+                                if (ConsChat.get(context)
+                                        .audioSelectedList[index!] ==
+                                    true)
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ConstrainedBox(
+                                      constraints: BoxConstraints(
+                                        minHeight: 5,
+                                        maxHeight: 30,
+                                        maxWidth:
+                                            MediaQuery.of(context).size.width *
+                                                .33,
+                                      ),
+                                      child: MusicVisualizer(
+                                        curve: Curves.ease,
+                                        barCount: 30,
+                                        colors: colors,
+                                        duration: duration,
+                                      ),
+                                    ),
+                                  ),
                                 /* SizedBox(
                                   /// height: 20,
                                   width:
@@ -150,16 +175,24 @@ class AudioMessage extends StatelessWidget {
                                     ),
                                   ),
                                 ),*/
-                                Text(
-                                  ConsChat.get(context).currentpostlabel,
-                                  style: TextStyle(
-                                      color: isme
-                                          ? Colors.white
-                                          : Colors.blueGrey),
-                                ),
                                 const SizedBox(
                                   width: 5,
                                 ),
+                                if (ConsChat.get(context)
+                                        .audioSelectedList[index!] ==
+                                    true)
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 8.0),
+                                    child: Text(
+                                      ConsChat.get(context)
+                                          .currentpostlabell[index!],
+                                      style: TextStyle(
+                                          color: isme
+                                              ? Colors.white
+                                              : Colors.blueGrey),
+                                    ),
+                                  ),
+
                                 ConstrainedBox(
                                   constraints: const BoxConstraints(
                                     minHeight: 5,

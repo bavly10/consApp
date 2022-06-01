@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:audioplayers/audioplayers.dart';
+//import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +11,6 @@ import 'package:helpy_app/modules/Chat/states.dart';
 import 'package:helpy_app/shared/localization/translate.dart';
 import 'package:helpy_app/shared/strings.dart';
 import 'package:helpy_app/shared/my_colors.dart';
-import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
@@ -82,12 +81,14 @@ class ChatInputField extends StatelessWidget {
                           cubit.isRecording = true;
                           print(cubit.isRecording);
                           ConsChat.get(context).startRecording(context);
+
                           print(cubit.isRecording);
                           cubit.timerStream =
                               ConsChat.get(context).stopWatchStream();
                           cubit.timerSubscription =
                               cubit.timerStream.listen((int newTick) {
                             cubit.changeTime(newTick);
+                            ConsChat.get(context).onWatchChange(newTick);
                           });
 
                           // Start recording

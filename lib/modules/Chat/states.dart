@@ -45,3 +45,7 @@ class StartingTimerOfRecord extends ConsChatStates {}
 class ChatAudioIsPause extends ConsChatStates {}
 
 class ChangeCurrentPostLabel extends ConsChatStates {}
+
+class WaithingToOPenAudio extends ConsChatStates {}
+
+class ChangeTime extends ConsChatStates {}
