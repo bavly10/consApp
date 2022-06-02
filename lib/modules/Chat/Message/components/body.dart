@@ -61,12 +61,14 @@ class BodyMessage extends StatelessWidget {
                       // cubit.audioModel = AudioModel.fromJson(docs);
                       cubit.doc = docs;
                       cubit.doc!.length = docs.length;
-                      return AudioMes(
-                        document: docs[index],
-                        isme: docs[index]['senderid'] == myid,
-                        index: index,
-                        length: docs.length,
-                      ); /*AudioMessage(
+                      if (docs[index]["type"] == "audio") {
+                        return AudioMes(
+                          document: docs[index],
+                          isme: docs[index]['senderid'] == myid,
+                          index: index,
+                          length: docs.length,
+                        );
+                      } /*AudioMessage(
                         index: index,
                         username: docs[index]['myname'],
                         mesage: docs[index]['vurl'],
@@ -78,15 +80,17 @@ class BodyMessage extends StatelessWidget {
                       );*/
 
                       //docs[index]["type"] == "text"
-                      /* mesagebuble(
-                              username: docs[index]['myname'],
-                              mesage: docs[index]['text'],
-                              useriamg: docs[index]['image'],
-                              date: docs[index]['date'],
-                              isme: docs[index]['senderid'] == myid,
-                              isopen: cubit.isopen,
-                              viewd: docs[index]['status'] == "viewed",
-                            )*/
+                      else {
+                        return mesagebuble(
+                          username: docs[index]['myname'],
+                          mesage: docs[index]['text'],
+                          useriamg: docs[index]['image'],
+                          date: docs[index]['date'],
+                          isme: docs[index]['senderid'] == myid,
+                          isopen: cubit.isopen,
+                          viewd: docs[index]['status'] == "viewed",
+                        );
+                      }
                       //  AudioMes(
                       // document: docs[index],
                       // isme: docs[index]['senderid'] == myid,

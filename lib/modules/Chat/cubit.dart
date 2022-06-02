@@ -397,6 +397,7 @@ class ConsChat extends Cubit<ConsChatStates> {
 
       currentpostlabel = "$rhours:$rminutes:$rseconds";
       currentpostlabell[index] = currentpostlabel;
+
       current = currentpostlabell[index];
 
       emit(ChangeCurrentPostLabel());

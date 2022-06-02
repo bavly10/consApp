@@ -25,6 +25,12 @@ class AudioMes extends StatelessWidget {
       Colors.blueGrey[400]!,
       Colors.brown[900]!
     ];
+    final List<Color> colors1 = [
+      Colors.red,
+      Colors.white,
+      Colors.blueGrey[400]!,
+      Colors.brown[900]!
+    ];
     final List<int> duration = [950, 750, 650, 850, 550];
     Timestamp firebaseTimestamp = document['date'];
     var datee = firebaseTimestamp.toDate();
@@ -108,8 +114,8 @@ class AudioMes extends StatelessWidget {
                                   },
                                   icon: Icon(
                                     ConsChat.get(context)
-                                                .audioSelectedList[index!] ||
-                                            ConsChat.get(context).isRecording
+                                                .audioSelectedList[index!] &&
+                                            !ConsChat.get(context).isRecording
                                         ? Icons.pause_circle_rounded
                                         : Icons.play_arrow_rounded,
                                     color: isme ? Colors.blueGrey : myAmber,
@@ -131,7 +137,7 @@ class AudioMes extends StatelessWidget {
                                       child: MusicVisualizer(
                                         curve: Curves.ease,
                                         barCount: 30,
-                                        colors: colors,
+                                        colors: isme ? colors1 : colors,
                                         duration: duration,
                                       ),
                                     ),
