@@ -300,6 +300,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_audio_waveforms:
+    dependency: "direct main"
+    description:
+      name: flutter_audio_waveforms
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.1+5"
   flutter_bloc:
     dependency: "direct main"
     description:
@@ -567,6 +574,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  mini_music_visualizer:
+    dependency: "direct main"
+    description:
+      name: mini_music_visualizer
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
   modal_bottom_sheet:
     dependency: "direct main"
     description:
