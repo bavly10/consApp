@@ -72,8 +72,6 @@ dependencies:
  
   record: ^4.1.1
   
-  flutter_audio_waveforms: 
-  mini_music_visualizer: ^1.0.2
   
   just_audio: ^0.9.22 
   music_visualizer: ^1.0.2
