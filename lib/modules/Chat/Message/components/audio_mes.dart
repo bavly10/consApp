@@ -10,9 +10,6 @@ import 'package:intl/intl.dart' as intl;
 import '../../../../shared/my_colors.dart';
 import 'package:music_visualizer/music_visualizer.dart';
 
-import 'package:flutter_audio_waveforms/flutter_audio_waveforms.dart';
-import 'package:mini_music_visualizer/mini_music_visualizer.dart';
-
 class AudioMes extends StatelessWidget {
   final DocumentSnapshot document;
   int? index, length;

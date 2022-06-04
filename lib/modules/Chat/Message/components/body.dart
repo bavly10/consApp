@@ -58,7 +58,7 @@ class BodyMessage extends StatelessWidget {
                       BlocBuilder<ConsChat, ConsChatStates>(
                     builder: (ctx, state) {
                       final cubit = ConsChat.get(context);
-                      // cubit.audioModel = AudioModel.fromJson(docs);
+
                       cubit.doc = docs;
                       cubit.doc!.length = docs.length;
                       if (docs[index]["type"] == "audio") {
@@ -68,7 +68,17 @@ class BodyMessage extends StatelessWidget {
                           index: index,
                           length: docs.length,
                         );
-                      } /*AudioMessage(
+                      } else {
+                        return mesagebuble(
+                          username: docs[index]['myname'],
+                          mesage: docs[index]['text'],
+                          useriamg: docs[index]['image'],
+                          date: docs[index]['date'],
+                          isme: docs[index]['senderid'] == myid,
+                          isopen: cubit.isopen,
+                          viewd: docs[index]['status'] == "viewed",
+                        );
+                        /*AudioMessage(
                         index: index,
                         username: docs[index]['myname'],
                         mesage: docs[index]['vurl'],
@@ -79,22 +89,8 @@ class BodyMessage extends StatelessWidget {
                         viewd: docs[index]['status'] == "viewed",
                       );*/
 
-                      //docs[index]["type"] == "text"
-                      else {
-                        return mesagebuble(
-                          username: docs[index]['myname'],
-                          mesage: docs[index]['text'],
-                          useriamg: docs[index]['image'],
-                          date: docs[index]['date'],
-                          isme: docs[index]['senderid'] == myid,
-                          isopen: cubit.isopen,
-                          viewd: docs[index]['status'] == "viewed",
-                        );
+                        //docs[index]["type"] == "text"
                       }
-                      //  AudioMes(
-                      // document: docs[index],
-                      // isme: docs[index]['senderid'] == myid,
-                      //);
                     },
                   ),
                 ),

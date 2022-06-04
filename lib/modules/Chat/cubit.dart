@@ -345,6 +345,7 @@ class ConsChat extends Cubit<ConsChatStates> {
       }).catchError((onError) {
         print("error recording is ${onError.toString()}");
       });
+
       // }
     }
   }

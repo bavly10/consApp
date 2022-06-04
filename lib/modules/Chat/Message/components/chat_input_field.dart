@@ -131,10 +131,11 @@ class ChatInputField extends StatelessWidget {
                                   width: 3,
                                 ),
                                 Text(
-                                  "Recording Now ...${cubit.minutesStr}:${cubit.secondsStr}",
+                                  "Recording Now . . .${cubit.hoursStr}:${cubit.minutesStr}",
                                   style: TextStyle(
                                       color: myAmber,
-                                      fontWeight: FontWeight.w600),
+                                      fontWeight: FontWeight.w600,
+                                      fontStyle: FontStyle.italic),
                                 ),
                               ],
                             ))
