@@ -69,6 +69,9 @@ dependencies:
   flutter_staggered_grid_view:
   clickable_list_wheel_view: ^0.0.4
   stop_watch_timer:
+  flutter_downloader: 
+  
+
  
   record: ^4.1.1
   

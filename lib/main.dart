@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'package:helpy_app/Cubit/my_observer.dart';
@@ -24,6 +25,7 @@ import 'modules/Deatils_Special/cubit/cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await FlutterDownloader.initialize();
   Bloc.observer = MyBlocObserver();
   await Firebase.initializeApp();
   await CashHelper.init();

@@ -3,17 +3,26 @@ import 'dart:core';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
+//import 'package:downloads_path_provider/downloads_path_provider.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/model/audio_model.dart';
 import 'package:helpy_app/modules/Chat/states.dart';
+import 'package:helpy_app/shared/localization/translate.dart';
+import 'package:helpy_app/shared/my_colors.dart';
 import 'package:http/http.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:path_provider/path_provider.dart';
 // Import package
 import 'package:record/record.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
+
+import 'dart:io' as io;
 
 class ConsChat extends Cubit<ConsChatStates> {
   ConsChat() : super(ConInitialState());
@@ -28,6 +37,7 @@ class ConsChat extends Cubit<ConsChatStates> {
   bool isPlaying = false;
   final record = Record();
   int duration = 2000;
+  Directory? downloadsDirectory;
 
   final player = AudioPlayer();
 
@@ -348,6 +358,21 @@ class ConsChat extends Cubit<ConsChatStates> {
 
       // }
     }
+    final picker = ImagePicker();
+    final pickers = ImagePicker();
+    var pickedFile, pickedFils;
+    File? imagee;
+
+    Future getImageBloc(ImageSource src) async {
+      pickedFile = await picker.pickImage(source: src, imageQuality: 50);
+      if (pickedFile != null) {
+        imagee = File(pickedFile.path);
+        //emit(TakeImage_State());
+        print("image selected");
+      } else {
+        print("no image selected");
+      }
+    }
   }
 
   void StopRecord() async {
@@ -465,5 +490,154 @@ class ConsChat extends Cubit<ConsChatStates> {
       onChangeRawMinute: (value) => print('onChangeRawMinute $value'),
     );
     emit(ChangeTime());
+  }
+
+///////////////////////////////Pdf File////////////////////
+
+  var pickedFile;
+
+  FilePickerResult? result;
+  void pickFiles(mediaXtype, bool allowMultiple) async {
+    result = (await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: mediaXtype,
+      allowMultiple: allowMultiple,
+      withReadStream: true,
+      withData: true,
+    ));
+    if (result == null) {
+      emit(PickChatFileError());
+    } else {
+      emit(PickChatFileSucess());
+    }
+  }
+
+  Future<void> sendPdfFile(
+      {context,
+      required String custid,
+      required String userid,
+      required String username,
+      required String file,
+      required String fileName,
+      required int sizefile}) async {
+    ConsCubit.get(context).getMyShared();
+    final customerdata = await FirebaseFirestore.instance
+        .collection('AllChat')
+        .doc(custid)
+        .get();
+
+    final userdata = await FirebaseFirestore.instance
+        .collection('AllChat')
+        .doc(userid)
+        .get();
+
+    await FirebaseFirestore.instance
+        .collection('AllChat')
+        .doc(custid)
+        .collection("chats")
+        .doc(userid)
+        .collection("message")
+        .add({
+      "furl": file,
+      "filename": fileName,
+      "sizefile": sizefile,
+      "senderid": userid,
+      "myid": custid,
+      "myname": customerdata["myname"],
+      "name": username,
+      "image": userdata["senderimage"],
+      "date": Timestamp.now(),
+      "status": "Arrived",
+      "type": "pdf"
+    });
+    await FirebaseFirestore.instance
+        .collection('AllChat')
+        .doc(userid)
+        .collection("chats")
+        .doc(custid)
+        .collection("message")
+        .add({
+      "furl": file,
+      "filename": fileName,
+      "sizefile": sizefile,
+      "senderid": userid,
+      "myid": custid,
+      "myname": customerdata["myname"],
+      "name": username,
+      "image": customerdata["myimage"],
+      "date": Timestamp.now(),
+      "status": "Arrived",
+      "type": "pdf"
+    }).catchError((onError) {});
+    if (ConsCubit.get(context).customerID == custid) {
+      print(custid);
+      typingMessageError(userid);
+    } else {
+      print(userid);
+      typingMessageError(userid);
+    }
+
+    emit(ConsChatSucessText());
+  }
+
+  uploadFilePdf({
+    context,
+    required String custid,
+    required String userid,
+    required String username,
+  }) {
+    if (result!.files.single.size <= 5242880) {
+      FirebaseStorage.instance
+          .ref()
+          .child(
+              'PdfChat/${Uri.file(result!.files.single.path!).pathSegments.last}')
+          .putFile(File(result!.files.single.path!))
+          .then((value) {
+        value.ref.getDownloadURL().then((String? value) {
+          print(value);
+          sendPdfFile(
+              context: context,
+              custid: custid,
+              userid: userid,
+              username: username,
+              file: value!,
+              fileName: result!.files.single.name,
+              sizefile: result!.files.single.size);
+          emit(ConsChatUploadFilePdfChatSucess());
+
+          //profileImageUrl = value!;
+        }).catchError((error) {
+          emit(ConsChatUploadFilePdfChatError());
+        });
+      }).catchError((onError) {
+        emit(ConsChatUploadFilePdfChatError());
+      });
+    } else {
+      print(result!.files.single.size);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: myAmber,
+        content: Text(mytranslate(context, "exceed")),
+      ));
+    }
+  }
+
+  Future<void> downloadFille(String url, context, fileName) async {
+    var dio = Dio();
+    var dir = await getExternalStorageDirectory();
+    var downloadDir = await io.Directory(dir!.path).create(recursive: true);
+    io.File('${downloadDir.path}/$fileName').exists().then((a) async {
+      print("Downloading file");
+      print(downloadDir.path);
+      await dio
+          .download(url, '${downloadDir.path}/$fileName.pdf')
+          .then((value) => {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  backgroundColor: myAmber,
+                  content: Text(mytranslate(context, "path") + "$fileName"),
+                )),
+                print("Download completed"),
+                emit(DownloadFileChat()),
+              });
+    });
   }
 }

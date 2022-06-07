@@ -1,21 +1,15 @@
-import 'dart:io';
-
-//import 'package:audioplayers/audioplayers.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/modules/Chat/Message/components/ripple_mic.dart';
 import 'package:helpy_app/modules/Chat/cubit.dart';
 import 'package:helpy_app/modules/Chat/states.dart';
+import 'package:helpy_app/shared/componotents.dart';
 import 'package:helpy_app/shared/localization/translate.dart';
 import 'package:helpy_app/shared/strings.dart';
 import 'package:helpy_app/shared/my_colors.dart';
 
-import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
 // Import package
-import 'package:record/record.dart';
 
 class ChatInputField extends StatelessWidget {
   final String userid, username, custid;
@@ -33,7 +27,27 @@ class ChatInputField extends StatelessWidget {
   Widget build(BuildContext context) {
     ConsCubit.get(context).getMyShared();
 
-    return BlocBuilder<ConsChat, ConsChatStates>(
+    return BlocConsumer<ConsChat, ConsChatStates>(
+      listener: ((context, state) {
+        if (state is PickChatFileSucess) {
+          My_CustomAlertDialog(
+            icon: Icons.done,
+            context: context,
+            onPress: () {
+              ConsChat.get(context).uploadFilePdf(
+                  context: context,
+                  custid: custid,
+                  userid: userid,
+                  username: username);
+              Navigator.pop(context);
+            },
+            pressTitle: mytranslate(context, "sendurl"),
+            pressColor: myAmber,
+            bigTitle: mytranslate(context, "surely"),
+            content: mytranslate(context, "pdff"),
+          );
+        }
+      }),
       builder: (ctx, state) {
         final cubit = ConsChat.get(context);
         return Container(
@@ -72,12 +86,11 @@ class ChatInputField extends StatelessWidget {
                                         cubit.isopen = false,
                                       });
                         })
-                    : LongPressDraggable(
-                        feedback: const Icon(Icons.mic, color: kPrimaryColor),
+                    : InkWell(
                         child: cubit.isRecording
                             ? const RipplesMicAnimation()
                             : const Icon(Icons.mic, color: kPrimaryColor),
-                        onDragStarted: () async {
+                        onTap: () async {
                           cubit.isRecording = true;
                           print(cubit.isRecording);
                           ConsChat.get(context).startRecording(context);
@@ -93,19 +106,6 @@ class ChatInputField extends StatelessWidget {
 
                           // Start recording
                         },
-                        onDragEnd: (a) async {
-                          // if (a.offset.dx < 3000 - 10 / 5) {
-                          cubit.StopRecord();
-                          cubit.changeStopTimer();
-
-                          cubit.uploadAudio(
-                            context: context,
-                            custid: custid,
-                            userid: userid,
-                            username: username,
-                          );
-                          // }
-                        },
                       ),
                 const SizedBox(width: kDefaultPadding),
                 Expanded(
@@ -120,18 +120,38 @@ class ChatInputField extends StatelessWidget {
                     child: cubit.isRecording
                         ? Container(
                             color: Colors.white,
-                            child: Row(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Icon(
-                                  Icons.circle,
-                                  color: Colors.red,
-                                  size: 14,
+                                Text(mytranslate(context, "pressr"),
+                                    style: TextStyle(
+                                        color: myAmber,
+                                        fontWeight: FontWeight.w600)),
+                                InkWell(
+                                  onTap: () async {
+                                    cubit.StopRecord();
+                                    cubit.changeStopTimer();
+
+                                    cubit.uploadAudio(
+                                      context: context,
+                                      custid: custid,
+                                      userid: userid,
+                                      username: username,
+                                    );
+                                    // }
+                                  },
+                                  child: const Icon(
+                                    Icons.stop_circle_rounded,
+                                    color: Colors.red,
+                                    size: 30,
+                                  ),
                                 ),
                                 const SizedBox(
                                   width: 3,
                                 ),
                                 Text(
-                                  "Recording Now . . .${cubit.hoursStr}:${cubit.minutesStr}",
+                                  "${cubit.hoursStr}:${cubit.minutesStr}",
                                   style: TextStyle(
                                       color: myAmber,
                                       fontWeight: FontWeight.w600,
@@ -167,22 +187,31 @@ class ChatInputField extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              Icon(
-                                Icons.attach_file,
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1!
-                                    .color!
-                                    .withOpacity(0.64),
+                              InkWell(
+                                onTap: () {
+                                  ConsChat.get(context)
+                                      .pickFiles(['pdf'], false);
+                                },
+                                child: Icon(
+                                  Icons.attach_file,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1!
+                                      .color!
+                                      .withOpacity(0.64),
+                                ),
                               ),
                               const SizedBox(width: kDefaultPadding / 4),
-                              Icon(
-                                Icons.camera_alt_outlined,
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1!
-                                    .color!
-                                    .withOpacity(0.64),
+                              InkWell(
+                                onTap: () {},
+                                child: Icon(
+                                  Icons.camera_alt_outlined,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1!
+                                      .color!
+                                      .withOpacity(0.64),
+                                ),
                               ),
                             ],
                           ),
