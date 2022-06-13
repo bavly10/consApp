@@ -2,16 +2,27 @@ import 'dart:async';
 import 'dart:core';
 import 'dart:io';
 
-import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
+//import 'package:downloads_path_provider/downloads_path_provider.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helpy_app/Cubit/cubit.dart';
+import 'package:helpy_app/model/audio_model.dart';
 import 'package:helpy_app/modules/Chat/states.dart';
+import 'package:helpy_app/shared/localization/translate.dart';
+import 'package:helpy_app/shared/my_colors.dart';
 import 'package:http/http.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:path_provider/path_provider.dart';
 // Import package
 import 'package:record/record.dart';
+import 'package:stop_watch_timer/stop_watch_timer.dart';
+
+import 'dart:io' as io;
 
 class ConsChat extends Cubit<ConsChatStates> {
   ConsChat() : super(ConInitialState());
@@ -26,15 +37,16 @@ class ConsChat extends Cubit<ConsChatStates> {
   bool isPlaying = false;
   final record = Record();
   int duration = 2000;
-  AudioPlayer? audioPlayer = AudioPlayer(mode: PlayerMode.MEDIA_PLAYER);
-  int? result;
+  Directory? downloadsDirectory;
+
+  final player = AudioPlayer();
+
   int count = 0;
-  int maxduration = 20000;
+
   int currentpos = 0;
-  String currentpostlabel = "00:00";
-  int? maxDurationInmilliseconds;
+
   var maxDuration;
-  int? seekval;
+
   var hoursStr = '0';
   var secondsStr = '0';
   var minutesStr = '0';
@@ -44,14 +56,9 @@ class ConsChat extends Cubit<ConsChatStates> {
   int counter = 0;
   var timerStream;
   var timerSubscription;
-  int? shours;
-  int? sminutes;
-  int? sseconds;
-  int? rhours;
-  int? rminutes;
-  int? rseconds;
+  int? shours, sminutes, sseconds, rhours, rminutes, rseconds;
 
-//  var duration1 = Duration(milliseconds: 500);
+//////////////////////////////////////////////
   void changeIcon(String s, randomID) {
     if (s.isEmpty) {
       typingMessageError(randomID);
@@ -212,6 +219,8 @@ class ConsChat extends Cubit<ConsChatStates> {
   }
 
   //////////////////////Send Audio File/////////////////////////
+  ///
+
   Future<void> sendAudio({
     context,
     required String custid,
@@ -224,10 +233,21 @@ class ConsChat extends Cubit<ConsChatStates> {
         .collection('AllChat')
         .doc(custid)
         .get();
+
     final userdata = await FirebaseFirestore.instance
         .collection('AllChat')
         .doc(userid)
         .get();
+    AudioModel audioModel = AudioModel(
+        date: Timestamp.now(),
+        mesage: audio,
+        useriamg: userdata["senderimage"],
+        username: username,
+        viewed: true,
+        myId: custid,
+        myname: customerdata["myname"],
+        senderId: userdata["senderimage"],
+        type: 'audio');
     await FirebaseFirestore.instance
         .collection('AllChat')
         .doc(custid)
@@ -274,61 +294,42 @@ class ConsChat extends Cubit<ConsChatStates> {
   }
 
   ///////////////Load File/////////////////////////////
-  Future loadFile(context, String url) async {
-    isPlaying = true;
+  Future loadFile(context, String url, index) async {
+    emit(WaithingToOPenAudio());
+
     print("url is...$url");
     final bytes = await readBytes(Uri.parse(url));
     tempDir = await getExternalStorageDirectory();
-    filePath = File('${ConsChat.get(context).tempDir?.path}/audio${count++}.mp3');
+    filePath = File('${tempDir?.path}/audio${count++}.mp3');
     await filePath?.writeAsBytes(bytes);
-    //  if (await filePath!.exists()) {
-    print(filePath);
-    audioPath = filePath!.path;
-    // isPlaying = true;
-    // await play();
-    isPlaying = false;
-    emit(ConsChatLoadAudioPlayerChatSucess());
-    //}
+    if (await filePath!.exists()) {
+      print(filePath);
+      audioPath = filePath!.path;
+
+      await play(audioPath, index);
+
+      emit(ConsChatLoadAudioPlayerChatSucess());
+    } else {
+      print('There is some errors here....');
+    }
   }
 
   //////////play audio/////////////////
-  Future<void> play(url) async {
-    labelTimer();
-    isPlaying = true;
+  Future<void> play(url, index) async {
+    print("playyy this audio${url.toString()}");
 
-    final bytes = await readBytes(Uri.parse(url));
-    await filePath?.writeAsBytes(bytes);
+    maxDuration = await player.setUrl(url);
 
-    print("playyy this audio${audioPath.toString()}");
-    await audioPlayer
-        ?.play(
-      audioPath!,
-      isLocal: false,
-    )
-        .then((value) {
-      isPlaying = true;
-      maxDuration = audioPlayer?.onDurationChanged.listen((Duration duration) {
-        print('max duration: ${duration.inSeconds}');
-        maxDuration = duration;
-        labelTimer();
-        emit(GettinglengthAudio());
-      });
-
-      emit(ChatAudioIsPlaying());
+    player.play().asStream().listen((event) {
+      stopPlay(url);
+      audioSelectedList[index] = false;
     });
-    isPlaying = false;
-    //  audioPlayer!.setReleaseMode(ReleaseMode.RELEASE);
-    // audioPlayer?.onDurationChanged.listen((Duration duration) {
-    //  print('max duration: ${duration.inSeconds}');
 
-    //  });
-    duration = await audioPlayer!.getDuration();
-    print("Duaration is $duration");
+    emit(ChatAudioIsPlaying());
   }
 
 ////////////////////record Audio/////////////
   void startRecording(context) async {
-    //isRecording = true;
     if (await record.hasPermission()) {
       print(record.hasPermission().toString());
 
@@ -354,7 +355,23 @@ class ConsChat extends Cubit<ConsChatStates> {
       }).catchError((onError) {
         print("error recording is ${onError.toString()}");
       });
+
       // }
+    }
+    final picker = ImagePicker();
+    final pickers = ImagePicker();
+    var pickedFile, pickedFils;
+    File? imagee;
+
+    Future getImageBloc(ImageSource src) async {
+      pickedFile = await picker.pickImage(source: src, imageQuality: 50);
+      if (pickedFile != null) {
+        imagee = File(pickedFile.path);
+        //emit(TakeImage_State());
+        print("image selected");
+      } else {
+        print("no image selected");
+      }
     }
   }
 
@@ -365,8 +382,8 @@ class ConsChat extends Cubit<ConsChatStates> {
     });
   }
 
-  void labelTimer() {
-    audioPlayer?.onAudioPositionChanged.listen((Duration p) {
+  void labelTimer(index) {
+    player.positionStream.listen((Duration p) {
       currentpos = p.inMilliseconds; //get the current position of playing audio
 
       //generating the duration label
@@ -379,18 +396,10 @@ class ConsChat extends Cubit<ConsChatStates> {
       rseconds = sseconds! - (sminutes! * 60 + shours! * 60 * 60);
 
       currentpostlabel = "$rhours:$rminutes:$rseconds";
+      currentpostlabell[index] = currentpostlabel;
+
       emit(ChangeCurrentPostLabel());
     });
-  }
-
-  Future<Duration> durationS() async {
-    await Future.delayed(const Duration(milliseconds: 200));
-
-    maxDurationInmilliseconds = await audioPlayer!.getDuration();
-
-    maxDuration = Duration(milliseconds: maxDurationInmilliseconds!);
-    emit(GettinglengthAudio());
-    return maxDuration;
   }
 
   Stream<int> stopWatchStream() {
@@ -438,41 +447,197 @@ class ConsChat extends Cubit<ConsChatStates> {
     }
   }
 
-  void seekAudio(value) async {
-    labelTimer();
-    seekval = value.round();
-    result = await audioPlayer!.seek(Duration(milliseconds: seekval!));
-    if (result == 1) {
-      //seek successful
-      currentpos = seekval!;
-      emit(SeekAudioState());
-      print("seekval${seekval}");
-    } else {
-      print("Seek unsuccessful.");
-    }
-  }
-
-  // bool changeIsPlaying(bool isPlay) {
-  // emit(ChangePlaying());
-  // return isPlaying = isPlay;
-  // }
-  void changePlayed(context, bool v, url) {
-    isPlaying = !isPlaying;
-    emit(ChangePlaying());
-    if (isPlaying) {
-      loadFile(context, url);
-      play(url);
-    } else {
-      pausPlay(url);
-    }
-  }
-
-  Future<void> pausPlay(url) async {
-    final bytes = await readBytes(Uri.parse(url));
-    await filePath?.writeAsBytes(bytes);
-
-    await audioPlayer!.pause().then((value) {
+  Future<void> stopPlay(url) async {
+    isPlaying = false;
+    await player.setUrl(url);
+    await player.stop().then((value) {
       emit(ChatAudioIsPause());
+    });
+  }
+
+  Future<void> pausePlay(url) async {
+    isPlaying = false;
+    await player.setUrl(url);
+    await player.pause().then((value) {
+      emit(ChatAudioIsPause());
+    });
+  }
+
+  String currentpostlabel = "00.00";
+  List<DocumentSnapshot?>? doc;
+  late List<String> currentpostlabell =
+      List.generate(audioSelectedList.length, (index) => "00.00");
+
+  late List<bool> audioSelectedList =
+      List.generate(doc!.length + 3, (index) => false);
+  void selected(index, length, document, context, url) {
+    audioSelectedList = List.generate(document.length, (i) => false);
+    audioSelectedList[index] = true;
+    loadFile(context, url, index);
+    if (audioSelectedList[index] == true) {
+      isPlaying = true;
+    }
+
+    emit(ChangePlaying());
+  }
+
+  var stopWatchTimer = StopWatchTimer();
+  onWatchChange(value) {
+    stopWatchTimer = StopWatchTimer(
+      mode: StopWatchMode.countUp,
+      onChange: (value) => print('onChange $value'),
+      onChangeRawSecond: (value) => print('onChangeRawSecond $value'),
+      onChangeRawMinute: (value) => print('onChangeRawMinute $value'),
+    );
+    emit(ChangeTime());
+  }
+
+///////////////////////////////Pdf File////////////////////
+
+  var pickedFile;
+
+  FilePickerResult? result;
+  void pickFiles(mediaXtype, bool allowMultiple) async {
+    result = (await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: mediaXtype,
+      allowMultiple: allowMultiple,
+      withReadStream: true,
+      withData: true,
+    ));
+    if (result == null) {
+      emit(PickChatFileError());
+    } else {
+      emit(PickChatFileSucess());
+    }
+  }
+
+  Future<void> sendPdfFile(
+      {context,
+      required String custid,
+      required String userid,
+      required String username,
+      required String file,
+      required String fileName,
+      required int sizefile}) async {
+    ConsCubit.get(context).getMyShared();
+    final customerdata = await FirebaseFirestore.instance
+        .collection('AllChat')
+        .doc(custid)
+        .get();
+
+    final userdata = await FirebaseFirestore.instance
+        .collection('AllChat')
+        .doc(userid)
+        .get();
+
+    await FirebaseFirestore.instance
+        .collection('AllChat')
+        .doc(custid)
+        .collection("chats")
+        .doc(userid)
+        .collection("message")
+        .add({
+      "furl": file,
+      "filename": fileName,
+      "sizefile": sizefile,
+      "senderid": userid,
+      "myid": custid,
+      "myname": customerdata["myname"],
+      "name": username,
+      "image": userdata["senderimage"],
+      "date": Timestamp.now(),
+      "status": "Arrived",
+      "type": "pdf"
+    });
+    await FirebaseFirestore.instance
+        .collection('AllChat')
+        .doc(userid)
+        .collection("chats")
+        .doc(custid)
+        .collection("message")
+        .add({
+      "furl": file,
+      "filename": fileName,
+      "sizefile": sizefile,
+      "senderid": userid,
+      "myid": custid,
+      "myname": customerdata["myname"],
+      "name": username,
+      "image": customerdata["myimage"],
+      "date": Timestamp.now(),
+      "status": "Arrived",
+      "type": "pdf"
+    }).catchError((onError) {});
+    if (ConsCubit.get(context).customerID == custid) {
+      print(custid);
+      typingMessageError(userid);
+    } else {
+      print(userid);
+      typingMessageError(userid);
+    }
+
+    emit(ConsChatSucessText());
+  }
+
+  uploadFilePdf({
+    context,
+    required String custid,
+    required String userid,
+    required String username,
+  }) {
+    if (result!.files.single.size <= 5242880) {
+      FirebaseStorage.instance
+          .ref()
+          .child(
+              'PdfChat/${Uri.file(result!.files.single.path!).pathSegments.last}')
+          .putFile(File(result!.files.single.path!))
+          .then((value) {
+        value.ref.getDownloadURL().then((String? value) {
+          print(value);
+          sendPdfFile(
+              context: context,
+              custid: custid,
+              userid: userid,
+              username: username,
+              file: value!,
+              fileName: result!.files.single.name,
+              sizefile: result!.files.single.size);
+          emit(ConsChatUploadFilePdfChatSucess());
+
+          //profileImageUrl = value!;
+        }).catchError((error) {
+          emit(ConsChatUploadFilePdfChatError());
+        });
+      }).catchError((onError) {
+        emit(ConsChatUploadFilePdfChatError());
+      });
+    } else {
+      print(result!.files.single.size);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: myAmber,
+        content: Text(mytranslate(context, "exceed")),
+      ));
+    }
+  }
+
+  Future<void> downloadFille(String url, context, fileName) async {
+    var dio = Dio();
+    var dir = await getExternalStorageDirectory();
+    var downloadDir = await io.Directory(dir!.path).create(recursive: true);
+    io.File('${downloadDir.path}/$fileName').exists().then((a) async {
+      print("Downloading file");
+      print(downloadDir.path);
+      await dio
+          .download(url, '${downloadDir.path}/$fileName.pdf')
+          .then((value) => {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  backgroundColor: myAmber,
+                  content: Text(mytranslate(context, "path") + "$fileName"),
+                )),
+                print("Download completed"),
+                emit(DownloadFileChat()),
+              });
     });
   }
 }

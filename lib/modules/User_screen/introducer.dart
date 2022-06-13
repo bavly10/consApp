@@ -292,12 +292,13 @@ class Introducer extends StatelessWidget {
                 var model = CustomerCubit.get(context).model;
                 if (model?.walletPoint == null)
                 {
-                  await ConsCubitIntro.get(context).getPay(
-                      user: cubit.username,
-                      name: model!.username,
-                      email: model.email,
-                      phone: model.phone,
-                      amount: cubit.introPrice);
+                  addchat(context,cubit.id.toString(),cubit.username);
+                  // await ConsCubitIntro.get(context).getPay(
+                  //     user: cubit.username,
+                  //     name: model!.username,
+                  //     email: model.email,
+                  //     phone: model.phone,
+                  //     amount: cubit.introPrice);
                 } else {
                   My_CustomAlertDialog(
                     pressTitle: mytranslate(context, "done"),

@@ -45,3 +45,17 @@ class StartingTimerOfRecord extends ConsChatStates {}
 class ChatAudioIsPause extends ConsChatStates {}
 
 class ChangeCurrentPostLabel extends ConsChatStates {}
+
+class WaithingToOPenAudio extends ConsChatStates {}
+
+class ChangeTime extends ConsChatStates {}
+
+class PickChatFileSucess extends ConsChatStates {}
+
+class PickChatFileError extends ConsChatStates {}
+
+class ConsChatUploadFilePdfChatSucess extends ConsChatStates {}
+
+class ConsChatUploadFilePdfChatError extends ConsChatStates {}
+
+class DownloadFileChat extends ConsChatStates {}

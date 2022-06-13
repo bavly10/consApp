@@ -258,7 +258,11 @@ class UserCubit extends Cubit<cons_login_Register_States> {
   }
 
   void uploadProfileUserImage({required String id}) {
-    FirebaseStorage.instance.ref().child('users/${Uri.file(imagee!.path).pathSegments.last}').putFile(imagee!).then((value) {
+    FirebaseStorage.instance
+        .ref()
+        .child('users/${Uri.file(imagee!.path).pathSegments.last}')
+        .putFile(imagee!)
+        .then((value) {
       value.ref.getDownloadURL().then((String? value) {
         print(value);
         updateUserImage(image: value, id: id);
@@ -290,14 +294,14 @@ class UserCubit extends Cubit<cons_login_Register_States> {
   String? myEmail;
   int? forgetID;
 
-  register(
-      {String? username,
-      email,
-      password,
-      phone,
-      address,
-      about,
-     }) async {
+  register({
+    String? username,
+    email,
+    password,
+    phone,
+    address,
+    about,
+  }) async {
     emit(cons_Loading_Register());
     late var response;
     final url = Uri.parse("$base_api/auth/local/register");
@@ -315,39 +319,41 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       "Confirmed": false.toString(),
       "categories": cat_id.toString(),
       "specailst": spec_id.toString(),
-      "Point":0.toString()
+      "Point": 0.toString()
     };
     try {
-        response = await http.post(url, headers: headrs, body: body);
-        print(response.toString());
-        if (response.statusCode == 200) {
-          var jdson = jsonDecode(response.body);
-          final loadeddata = jdson['user'];
-          myid = loadeddata["id"];
-          print(response.body);
-          authres = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-          await FirebaseFirestore.instance.collection("users").doc(myid.toString())
-              .set({
-            'username': username,
-            'email': email,
-            "phone": phone,
-            "userid":myid,
-          });
-          uploadImagesStrapi(myid, "certificate");
-          emit(cons_Register_Scusess());
-          return true;
-        } else if (response.statusCode == 400) {
-          var jdsonn = jsonDecode(response.body);
-          loginModel = LoginModel.fromJson(jdsonn);
-          print(loginModel!.message!
-              .map((e) => e.messages!.map((e) => e.message.toString())));
-          emit(cons_Login_Error(loginModel!));
-          return false;
-        } else {
-          print(response);
-          emit(cons_Register_final_Error());
-        }
-
+      response = await http.post(url, headers: headrs, body: body);
+      print(response.toString());
+      if (response.statusCode == 200) {
+        var jdson = jsonDecode(response.body);
+        final loadeddata = jdson['user'];
+        myid = loadeddata["id"];
+        print(response.body);
+        authres = await _auth.createUserWithEmailAndPassword(
+            email: email, password: password);
+        await FirebaseFirestore.instance
+            .collection("users")
+            .doc(myid.toString())
+            .set({
+          'username': username,
+          'email': email,
+          "phone": phone,
+          "userid": myid,
+        });
+        uploadImagesStrapi(myid, "certificate");
+        emit(cons_Register_Scusess());
+        return true;
+      } else if (response.statusCode == 400) {
+        var jdsonn = jsonDecode(response.body);
+        loginModel = LoginModel.fromJson(jdsonn);
+        print(loginModel!.message!
+            .map((e) => e.messages!.map((e) => e.message.toString())));
+        emit(cons_Login_Error(loginModel!));
+        return false;
+      } else {
+        print(response);
+        emit(cons_Register_final_Error());
+      }
     } on FirebaseException catch (y) {
       emit(cons_Register_firebase_Error());
       throw y;

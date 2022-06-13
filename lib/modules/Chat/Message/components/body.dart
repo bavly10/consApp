@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/modules/Chat/Message/components/audio_message.dart';
+
 import 'package:helpy_app/modules/Chat/Message/components/mesage_buble.dart';
-import 'package:helpy_app/modules/Chat/Message/components/typing.dart';
+import 'package:helpy_app/modules/Chat/Message/components/pdf_message.dart';
 import 'package:helpy_app/modules/Chat/cubit.dart';
 import 'package:helpy_app/modules/Chat/states.dart';
 import 'package:helpy_app/shared/strings.dart';
@@ -18,9 +18,9 @@ class BodyMessage extends StatelessWidget {
   String? anotherid;
   BodyMessage(
       {Key? key,
-        required this.userid,
-        required this.username,
-        required this.myid})
+      required this.userid,
+      required this.username,
+      required this.myid})
       : super(key: key);
 
   @override
@@ -34,7 +34,7 @@ class BodyMessage extends StatelessWidget {
           .collection("message")
           .orderBy("date", descending: true)
           .snapshots(),
-      builder: (ctx, AsyncSnapshot<QuerySnapshot> snapshot) {
+      builder: (ctx, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const SpinKitCircle(
             color: Colors.brown,
@@ -46,7 +46,7 @@ class BodyMessage extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding:
-                const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                    const EdgeInsets.symmetric(horizontal: kDefaultPadding),
                 child: ListView.builder(
                   controller: _controller,
                   reverse: true,
@@ -54,27 +54,50 @@ class BodyMessage extends StatelessWidget {
                   shrinkWrap: true,
                   itemBuilder: (context, index) =>
                       BlocBuilder<ConsChat, ConsChatStates>(
-                        builder: (ctx, state) {
-                          final cubit = ConsChat.get(context);
-                          return docs[index]["type"] == "text"
-                              ? mesagebuble(
-                            username: docs[index]['myname'],
-                            mesage: docs[index]['text'],
-                            useriamg: docs[index]['image'],
-                            date: docs[index]['date'],
-                            isme: docs[index]['senderid'] == myid,
-                            isopen: cubit.isopen,
-                          )
-                              : AudioMessage(
-                            username: docs[index]['myname'],
-                            mesage: docs[index]['vurl'],
-                            useriamg: docs[index]['image'],
-                            date: docs[index]['date'],
-                            isme: docs[index]['senderid'] == myid,
-                            isopen: cubit.isopen,
-                          );
-                        },
-                      ),
+                    builder: (ctx, state) {
+                      final cubit = ConsChat.get(context);
+
+                      cubit.doc = docs;
+                      cubit.doc!.length = docs.length;
+                      if (docs[index]["type"] == "audio") {
+                        return AudioMes(
+                          document: docs[index],
+                          isme: docs[index]['senderid'] == myid,
+                          index: index,
+                          length: docs.length,
+                        );
+                      } else if (docs[index]["type"] == "pdf") {
+                        return PdfMessage(
+                          document: docs[index],
+                          isme: docs[index]['senderid'] == myid,
+                          index: index,
+                          length: docs.length,
+                        );
+                      } else {
+                        return mesagebuble(
+                          username: docs[index]['myname'],
+                          mesage: docs[index]['text'],
+                          useriamg: docs[index]['image'],
+                          date: docs[index]['date'],
+                          isme: docs[index]['senderid'] == myid,
+                          isopen: cubit.isopen,
+                          viewd: docs[index]['status'] == "viewed",
+                        );
+                        /*AudioMessage(
+                        index: index,
+                        username: docs[index]['myname'],
+                        mesage: docs[index]['vurl'],
+                        useriamg: docs[index]['image'],
+                        date: docs[index]['date'],
+                        isme: docs[index]['senderid'] == myid,
+                        isopen: cubit.isopen,
+                        viewd: docs[index]['status'] == "viewed",
+                      );*/
+
+                        //docs[index]["type"] == "text"
+                      }
+                    },
+                  ),
                 ),
               ),
             ),

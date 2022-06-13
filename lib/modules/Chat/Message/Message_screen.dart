@@ -1,7 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:helpy_app/modules/Chat/Message/components/body.dart';
-import 'package:helpy_app/modules/Chat/cubit.dart';
 
 import 'package:helpy_app/shared/strings.dart';
 
@@ -14,7 +13,6 @@ class MessagesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ConsChat.get(context).updateMessageView(custid: myid, userid: senderid);
     final fcm = FirebaseMessaging.instance;
     fcm.subscribeToTopic("AllChat");
     return Scaffold(

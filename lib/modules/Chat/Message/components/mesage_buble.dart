@@ -13,10 +13,10 @@ class mesagebuble extends StatelessWidget {
         required this.isme,
         required this.isopen,
         required this.date,
-       });
+        required this.viewd});
 
   final String mesage, username, useriamg;
-  final bool isme, isopen;
+  final bool isme, isopen,viewd;
   Timestamp date;
   @override
   Widget build(BuildContext context) {
@@ -116,8 +116,9 @@ class mesagebuble extends StatelessWidget {
                       top: MediaQuery.of(context).size.height * .04),
                   height: 14,
                   width: 14,
-                  decoration:  BoxDecoration(
-                    color:Colors.grey,
+                  decoration: const BoxDecoration(
+                    ///is showed hn8yr loon
+                    color: Colors.grey,
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
