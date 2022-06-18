@@ -131,7 +131,10 @@ class _IntroducerSpecialState extends State<IntroducerSpecial> {
                                         child: GestureDetector(
                                           onTap: () {
                                             navigateTo(
-                                                context, Introducer(e.id!));
+                                                context,
+                                                Introducer(
+                                                  e.id!,
+                                                ));
                                           },
                                           child: Card(
                                             elevation: 8,

@@ -1,34 +1,70 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'package:helpy_app/Cubit/my_observer.dart';
 import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/model/user_model.dart';
+import 'package:helpy_app/modules/Chat/Message/components/body.dart';
 import 'package:helpy_app/modules/Chat/cubit.dart';
 import 'package:helpy_app/modules/User/cubit/cubit.dart';
 import 'package:helpy_app/modules/Splash_screen/animation_Splash/main.dart';
 import 'package:helpy_app/Cubit/states.dart';
-import 'package:helpy_app/modules/User/login/screren/register.dart';
-import 'package:helpy_app/modules/complian/complian_screen.dart';
 import 'package:helpy_app/modules/customer/cubit/cubit.dart';
+import 'package:helpy_app/shared/componotents.dart';
 
 import 'package:helpy_app/shared/localization/set_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:helpy_app/shared/localization/translate.dart';
 import 'package:helpy_app/shared/my_colors.dart';
 import 'package:helpy_app/shared/shared_prefernces.dart';
 import 'modules/Deatils_Special/cubit/cubit.dart';
+import 'modules/customer/Chat/chats_screen.dart';
+
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  if (message.data["click_action"] == "FLUTTER_NOTIFICATION_CLICK") {
+    navigateTo(
+      BuildContext,
+      ChatsScreen(),
+    );
+  }
+  print('When app in background:${message.data.toString()}');
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await FlutterDownloader.initialize();
+
   Bloc.observer = MyBlocObserver();
   await Firebase.initializeApp();
   await CashHelper.init();
+  await FirebaseMessaging.instance.getToken().then((value) {
+    var tokenFcm = value;
+    print(tokenFcm);
+  });
+  //FirebaseMessaging.instance.onTokenRefresh.listen((event) {
+  // print('The refresh${event.toString()}');
+//});
+  BuildContext context;
+  FirebaseMessaging.onMessage.listen((RemoteMessage event) {
+    print('when open ${event.notification!.body}');
+    // ignore: prefer_const_constructors
+    myToast(message: "${event.notification!.body}");
+  });
+
+  FirebaseMessaging.onMessageOpenedApp.listen((event) {
+    print('when app open in background:${event.data.toString()}');
+    if (event.data["click_action"] == "FLUTTER_NOTIFICATION_CLICK") {
+      navigateTo(
+        BuildContext,
+        ChatsScreen(),
+      );
+      // navigateTo(context, )
+    }
+  });
+  FirebaseMessaging.onBackgroundMessage((firebaseMessagingBackgroundHandler));
 
   runApp(MyApp());
 }
@@ -104,6 +140,7 @@ class MyApp extends StatelessWidget {
             ),
             themeMode: ThemeMode.light,
             home: Animation_Splash(),
+            // Register_intro('ss@gmail.com'),
 
             //// HomeServices(),
             builder: EasyLoading.init(),

@@ -1,17 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:helpy_app/Cubit/cubit.dart';
+import 'package:helpy_app/model/user_model.dart';
+import 'package:helpy_app/modules/Chat/cubit.dart';
 
 import 'package:helpy_app/modules/Deatils_Special/cubit/cubit.dart';
 import 'package:helpy_app/modules/Deatils_Special/cubit/states.dart';
+import 'package:helpy_app/modules/User/cubit/cubit.dart';
 import 'package:helpy_app/modules/customer/Chat/chats_screen.dart';
 import 'package:helpy_app/payment/pay_errors/pay_errors.dart';
 import 'package:helpy_app/shared/componotents.dart';
 
 class PaymentsTest extends StatelessWidget {
   final String url;
+
   final int id;
   PaymentsTest(this.url, this.id);
   ScrollController scrollController = ScrollController();
@@ -41,15 +46,29 @@ class PaymentsTest extends StatelessWidget {
                 ),
               ),
               onLoadStop: (InAppWebViewController controller, url) async {
-                await controller.evaluateJavascript(source: "document.documentElement.innerText")
-                    .then((value) {
+                await controller
+                    .evaluateJavascript(
+                        source: "document.documentElement.innerText")
+                    .then((value) async {
                   if (value.toString().contains("Transaction not completed") ||
                       value.toString().contains("لم تكتمل المعاملة")) {
-                    navigateToFinish(context, PaymentError(cubit: cubit,mytext: value,));
-                  } else if (
-                  value.toString().contains("Transaction successful") ||
+                    navigateToFinish(
+                        context,
+                        PaymentError(
+                          cubit: cubit,
+                          mytext: value,
+                        ));
+                  } else if (value
+                          .toString()
+                          .contains("Transaction successful") ||
                       value.toString().contains("معاملة ناجحة")) {
-                    addchat(context,cubit.id.toString(),cubit.username);
+                    addchat(context, cubit.id.toString(), cubit.username);
+
+                    ConsCubit.get(context).sendFcm(
+                        title: "Surely",
+                        body: "New message from customer",
+                        fcmToken: ConsCubit.get(context).userTokenDevice);
+
                     navigateToFinish(context, ChatsScreen());
                   } else {
                     null;
@@ -62,28 +81,30 @@ class PaymentsTest extends StatelessWidget {
       );
     });
   }
-  addchat(context,userid,username)async{
+
+  addchat(context, userid, username) async {
     ConsCubit.get(context).getMyShared();
-    String? custId=ConsCubit.get(context).customerID;
-    final customerdata = await FirebaseFirestore.instance.collection('customers').doc(custId).get();
-    final userdata = await FirebaseFirestore.instance.collection('users').doc(userid.toString()).get();
+    final model = UserCubit.get(context).loginModel;
+    String? custId = ConsCubit.get(context).customerID;
+    final customerdata = await FirebaseFirestore.instance
+        .collection('customers')
+        .doc(custId)
+        .get();
+    final userdata = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userid.toString())
+        .get();
     await FirebaseFirestore.instance.collection("AllChat").doc(custId).set({
-      "senderID":userid,
+      "senderID": userid,
       "myID": custId,
       "myname": customerdata["username"],
-      "sendername":username,
-      "myimage":customerdata["imageCustomer"],
-      "senderimage":userdata["imageIntroduce"],
-      "time":Timestamp.now(),
-    }).then((value) => null);
-    await FirebaseFirestore.instance.collection("AllChat").doc(userid.toString()).set({
-      "myID":userid,
-      "senderID": custId,
-      "myname":username,
-      "sendername": customerdata["username"],
-      "myimage":userdata["imageIntroduce"],
-      "senderimage":customerdata["imageCustomer"],
-      "time":Timestamp.now(),
-    }).then((value) =>  myToast(message: "تم اضافه الي قائمه الاصدقاء"));
+      "sendername": username,
+      "myimage": customerdata["imageCustomer"],
+      "senderimage": userdata["imageIntroduce"],
+      "time": Timestamp.now(),
+    }).then((value) => ConsCubit.get(context).sendFcm(
+        title: "Surely",
+        body: "New message from customer",
+        fcmToken: ConsCubit.get(context).userTokenDevice));
   }
 }

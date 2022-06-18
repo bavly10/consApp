@@ -90,7 +90,8 @@ class UserStrapi {
       this.posts,
       this.filesIntros,
       this.forgetpass,
-      required this.introPrice});
+      required this.introPrice,
+      this.points});
 
   late int? id;
   late String username;
@@ -115,42 +116,43 @@ class UserStrapi {
   List<Post_user>? posts;
   List<FilesIntro>? filesIntros;
   dynamic introPrice;
+  double? points = 0.0;
 
   factory UserStrapi.fromJson(Map<String, dynamic> json) => UserStrapi(
-        id: json["id"],
-        username: json["username"],
-        introPrice: json["introPrice"],
-        email: json["email"],
-        about: json["about"],
-        provider: json["provider"],
-        blocked: json["blocked"],
-        role: Role.fromJson(json["role"]),
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-        categories: Categories_user.fromJson(json["categories"]),
-        specailst: json["specailst"] == null
-            ? null
-            : Specailst_user.fromJson(json["specailst"]),
-        typeIntroducer: json["type_introducer"],
-        phone: json["phone"],
-        confirmed: json["Confirmed"],
-        forgetpass: json['forgetPass'],
-        city: json["city"],
-        address: json["address"],
-        introLogo: json["intro_logo"] != null
-            ? Img_user.fromJson(json["intro_logo"])
-            : null,
-        introImg: List<Img_user>.from(
-            json["intro_img"].map((x) => Img_user.fromJson(x))),
-        certificate: List<Img_user>.from(
-            json["certificate"].map((x) => Img_user.fromJson(x))),
-        posts: List<Post_user>.from(
-            json["posts"].map((x) => Post_user.fromJson(x))),
-        filesIntros: json["filesusers"] == null
-            ? null
-            : List<FilesIntro>.from(
-                json["filesusers"].map((x) => FilesIntro.fromJson(x))),
-      );
+      id: json["id"],
+      username: json["username"],
+      introPrice: json["introPrice"],
+      email: json["email"],
+      about: json["about"],
+      provider: json["provider"],
+      blocked: json["blocked"],
+      role: Role.fromJson(json["role"]),
+      createdAt: DateTime.parse(json["created_at"]),
+      updatedAt: DateTime.parse(json["updated_at"]),
+      categories: Categories_user.fromJson(json["categories"]),
+      specailst: json["specailst"] == null
+          ? null
+          : Specailst_user.fromJson(json["specailst"]),
+      typeIntroducer: json["type_introducer"],
+      phone: json["phone"],
+      confirmed: json["Confirmed"],
+      forgetpass: json['forgetPass'],
+      city: json["city"],
+      address: json["address"],
+      introLogo: json["intro_logo"] != null
+          ? Img_user.fromJson(json["intro_logo"])
+          : null,
+      introImg: List<Img_user>.from(
+          json["intro_img"].map((x) => Img_user.fromJson(x))),
+      certificate: List<Img_user>.from(
+          json["certificate"].map((x) => Img_user.fromJson(x))),
+      posts:
+          List<Post_user>.from(json["posts"].map((x) => Post_user.fromJson(x))),
+      filesIntros: json["filesusers"] == null
+          ? null
+          : List<FilesIntro>.from(
+              json["filesusers"].map((x) => FilesIntro.fromJson(x))),
+      points: json["points"]);
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -176,6 +178,7 @@ class UserStrapi {
         "certificate": List<dynamic>.from(certificate!.map((x) => x.toJson())),
         "posts": List<dynamic>.from(posts!.map((x) => x.toJson())),
         "filesusers": List<dynamic>.from(filesIntros!.map((x) => x.toJson())),
+        "points": points
       };
 }
 

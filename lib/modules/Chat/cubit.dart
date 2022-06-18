@@ -1,6 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:helpy_app/modules/User/cubit/cubit.dart';
+import 'package:helpy_app/modules/User/cubit/states.dart';
+import 'package:helpy_app/modules/customer/cubit/cubit.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
@@ -38,6 +44,7 @@ class ConsChat extends Cubit<ConsChatStates> {
   final record = Record();
   int duration = 2000;
   Directory? downloadsDirectory;
+  // String? token;
 
   final player = AudioPlayer();
 
@@ -104,7 +111,10 @@ class ConsChat extends Cubit<ConsChatStates> {
       "date": Timestamp.now(),
       "status": "Arrived",
       "type": "text"
-    });
+    }).then((value) => ConsCubit.get(context).sendFcm(
+            title: "Surely",
+            body: "New message from user",
+            fcmToken: ConsCubit.get(context).custTokenDevice));
     await FirebaseFirestore.instance
         .collection('AllChat')
         .doc(userid)
@@ -112,16 +122,21 @@ class ConsChat extends Cubit<ConsChatStates> {
         .doc(custid)
         .collection("message")
         .add({
-      "text": message,
-      "senderid": userid,
-      "myid": custid,
-      "myname": customerdata["myname"],
-      "name": username,
-      "image": customerdata["myimage"],
-      "date": Timestamp.now(),
-      "status": "Arrived",
-      "type": "text"
-    }).catchError((onError) {});
+          "text": message,
+          "senderid": userid,
+          "myid": custid,
+          "myname": customerdata["myname"],
+          "name": username,
+          "image": customerdata["myimage"],
+          "date": Timestamp.now(),
+          "status": "Arrived",
+          "type": "text"
+        })
+        .then((value) => ConsCubit.get(context).sendFcm(
+            title: "Surely",
+            body: "New message from customer",
+            fcmToken: ConsCubit.get(context).userTokenDevice))
+        .catchError((onError) {});
     if (ConsCubit.get(context).customerID == custid) {
       print(custid);
       typingMessageError(userid);
@@ -134,7 +149,7 @@ class ConsChat extends Cubit<ConsChatStates> {
   }
 
   Future<void> updateMessageView(
-      {required String custid, required String userid}) async {
+      {required String custid, required String userid, context}) async {
     await FirebaseFirestore.instance
         .collection("AllChat")
         .doc(custid)

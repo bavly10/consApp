@@ -8,6 +8,7 @@ import 'package:helpy_app/shared/componotents.dart';
 import 'package:helpy_app/shared/localization/translate.dart';
 import 'package:helpy_app/shared/strings.dart';
 import 'package:helpy_app/shared/my_colors.dart';
+import 'package:helpy_app/Cubit/cubit.dart';
 
 // Import package
 
@@ -80,11 +81,11 @@ class ChatInputField extends StatelessWidget {
                                       context: context,
                                       userid: userid,
                                       username: username)
-                                  .then((value) => {
-                                        controller.clear(),
-                                        FocusScope.of(context).unfocus(),
-                                        cubit.isopen = false,
-                                      });
+                                  .then((value) {
+                                  controller.clear();
+                                  FocusScope.of(context).unfocus();
+                                  cubit.isopen = false;
+                                });
                         })
                     : InkWell(
                         child: cubit.isRecording

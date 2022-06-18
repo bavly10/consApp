@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:helpy_app/Cubit/states.dart';
 import 'package:helpy_app/model/ads.dart';
 import 'package:helpy_app/model/categories_model.dart';
@@ -30,13 +31,16 @@ class ConsCubit extends Cubit<cons_States> {
   Locale? locale_cubit;
   String? lang;
   static bool xtranslate = false;
+  var token;
   void changeLang(lang) async {
     Locale currentLocale = await setLocale(lang.lang_Code);
     changLocale(currentLocale);
   }
+
   changLocale(Locale currentLocale) {
     locale_cubit = currentLocale;
   }
+
   Future<Locale> locale(String lang) async {
     switch (lang) {
       case "en":
@@ -54,10 +58,12 @@ class ConsCubit extends Cubit<cons_States> {
     emit(cons_Change_Language());
     return locale_cubit!;
   }
+
   Future<Locale> setLocale(String langCode) async {
     await CashHelper.putData("locale", langCode);
     return locale(langCode);
   }
+
   Future<Locale> getLocale() async {
     lang = CashHelper.getData("locale");
     return locale(lang!);
@@ -264,6 +270,9 @@ class ConsCubit extends Cubit<cons_States> {
   int? userID;
   int? customerIDStrapi;
   String? localeLang;
+  String? custTokenDevice;
+  String? userTokenDevice;
+
   void getMyShared() {
     customerToken = CashHelper.getData("tokenCustomer");
     customerID = CashHelper.getData("cust_id");
@@ -271,16 +280,72 @@ class ConsCubit extends Cubit<cons_States> {
     userID = CashHelper.getData("userId");
     customerIDStrapi = CashHelper.getData("customer_idStrapi");
     localeLang = CashHelper.getData("locale");
+    userTokenDevice = CashHelper.getData("userToken");
+    custTokenDevice = CashHelper.getData("customerToken");
+    print("userToke$userTokenDevice");
   }
 
   String? localID;
-  void getID(){
-    if(customerID==null)
-      {
-        localID=userID.toString();
-      }
-    else{
-      localID=customerID;
+  void getID() {
+    if (customerID == null) {
+      localID = userID.toString();
+    } else {
+      localID = customerID;
     }
+  }
+
+  final HttpClient httpClient = HttpClient();
+  final String fcmUrl = 'https://fcm.googleapis.com/fcm/send';
+  String fcmKey =
+      "AAAAwm87A2Y:APA91bFL6sSEa93uK9wGraq90kNEM6-Zsa98-1lgGnMB2S2ou1feNkwZc9_am9DW1msAxHgbZG6GacFsLOEr8wREHR7VtFpyRyWauf2WEjzuItCSF4p3V0NYjk8hEV6ZzwNypUO3NSdV";
+
+  Future<void> sendFcm({
+    required String title,
+    required String body,
+    String? nameSender,
+    String? fcmToken,
+  }) async {
+    var response = await http.post(Uri.parse(fcmUrl),
+        body: jsonEncode({
+          "to": fcmToken,
+          "priority": "high",
+          "notification": {
+            "title": title,
+            "body": nameSender! + body,
+            "sound": "default"
+          },
+          "data": {
+            "click_action": "FLUTTER_NOTIFICATION_CLICK",
+            "sound": "default",
+          },
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'key=$fcmKey '
+        });
+
+    if (response.statusCode == 200) {
+      print('Helloooooooooooo');
+      print(response.body.toString());
+    } else {
+      print('Noooooooooooooo');
+      print(response.reasonPhrase);
+    }
+  }
+
+  void sendAddingNotification({name, id, tittle, body, context, nameSender}) {
+    FirebaseFirestore.instance
+        .collection(name)
+        .doc(id.toString())
+        .collection('tokens')
+        .doc(id.toString())
+        .get()
+        .then((value) {
+      ConsCubit.get(context).sendFcm(
+          title: tittle,
+          body: body,
+          nameSender: nameSender ?? "",
+          fcmToken: value.get('token'));
+    });
   }
 }
