@@ -305,7 +305,7 @@ class Introducer extends StatelessWidget {
                     body: " Add you ..Click To Start",
                     nameSender: model?.username ?? "",
                     context: context);
-
+                print(cubit.username);
                 UserCubit.get(context).changePoint(cubit.points, id);
 
                 if (model?.walletPoint == null) {

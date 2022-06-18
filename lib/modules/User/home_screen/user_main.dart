@@ -31,11 +31,11 @@ class UserHome extends StatelessWidget {
                     radius: 120.0,
                     lineWidth: 13.0,
                     animation: true,
-                    percent: model?.userClass!.points == null
-                        ? 0
-                        : model!.userClass!.points!,
+                    percent: model!.userClass!.points == null
+                        ? 0.0
+                        : model.userClass!.points!,
                     center: Text(
-                      "${model?.userClass!.points == null ? 0 : model!.userClass!.points}",
+                      "${model.userClass!.points == null ? 0.0 : model.userClass!.points!}",
                       //mytranslate(context, "point"),
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 20.0),

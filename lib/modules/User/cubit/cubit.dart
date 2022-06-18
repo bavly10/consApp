@@ -49,7 +49,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     UserProfileScreen(),
   ];
   void changePoint(points, id) {
-    points = points + 10;
+    points = points + 0.1;
     print(loginModel?.userClass?.points);
     updatePoints(points, id);
     emit(IncreasePoint());

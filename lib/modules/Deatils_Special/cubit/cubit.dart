@@ -39,6 +39,7 @@ class ConsCubitIntro extends Cubit<cons_StatesIntro> {
               city: value["city"],
               about: value["about"],
               username: value["username"],
+              points: value["points"],
               typeIntroducer: value["type_introducer"],
               specailst: Specailst_user.fromJson(value["specailst"]),
               introLogo: value["intro_logo"] == null
@@ -69,6 +70,7 @@ class ConsCubitIntro extends Cubit<cons_StatesIntro> {
               introPrice: value["introPrice"] ?? 0.0,
               city: value["city"],
               about: value["about"],
+              points: value["points"],
               username: value["username"],
               typeIntroducer: value["type_introducer"],
               specailst: Specailst_user.fromJson(value["specailst"]),
