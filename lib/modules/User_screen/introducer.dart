@@ -306,7 +306,7 @@ class Introducer extends StatelessWidget {
                     nameSender: model?.username ?? "",
                     context: context);
 
-                // UserCubit.get(context).changePoint(cubit.points, id);
+                UserCubit.get(context).changePoint(cubit.points, id);
 
                 if (model?.walletPoint == null) {
                   addchat(context, cubit.id.toString(), cubit.username);

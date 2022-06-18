@@ -49,7 +49,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     UserProfileScreen(),
   ];
   void changePoint(points, id) {
-    points = (points) + 10;
+    points = points + 10;
     print(loginModel?.userClass?.points);
     updatePoints(points, id);
     emit(IncreasePoint());
@@ -339,7 +339,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       "Confirmed": false.toString(),
       "categories": cat_id.toString(),
       "specailst": spec_id.toString(),
-      "Point": 0.toString()
+      "points": 0.0
     };
     try {
       response = await http.post(url, headers: headrs, body: body);

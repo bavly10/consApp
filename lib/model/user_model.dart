@@ -152,7 +152,7 @@ class UserStrapi {
           ? null
           : List<FilesIntro>.from(
               json["filesusers"].map((x) => FilesIntro.fromJson(x))),
-      points: json["points"]);
+      points: json["points"].toDouble());
 
   Map<String, dynamic> toJson() => {
         "id": id,
