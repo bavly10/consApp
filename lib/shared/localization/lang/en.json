@@ -177,5 +177,6 @@
    "pdff": "Are you Sure To Sending File?",
    "pressr": "Press To Stop Record",
    "path": "Your File in Files/Storage/Android/data/com.example.helpy_app/files/",
-   "exceed": " FAiled Uploading..Your File is bigger than 5 MB😢"
+   "exceed": " FAiled Uploading..Your File is bigger than 5 MB😢",
+   "closed": "Closed"
 }

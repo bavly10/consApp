@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -6,7 +7,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:helpy_app/Cubit/my_observer.dart';
 import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/model/user_model.dart';
-import 'package:helpy_app/modules/Chat/Message/components/body.dart';
 import 'package:helpy_app/modules/Chat/cubit.dart';
 import 'package:helpy_app/modules/User/cubit/cubit.dart';
 import 'package:helpy_app/modules/Splash_screen/animation_Splash/main.dart';
@@ -22,6 +22,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:helpy_app/shared/my_colors.dart';
 import 'package:helpy_app/shared/shared_prefernces.dart';
 import 'modules/Deatils_Special/cubit/cubit.dart';
+import 'modules/User/login/screren/register.dart';
 import 'modules/customer/Chat/chats_screen.dart';
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -40,6 +41,8 @@ void main() async {
   Bloc.observer = MyBlocObserver();
   await Firebase.initializeApp();
   await CashHelper.init();
+
+  //print("id$uid");
   await FirebaseMessaging.instance.getToken().then((value) {
     var tokenFcm = value;
     print(tokenFcm);
@@ -140,7 +143,7 @@ class MyApp extends StatelessWidget {
             ),
             themeMode: ThemeMode.light,
             home: Animation_Splash(),
-            // Register_intro('ss@gmail.com'),
+            //Register_intro('aws@gmail.com'),
 
             //// HomeServices(),
             builder: EasyLoading.init(),

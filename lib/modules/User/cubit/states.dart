@@ -134,3 +134,5 @@ class ChangeCoverUserImageLoadingState extends cons_login_Register_States {}
 class ChangeCoverUserImageErrorState extends cons_login_Register_States {}
 
 class GettingUserToken extends cons_login_Register_States {}
+
+class ExceedPoint extends cons_login_Register_States {}

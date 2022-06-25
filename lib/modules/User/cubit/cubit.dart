@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/model/post.dart';
 
 import 'package:helpy_app/model/user_model.dart';
@@ -41,6 +42,8 @@ class UserCubit extends Cubit<cons_login_Register_States> {
   int? cat_id, spec_id;
   int currentindex = 0;
   late String userToken;
+  String? numNew;
+  String? numOld;
 
   List screen = [
     const UserHome(),
@@ -48,11 +51,22 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     AdsScreen(),
     UserProfileScreen(),
   ];
-  void changePoint(points, id) {
-    points = points + 0.1;
-    print(loginModel?.userClass?.points);
-    updatePoints(points, id);
-    emit(IncreasePoint());
+  void changePoint(points, id, context) {
+    if (points < 1.0) {
+      points = points + 0.1;
+      print(loginModel?.userClass?.points);
+      updatePoints(points, id);
+      emit(IncreasePoint());
+    } else {
+      ConsCubit.get(context).sendAddingNotification(
+          name: 'users',
+          id: id,
+          tittle: "Surely👌",
+          body: "Congrate🎉🎁You Win 500SR..Click To Check your Points ",
+          nameSender: "",
+          context: context);
+      emit(ExceedPoint());
+    }
   }
 
   Future<http.Response> updatePoints(points, id) {
@@ -324,6 +338,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
   }) async {
     emit(cons_Loading_Register());
     late var response;
+    var points = 0.0;
     final url = Uri.parse("$base_api/auth/local/register");
     Map<String, String> headrs = {'Accept': 'application/json'};
     Map<String, dynamic> body = {
@@ -339,7 +354,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       "Confirmed": false.toString(),
       "categories": cat_id.toString(),
       "specailst": spec_id.toString(),
-      "points": 0.0
+      "points": points.toString()
     };
     try {
       response = await http.post(url, headers: headrs, body: body);
@@ -359,7 +374,6 @@ class UserCubit extends Cubit<cons_login_Register_States> {
           'email': email,
           "phone": phone,
           "userid": myid,
-          // "token": await FirebaseMessaging.instance.getToken()
         });
         uploadImagesStrapi(myid, "certificate");
         print(myid);
@@ -412,12 +426,11 @@ class UserCubit extends Cubit<cons_login_Register_States> {
           .get()
           .then((value) {
         userToken = value.get('token');
+        CashHelper.putData("userToken", userToken); //userToken
+        print(userToken);
+        print("login token");
+        emit(GettingUserToken());
       });
-
-      CashHelper.putData("userToken", userToken); //userToken
-      print(userToken);
-      print("login token");
-      emit(GettingUserToken());
     }).catchError((onError) {
       print('like post error is ${onError.toString()}');
     });
@@ -443,6 +456,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
       var tokenuser = resdata['idToken'];
       CashHelper.putData("userToken", tokenuser);
       getUserLogin(email);
+
       emit(cons_user_Scusess());
     } catch (e) {
       emit(cons_user_error());
@@ -516,7 +530,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
     final url = Uri.parse("$base_api/users?_where[email]=$email");
     final http.Response res = await http.get(url);
     if (res.statusCode == 200) {
-      print(res.body.toString());
+      // print(res.body.toString());
       var resp = jsonDecode(res.body);
       for (var x in resp) {
         userid = x["id"];

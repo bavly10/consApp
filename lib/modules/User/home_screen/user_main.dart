@@ -2,7 +2,9 @@
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/model/user_model.dart';
 import 'package:helpy_app/modules/User/cubit/cubit.dart';
 import 'package:helpy_app/modules/User/cubit/states.dart';
@@ -14,6 +16,8 @@ import 'package:percent_indicator/percent_indicator.dart';
 
 class UserHome extends StatelessWidget {
   const UserHome({Key? key}) : super(key: key);
+
+  get myAmber => null;
 
   @override
   Widget build(BuildContext context) {
@@ -31,11 +35,11 @@ class UserHome extends StatelessWidget {
                     radius: 120.0,
                     lineWidth: 13.0,
                     animation: true,
-                    percent: model!.userClass!.points == null
+                    percent: model?.userClass!.points == null
                         ? 0.0
-                        : model.userClass!.points!,
+                        : model!.userClass!.points!,
                     center: Text(
-                      "${model.userClass!.points == null ? 0.0 : model.userClass!.points!}",
+                      "${model?.userClass!.points == null ? 0.0 : model!.userClass!.points!.toStringAsFixed(1)}",
                       //mytranslate(context, "point"),
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 20.0),
@@ -115,7 +119,7 @@ class UserHome extends StatelessWidget {
                                 height: 5,
                               ),
                               Text(
-                                '12',
+                                UserCubit.get(context).numNew ?? "0",
                                 style: TextStyle(color: Colors.white),
                               ),
                             ],
@@ -143,7 +147,7 @@ class UserHome extends StatelessWidget {
                               SizedBox(
                                 height: 5,
                               ),
-                              Text('4'),
+                              Text(UserCubit.get(context).numOld ?? "0"),
                             ],
                           )),
                     )

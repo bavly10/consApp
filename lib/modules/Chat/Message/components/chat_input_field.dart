@@ -176,9 +176,9 @@ class ChatInputField extends StatelessWidget {
                                   onChanged: (s) {
                                     if (ConsCubit.get(context).customerID ==
                                         custid) {
-                                      cubit.changeIcon(s, userid);
+                                      cubit.changeIcon(s, userid, context);
                                     } else {
-                                      cubit.changeIcon(s, userid);
+                                      cubit.changeIcon(s, userid, context);
                                     }
                                   },
                                   decoration: InputDecoration(

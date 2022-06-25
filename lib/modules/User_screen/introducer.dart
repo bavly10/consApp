@@ -306,7 +306,7 @@ class Introducer extends StatelessWidget {
                     nameSender: model?.username ?? "",
                     context: context);
                 print(cubit.username);
-                UserCubit.get(context).changePoint(cubit.points, id);
+                UserCubit.get(context).changePoint(cubit.points, id, context);
 
                 if (model?.walletPoint == null) {
                   addchat(context, cubit.id.toString(), cubit.username);
@@ -364,7 +364,12 @@ class Introducer extends StatelessWidget {
         .collection('users')
         .doc(userid.toString())
         .get();
-    await FirebaseFirestore.instance.collection("AllChat").doc(custId).set({
+    await FirebaseFirestore.instance
+        .collection("AllChat")
+        .doc(custId)
+        .collection('contact')
+        .doc(userid)
+        .set({
       "senderID": userid,
       "myID": custId,
       "myname": customerdata["username"],
@@ -373,10 +378,12 @@ class Introducer extends StatelessWidget {
       "senderimage": userdata["imageIntroduce"],
       "typing": "false",
       "time": Timestamp.now(),
-    }).then((value) => null);
+    });
     await FirebaseFirestore.instance
         .collection("AllChat")
         .doc(userid.toString())
+        .collection('contact')
+        .doc(custId)
         .set({
       "myID": userid,
       "senderID": custId,

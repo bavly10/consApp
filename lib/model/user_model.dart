@@ -488,9 +488,15 @@ class Specailst_user {
         id: json["id"],
         specTitle: json["Spec_title"],
         catTitle: json["cat_title"],
-        publishedAt: DateTime.parse(json["published_at"]),
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
+        publishedAt: json["published_at"] == null
+            ? null
+            : DateTime.parse(json["published_at"]),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
       );
 
   Map<String, dynamic> toJson() => {

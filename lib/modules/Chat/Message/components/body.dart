@@ -8,6 +8,7 @@ import 'package:helpy_app/modules/Chat/Message/components/mesage_buble.dart';
 import 'package:helpy_app/modules/Chat/Message/components/pdf_message.dart';
 import 'package:helpy_app/modules/Chat/cubit.dart';
 import 'package:helpy_app/modules/Chat/states.dart';
+import 'package:helpy_app/shared/localization/translate.dart';
 import 'package:helpy_app/shared/strings.dart';
 
 import 'chat_input_field.dart';
@@ -29,6 +30,8 @@ class BodyMessage extends StatelessWidget {
       stream: FirebaseFirestore.instance
           .collection("AllChat")
           .doc(myid)
+          .collection('contact')
+          .doc(userid)
           .collection("chats")
           .doc(userid)
           .collection("message")
@@ -40,7 +43,7 @@ class BodyMessage extends StatelessWidget {
             color: Colors.brown,
           );
         }
-        final docs = snapshot.requireData.docs;
+        final docs = snapshot.data.docs;
         return Column(
           children: [
             Expanded(
@@ -101,12 +104,14 @@ class BodyMessage extends StatelessWidget {
                 ),
               ),
             ),
-            ChatInputField(
-              userid: userid,
-              username: username,
-              custid: myid,
-              listController: _controller,
-            )
+            ConsChat.get(context).isClose == false
+                ? ChatInputField(
+                    userid: userid,
+                    username: username,
+                    custid: myid,
+                    listController: _controller,
+                  )
+                : Text(mytranslate(context, "closed"))
           ],
         );
       },

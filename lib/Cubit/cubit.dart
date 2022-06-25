@@ -6,7 +6,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:helpy_app/Cubit/states.dart';
 import 'package:helpy_app/model/ads.dart';
 import 'package:helpy_app/model/categories_model.dart';
-import 'package:helpy_app/model/lang.dart';
 import 'package:helpy_app/model/specailsts_model.dart';
 import 'package:helpy_app/modules/MainScreen/aboutus.dart';
 import 'package:helpy_app/modules/MainScreen/Ads/ads.dart';
@@ -18,7 +17,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helpy_app/shared/shared_prefernces.dart';
 
-import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';

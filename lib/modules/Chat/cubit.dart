@@ -1,12 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:helpy_app/modules/User/cubit/cubit.dart';
-import 'package:helpy_app/modules/User/cubit/states.dart';
-import 'package:helpy_app/modules/customer/cubit/cubit.dart';
-import 'package:http/http.dart' as http;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
@@ -44,6 +38,7 @@ class ConsChat extends Cubit<ConsChatStates> {
   final record = Record();
   int duration = 2000;
   Directory? downloadsDirectory;
+  bool isClose = false;
   // String? token;
 
   final player = AudioPlayer();
@@ -66,15 +61,16 @@ class ConsChat extends Cubit<ConsChatStates> {
   int? shours, sminutes, sseconds, rhours, rminutes, rseconds;
 
 //////////////////////////////////////////////
-  void changeIcon(String s, randomID) {
+  void changeIcon(String s, randomID, context) {
     if (s.isEmpty) {
-      typingMessageError(randomID);
+      typingMessageError(randomID, context);
       isopen = false;
     } else {
       isopen = true;
       message = s;
+
       if (s.length > 3) {
-        typingMessageDone(randomID);
+        typingMessageDone(randomID, context);
       }
     }
     emit(ConsChatChangeIcon());
@@ -90,14 +86,20 @@ class ConsChat extends Cubit<ConsChatStates> {
     final customerdata = await FirebaseFirestore.instance
         .collection('AllChat')
         .doc(custid)
+        .collection('contact')
+        .doc(userid)
         .get();
     final userdata = await FirebaseFirestore.instance
         .collection('AllChat')
         .doc(userid)
+        .collection('contact')
+        .doc(custid)
         .get();
     await FirebaseFirestore.instance
         .collection('AllChat')
         .doc(custid)
+        .collection('contact')
+        .doc(userid)
         .collection("chats")
         .doc(userid)
         .collection("message")
@@ -111,38 +113,32 @@ class ConsChat extends Cubit<ConsChatStates> {
       "date": Timestamp.now(),
       "status": "Arrived",
       "type": "text"
-    }).then((value) => ConsCubit.get(context).sendFcm(
-            title: "Surely",
-            body: "New message from user",
-            fcmToken: ConsCubit.get(context).custTokenDevice));
+    });
     await FirebaseFirestore.instance
         .collection('AllChat')
         .doc(userid)
+        .collection('contact')
+        .doc(custid)
         .collection("chats")
         .doc(custid)
         .collection("message")
         .add({
-          "text": message,
-          "senderid": userid,
-          "myid": custid,
-          "myname": customerdata["myname"],
-          "name": username,
-          "image": customerdata["myimage"],
-          "date": Timestamp.now(),
-          "status": "Arrived",
-          "type": "text"
-        })
-        .then((value) => ConsCubit.get(context).sendFcm(
-            title: "Surely",
-            body: "New message from customer",
-            fcmToken: ConsCubit.get(context).userTokenDevice))
-        .catchError((onError) {});
+      "text": message,
+      "senderid": userid,
+      "myid": custid,
+      "myname": customerdata["myname"],
+      "name": username,
+      "image": customerdata["myimage"],
+      "date": Timestamp.now(),
+      "status": "Arrived",
+      "type": "text"
+    }).catchError((onError) {});
     if (ConsCubit.get(context).customerID == custid) {
       print(custid);
-      typingMessageError(userid);
+      typingMessageError(userid, context);
     } else {
       print(userid);
-      typingMessageError(userid);
+      typingMessageError(userid, context);
     }
 
     emit(ConsChatSucessText());
@@ -151,13 +147,15 @@ class ConsChat extends Cubit<ConsChatStates> {
   Future<void> updateMessageView(
       {required String custid, required String userid, context}) async {
     await FirebaseFirestore.instance
-        .collection("AllChat")
+        .collection('AllChat')
         .doc(custid)
+        .collection('contact')
+        .doc(userid)
         .collection("chats")
         .doc(userid)
         .collection("message")
         .doc()
-        .update({'status': "viewed"}).then((value) {
+        .set({'status': "viewed"}).then((value) {
       emit(ConsViewedMessage());
     }).catchError((onError) {
       print(onError.toString());
@@ -166,11 +164,13 @@ class ConsChat extends Cubit<ConsChatStates> {
     await FirebaseFirestore.instance
         .collection("AllChat")
         .doc(userid)
+        .collection('contact')
+        .doc(custid)
         .collection("chats")
         .doc(custid)
         .collection("message")
         .doc()
-        .update({'status': "viewed"}).then((value) {
+        .set({'status': "viewed"}).then((value) {
       emit(ConsViewedUserMessage());
     }).catchError((onError) {
       print(onError.toString());
@@ -178,9 +178,11 @@ class ConsChat extends Cubit<ConsChatStates> {
     });
   }
 
-  Future<void> typingMessageDone(randomID) async {
+  Future<void> typingMessageDone(randomID, context) async {
     await FirebaseFirestore.instance
         .collection("AllChat")
+        .doc(ConsCubit.get(context).localID)
+        .collection('contact')
         .doc(randomID)
         .update({'typing': "true"}).then((value) {
       emit(ConsViewedMessage());
@@ -190,9 +192,11 @@ class ConsChat extends Cubit<ConsChatStates> {
     });
   }
 
-  Future<void> typingMessageError(randomID) async {
+  Future<void> typingMessageError(randomID, context) async {
     await FirebaseFirestore.instance
         .collection("AllChat")
+        .doc(ConsCubit.get(context).localID)
+        .collection('contact')
         .doc(randomID)
         .update({'typing': "false"}).then((value) {
       emit(ConsViewedMessage());
@@ -247,11 +251,15 @@ class ConsChat extends Cubit<ConsChatStates> {
     final customerdata = await FirebaseFirestore.instance
         .collection('AllChat')
         .doc(custid)
+        .collection('contact')
+        .doc(userid)
         .get();
 
     final userdata = await FirebaseFirestore.instance
         .collection('AllChat')
         .doc(userid)
+        .collection('contact')
+        .doc(custid)
         .get();
     AudioModel audioModel = AudioModel(
         date: Timestamp.now(),
@@ -266,6 +274,8 @@ class ConsChat extends Cubit<ConsChatStates> {
     await FirebaseFirestore.instance
         .collection('AllChat')
         .doc(custid)
+        .collection('contact')
+        .doc(userid)
         .collection("chats")
         .doc(userid)
         .collection("message")
@@ -283,6 +293,8 @@ class ConsChat extends Cubit<ConsChatStates> {
     await FirebaseFirestore.instance
         .collection('AllChat')
         .doc(userid)
+        .collection('contact')
+        .doc(custid)
         .collection("chats")
         .doc(custid)
         .collection("message")
@@ -299,10 +311,10 @@ class ConsChat extends Cubit<ConsChatStates> {
     }).catchError((onError) {});
     if (ConsCubit.get(context).customerID == custid) {
       print(custid);
-      typingMessageError(userid);
+      typingMessageError(userid, context);
     } else {
       print(userid);
-      typingMessageError(userid);
+      typingMessageError(userid, context);
     }
 
     emit(ConsChatSucessText());
@@ -539,16 +551,22 @@ class ConsChat extends Cubit<ConsChatStates> {
     final customerdata = await FirebaseFirestore.instance
         .collection('AllChat')
         .doc(custid)
+        .collection('contact')
+        .doc(userid)
         .get();
 
     final userdata = await FirebaseFirestore.instance
         .collection('AllChat')
         .doc(userid)
+        .collection('contact')
+        .doc(custid)
         .get();
 
     await FirebaseFirestore.instance
         .collection('AllChat')
         .doc(custid)
+        .collection('contact')
+        .doc(userid)
         .collection("chats")
         .doc(userid)
         .collection("message")
@@ -568,6 +586,8 @@ class ConsChat extends Cubit<ConsChatStates> {
     await FirebaseFirestore.instance
         .collection('AllChat')
         .doc(userid)
+        .collection('contact')
+        .doc(custid)
         .collection("chats")
         .doc(custid)
         .collection("message")
@@ -586,10 +606,10 @@ class ConsChat extends Cubit<ConsChatStates> {
     }).catchError((onError) {});
     if (ConsCubit.get(context).customerID == custid) {
       print(custid);
-      typingMessageError(userid);
+      typingMessageError(userid, context);
     } else {
       print(userid);
-      typingMessageError(userid);
+      typingMessageError(userid, context);
     }
 
     emit(ConsChatSucessText());
