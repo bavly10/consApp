@@ -19,6 +19,7 @@ import 'package:helpy_app/modules/User/profile/profile.dart';
 
 import 'package:helpy_app/modules/customer/Chat/chats_screen.dart';
 import 'package:helpy_app/shared/componotents.dart';
+import 'package:helpy_app/shared/localization/translate.dart';
 import 'package:helpy_app/shared/network.dart';
 import 'package:helpy_app/shared/shared_prefernces.dart';
 import 'package:image_picker/image_picker.dart';
@@ -62,7 +63,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
           name: 'users',
           id: id,
           tittle: "Surely👌",
-          body: "Congrate🎉🎁You Win 500SR..Click To Check your Points ",
+          body: mytranslate(context, "win"),
           nameSender: "",
           context: context);
       emit(ExceedPoint());

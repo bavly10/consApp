@@ -302,7 +302,7 @@ class Introducer extends StatelessWidget {
                     name: 'users',
                     id: id,
                     tittle: "Surely",
-                    body: " Add you ..Click To Start",
+                    body: mytranslate(context, "adding"),
                     nameSender: model?.username ?? "",
                     context: context);
                 print(cubit.username);

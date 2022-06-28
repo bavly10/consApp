@@ -92,7 +92,7 @@ class ChangePassword extends StatelessWidget {
                     ],
                   ),
                 )
-              : Center(child: CircularProgressIndicator()));
+              : const Center(child: CircularProgressIndicator()));
     });
   }
 }

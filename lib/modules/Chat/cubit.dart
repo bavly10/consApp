@@ -402,6 +402,7 @@ class ConsChat extends Cubit<ConsChatStates> {
     }
   }
 
+  //////////////////stop record///////////////////////
   void StopRecord() async {
     await Record().stop().then((value) {
       isRecording = false;

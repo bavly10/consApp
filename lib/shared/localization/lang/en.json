@@ -178,5 +178,8 @@
    "pressr": "Press To Stop Record",
    "path": "Your File in Files/Storage/Android/data/com.example.helpy_app/files/",
    "exceed": " FAiled Uploading..Your File is bigger than 5 MB😢",
-   "closed": "Closed"
+   "closed": "Closed",
+   "okay": "Okey",
+   "win": "Congrate🎉🎁You Win 500SR.. Check your Points ",
+   "adding": " Add you ..Check your Chat"
 }

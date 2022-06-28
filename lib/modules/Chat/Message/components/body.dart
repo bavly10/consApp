@@ -111,7 +111,13 @@ class BodyMessage extends StatelessWidget {
                     custid: myid,
                     listController: _controller,
                   )
-                : Text(mytranslate(context, "closed"))
+                : Text(
+                    mytranslate(context, "closed"),
+                    style: const TextStyle(
+                        color: Colors.blueGrey,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18),
+                  )
           ],
         );
       },

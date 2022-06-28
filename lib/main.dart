@@ -12,6 +12,7 @@ import 'package:helpy_app/modules/User/cubit/cubit.dart';
 import 'package:helpy_app/modules/Splash_screen/animation_Splash/main.dart';
 import 'package:helpy_app/Cubit/states.dart';
 import 'package:helpy_app/modules/customer/cubit/cubit.dart';
+import 'package:helpy_app/shared/compononet/custom_notification_dialog.dart';
 import 'package:helpy_app/shared/componotents.dart';
 
 import 'package:helpy_app/shared/localization/set_localization.dart';
@@ -35,6 +36,8 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print('When app in background:${message.data.toString()}');
 }
 
+final navigatorKey = GlobalKey<NavigatorState>();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -42,19 +45,24 @@ void main() async {
   await Firebase.initializeApp();
   await CashHelper.init();
 
-  //print("id$uid");
   await FirebaseMessaging.instance.getToken().then((value) {
     var tokenFcm = value;
     print(tokenFcm);
   });
-  //FirebaseMessaging.instance.onTokenRefresh.listen((event) {
-  // print('The refresh${event.toString()}');
-//});
-  BuildContext context;
+
+  BuildContext dialogContext; //
   FirebaseMessaging.onMessage.listen((RemoteMessage event) {
     print('when open ${event.notification!.body}');
-    // ignore: prefer_const_constructors
-    myToast(message: "${event.notification!.body}");
+
+    // myToast(message: "${event.notification!.body}");
+    showDialog(
+        context: navigatorKey.currentState!.overlay!.context,
+        builder: (context) {
+          dialogContext = context;
+          return CustomNotificationDialog(
+            notifiText: event.notification!.body!,
+          );
+        });
   });
 
   FirebaseMessaging.onMessageOpenedApp.listen((event) {
@@ -99,6 +107,7 @@ class MyApp extends StatelessWidget {
         builder: (context, state) {
           final cubit = ConsCubit.get(context);
           return MaterialApp(
+            navigatorKey: navigatorKey,
             locale: cubit.locale_cubit,
             localizationsDelegates: const [
               SetLocalztion.localizationsDelegate,
