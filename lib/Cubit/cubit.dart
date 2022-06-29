@@ -280,7 +280,6 @@ class ConsCubit extends Cubit<cons_States> {
     localeLang = CashHelper.getData("locale");
     userTokenDevice = CashHelper.getData("userToken");
     custTokenDevice = CashHelper.getData("customerToken");
-    print("userToke$userTokenDevice");
   }
 
   String? localID;
