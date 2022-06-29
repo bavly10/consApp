@@ -13,6 +13,8 @@ import '../../../Chat/Message/Message_screen.dart';
 
 class OldChat extends StatelessWidget {
   String? myid, senderid, username, introduceimg;
+  int? diff1;
+  List<int> diff = [];
 
   @override
   Widget build(BuildContext context) {
@@ -43,16 +45,18 @@ class OldChat extends StatelessWidget {
 
             docs.forEach((element) {
               allData = [];
+              diff = [];
               docs.map((element) {
                 var e = element.get('time');
                 DateTime dateTime2 = DateTime.parse(e.toDate().toString());
-                var diff1 = nowDate.difference(dateTime2).inHours;
-                print("difference time is $diff1");
-                if (diff1 >= 48) {
+                diff1 = nowDate.difference(dateTime2).inHours;
+                diff.add(diff1!);
+                //  print("difference time is $diff1");
+                if (diff1! >= 48) {
                   print("difference time is $diff1");
                   allData.add(element.data());
                   ConsChat.get(context).isClose = true;
-                  print(allData.toString());
+                  // print(allData.toString());
                 }
               }).toList();
             });
@@ -101,25 +105,23 @@ class OldChat extends StatelessWidget {
                                           allData[index]['sendername'],
                                           style: const TextStyle(
                                               fontSize: 16,
-                                              fontWeight: FontWeight.w500),
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.blueGrey),
                                         ),
                                         const SizedBox(height: 8),
-                                        const Opacity(
-                                          opacity: 0.64,
-                                          child: Text(
-                                            "Hello Abdullah! I am...",
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
                                       ],
                                     ),
                                   ),
                                 ),
                                 Opacity(
-                                  opacity: 0.64,
+                                  opacity: .8,
                                   child: Text(
-                                      allData[index]['senderID'].toString()),
+                                    "${diff[index].toString()}  ${mytranslate(context, "hours")}",
+                                    style: TextStyle(
+                                        color: myAmber,
+                                        fontStyle: FontStyle.italic,
+                                        fontWeight: FontWeight.w600),
+                                  ),
                                 ),
                               ],
                             ),
