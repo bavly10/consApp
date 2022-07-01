@@ -9,6 +9,7 @@ import 'package:helpy_app/shared/localization/translate.dart';
 import 'package:helpy_app/shared/strings.dart';
 import 'package:helpy_app/shared/my_colors.dart';
 import 'package:helpy_app/Cubit/cubit.dart';
+import 'package:image_picker/image_picker.dart';
 
 // Import package
 
@@ -47,6 +48,12 @@ class ChatInputField extends StatelessWidget {
             bigTitle: mytranslate(context, "surely"),
             content: mytranslate(context, "pdff"),
           );
+        } else if (state is TakeImageState) {
+          ConsChat.get(context).uploadImageChat(
+              custid: custid,
+              userid: userid,
+              username: username,
+              context: context);
         }
       }),
       builder: (ctx, state) {
@@ -204,7 +211,10 @@ class ChatInputField extends StatelessWidget {
                               ),
                               const SizedBox(width: kDefaultPadding / 4),
                               InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  ConsChat.get(context)
+                                      .getImageBloc(ImageSource.gallery);
+                                },
                                 child: Icon(
                                   Icons.camera_alt_outlined,
                                   color: Theme.of(context)

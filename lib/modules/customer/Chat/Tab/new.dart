@@ -59,11 +59,12 @@ class _newTestState extends State<newTest> {
                 var e = element.get('time');
                 DateTime dateTime2 = DateTime.parse(e.toDate().toString());
                 diff1 = nowDate.difference(dateTime2).inHours;
-                diff.add(diff1!);
+
                 // print("difference time is $diff1");
-                if (diff1! < 48) {
+                if (diff1! < 18) {
                   print("difference time is $diff1");
                   allData.add(element.data());
+                  diff.add(diff1!);
                   ConsChat.get(context).isClose = false;
                   // print(allData.toString());
                 }

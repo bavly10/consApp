@@ -676,4 +676,119 @@ class ConsChat extends Cubit<ConsChatStates> {
               });
     });
   }
+
+  ///////////////////////////////////Upload&send image///////////////////////
+  final picker = ImagePicker();
+
+  File? imagee;
+  Future getImageBloc(ImageSource src) async {
+    pickedFile = await picker.pickImage(source: src, imageQuality: 50);
+    if (pickedFile != null) {
+      imagee = File(pickedFile.path);
+      emit(TakeImageState());
+      print("image selected");
+    } else {
+      print("no image selected");
+    }
+  }
+
+  void uploadImageChat(
+      {context,
+      required String custid,
+      required String userid,
+      required String username}) {
+    FirebaseStorage.instance
+        .ref()
+        .child('ImageChat/${Uri.file(imagee!.path).pathSegments.last}')
+        .putFile(imagee!)
+        .then((value) {
+      value.ref.getDownloadURL().then((String? value) {
+        print(value);
+        sendImageChat(
+            context: context,
+            custid: custid,
+            userid: userid,
+            username: username,
+            imagechat: value!);
+        emit(UploadImageChatSucessState());
+
+        //profileImageUrl = value!;
+      }).catchError((error) {
+        emit(UploadImageChatErrorState());
+      });
+    }).catchError((onError) {
+      emit(UploadImageChatErrorState());
+    });
+  }
+
+  Future<void> sendImageChat({
+    context,
+    required String custid,
+    required String userid,
+    required String username,
+    required String imagechat,
+  }) async {
+    ConsCubit.get(context).getMyShared();
+    final customerdata = await FirebaseFirestore.instance
+        .collection('AllChat')
+        .doc(custid)
+        .collection('contact')
+        .doc(userid)
+        .get();
+
+    final userdata = await FirebaseFirestore.instance
+        .collection('AllChat')
+        .doc(userid)
+        .collection('contact')
+        .doc(custid)
+        .get();
+
+    await FirebaseFirestore.instance
+        .collection('AllChat')
+        .doc(custid)
+        .collection('contact')
+        .doc(userid)
+        .collection("chats")
+        .doc(userid)
+        .collection("message")
+        .add({
+      "imagechat": imagechat,
+      "senderid": userid,
+      "myid": custid,
+      "myname": customerdata["myname"],
+      "name": username,
+      "image": userdata["senderimage"],
+      "date": Timestamp.now(),
+      "status": "Arrived",
+      "type": "image"
+    });
+    await FirebaseFirestore.instance
+        .collection('AllChat')
+        .doc(userid)
+        .collection('contact')
+        .doc(custid)
+        .collection("chats")
+        .doc(custid)
+        .collection("message")
+        .add({
+      "imagechat": imagechat,
+      "senderid": userid,
+      "myid": custid,
+      "myname": customerdata["myname"],
+      "name": username,
+      "image": customerdata["myimage"],
+      "date": Timestamp.now(),
+      "status": "Arrived",
+      "type": "image"
+    }).catchError((onError) {});
+    if (ConsCubit.get(context).customerID == custid) {
+      print(custid);
+      typingMessageError(userid, context);
+    } else {
+      print(userid);
+      typingMessageError(userid, context);
+    }
+
+    emit(ConsChatSucessText());
+  }
 }

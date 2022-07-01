@@ -52,7 +52,7 @@ class OldChat extends StatelessWidget {
                 diff1 = nowDate.difference(dateTime2).inHours;
                 diff.add(diff1!);
                 //  print("difference time is $diff1");
-                if (diff1! >= 48) {
+                if (diff1! >= 18) {
                   print("difference time is $diff1");
                   allData.add(element.data());
                   ConsChat.get(context).isClose = true;

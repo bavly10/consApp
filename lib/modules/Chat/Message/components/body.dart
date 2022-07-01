@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:helpy_app/modules/Chat/Message/components/audio_message.dart';
+import 'package:helpy_app/modules/Chat/Message/components/image_message.dart';
 
 import 'package:helpy_app/modules/Chat/Message/components/mesage_buble.dart';
 import 'package:helpy_app/modules/Chat/Message/components/pdf_message.dart';
@@ -71,6 +72,13 @@ class BodyMessage extends StatelessWidget {
                         );
                       } else if (docs[index]["type"] == "pdf") {
                         return PdfMessage(
+                          document: docs[index],
+                          isme: docs[index]['senderid'] == myid,
+                          index: index,
+                          length: docs.length,
+                        );
+                      } else if (docs[index]["type"] == "image") {
+                        return ImageMessage(
                           document: docs[index],
                           isme: docs[index]['senderid'] == myid,
                           index: index,
