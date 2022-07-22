@@ -23,11 +23,15 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ConsCubit.get(context).getMyShared();
+    CustomerCubit.get(context)
+        .getCustomerData(ConsCubit.get(context).customerID);
     return BlocConsumer<CustomerCubit, Customer_States>(
       listener: (context, state) {},
       builder: (context, state) {
         var model = CustomerCubit.get(context).model;
         var cusImage = CustomerCubit.get(context).model?.image;
+        print(cusImage.toString());
         final cubit = ConsCubit.get(context);
         return Directionality(
           textDirection: TextDirection.rtl,
@@ -35,16 +39,15 @@ class ProfileScreen extends StatelessWidget {
             body: SingleChildScrollView(
               child: Column(
                 children: [
-                  if (cusImage == null)
-                    const CircleAvatar(
-                      backgroundImage: AssetImage('assets/logo.png'),
-                      radius: 50,
-                    ),
-                  if (cusImage != null)
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(cusImage),
-                      radius: 50,
-                    ),
+                  cusImage != null
+                      ? CircleAvatar(
+                          backgroundImage: NetworkImage(cusImage),
+                          radius: 50,
+                        )
+                      : const CircleAvatar(
+                          backgroundImage: AssetImage('assets/logo.png'),
+                          radius: 50,
+                        ),
                   const SizedBox(
                     height: 20,
                   ),
@@ -230,6 +233,7 @@ class ProfileScreen extends StatelessWidget {
                           trailingIcon: Icons.arrow_forward_ios_rounded,
                           onTap: () {
                             CashHelper.removeData("tokenCustomer");
+                            CashHelper.removeData("customer_idStrapi");
                             CashHelper.removeData("cust_id");
                             navigateToFinish(context, Main_login());
                           })),

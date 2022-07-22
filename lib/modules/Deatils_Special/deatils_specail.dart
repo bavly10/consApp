@@ -97,8 +97,8 @@ class _IntroducerSpecialState extends State<IntroducerSpecial> {
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
                           children: [
-                            const Text(
-                              "نتائج البحث :",
+                            Text(
+                              mytranslate(context, "searchr"),
                               style: TextStyle(fontSize: 20),
                             ),
                             const SizedBox(
@@ -205,6 +205,10 @@ class _IntroducerSpecialState extends State<IntroducerSpecial> {
                                                             const Spacer(),
                                                             InkWell(
                                                                 onTap: () {
+                                                                  print(ConsCubit
+                                                                          .get(
+                                                                              context)
+                                                                      .customerIDStrapi);
                                                                   ConsCubit.get(
                                                                           context)
                                                                       .getMyShared();

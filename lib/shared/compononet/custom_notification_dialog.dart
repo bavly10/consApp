@@ -16,7 +16,7 @@ class CustomNotificationDialog extends StatelessWidget {
           alignment: Alignment.topCenter,
           children: [
             SizedBox(
-              height: MediaQuery.of(context).size.height * .35,
+              height: MediaQuery.of(context).size.height * .42,
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(10, 70, 10, 10),
                 child: Column(

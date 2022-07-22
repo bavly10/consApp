@@ -27,8 +27,8 @@ class Ads {
   DateTime? createdAt;
   DateTime? updatedAt;
   bool premium;
-  String?URLLink;
-  String?Name;
+  String? URLLink;
+  String? Name;
   ProfileImage profileImage;
 
   factory Ads.fromJson(Map<String, dynamic> json) => Ads(
@@ -38,7 +38,7 @@ class Ads {
         updatedAt: DateTime.parse(json["updated_at"]),
         premium: json["premium"],
         URLLink: json["URLLink"],
-         Name: json["Name"],
+        Name: json["Name"],
         profileImage: ProfileImage.fromJson(json["profileImage"]),
       );
 
@@ -266,7 +266,7 @@ class UserName {
   String? address;
   String? about;
   bool? forgetpass;
-  int? introPrice;
+  dynamic introPrice;
   ProfileImage? introLogo;
   List<ProfileImage>? introImg;
 

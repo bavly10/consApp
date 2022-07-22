@@ -33,18 +33,25 @@ class UserMain extends StatelessWidget {
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(mytranslate(context, "welcome",), style: const TextStyle(color: Colors.black, fontSize: 18),),
-                    const SizedBox(width: 5,),
-                    Text(model?.userClass!.username??model?.userClass!.username??"error", style: TextStyle(color: myAmber),)
+                    Text(
+                      mytranslate(
+                        context,
+                        "welcome",
+                      ),
+                      style: const TextStyle(color: Colors.black, fontSize: 18),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      model?.userClass!.username ??
+                          model?.userClass!.username ??
+                          "error",
+                      style: TextStyle(color: myAmber),
+                    )
                   ],
                 ),
                 actions: [
-                  IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.money_rounded,
-                        color: HexColor('#C18F3A'),
-                      )),
                   IconButton(
                       onPressed: () {
                         CashHelper.removeData("userToken");

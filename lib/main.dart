@@ -152,7 +152,7 @@ class MyApp extends StatelessWidget {
             ),
             themeMode: ThemeMode.light,
             home: Animation_Splash(),
-            //Register_intro('aws@gmail.com'),
+            // Register_intro('hamza6063@gmail.com'),
 
             //// HomeServices(),
             builder: EasyLoading.init(),

@@ -69,9 +69,9 @@ class ConsChat extends Cubit<ConsChatStates> {
       isopen = true;
       message = s;
 
-      if (s.length > 3) {
-        typingMessageDone(randomID, context);
-      }
+      // if (s.length > 3) {
+      //   typingMessageDone(randomID, context);
+      // }
     }
     emit(ConsChatChangeIcon());
   }
@@ -512,6 +512,7 @@ class ConsChat extends Cubit<ConsChatStates> {
   var stopWatchTimer = StopWatchTimer();
   onWatchChange(value) {
     stopWatchTimer = StopWatchTimer(
+      isLapHours: true,
       mode: StopWatchMode.countUp,
       onChange: (value) => print('onChange $value'),
       onChangeRawSecond: (value) => print('onChangeRawSecond $value'),

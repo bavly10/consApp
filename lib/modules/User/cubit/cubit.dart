@@ -433,7 +433,7 @@ class UserCubit extends Cubit<cons_login_Register_States> {
         emit(GettingUserToken());
       });
     }).catchError((onError) {
-      print('like post error is ${onError.toString()}');
+      print('Token error is ${onError.toString()}');
     });
   }
 
