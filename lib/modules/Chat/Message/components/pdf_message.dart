@@ -126,23 +126,23 @@ class PdfMessage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      if (!isme)
-                        Container(
-                          margin: EdgeInsetsDirectional.only(
-                              top: MediaQuery.of(context).size.height * .04),
-                          height: 14,
-                          width: 14,
-                          decoration: const BoxDecoration(
-                            ///is showed hn8yr loon
-                            color: Colors.grey,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            Icons.done,
-                            size: 8,
-                            color: Theme.of(context).scaffoldBackgroundColor,
-                          ),
-                        ),
+                      // if (!isme)
+                      //   Container(
+                      //     margin: EdgeInsetsDirectional.only(
+                      //         top: MediaQuery.of(context).size.height * .04),
+                      //     height: 14,
+                      //     width: 14,
+                      //     decoration: const BoxDecoration(
+                      //       ///is showed hn8yr loon
+                      //       color: Colors.grey,
+                      //       shape: BoxShape.circle,
+                      //     ),
+                      //     child: Icon(
+                      //       Icons.done,
+                      //       size: 8,
+                      //       color: Theme.of(context).scaffoldBackgroundColor,
+                      //     ),
+                      //   ),
                     ],
                   ),
                   const SizedBox(
