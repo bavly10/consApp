@@ -201,6 +201,8 @@ class _LoginIntroState extends State<LoginIntro> {
                                 UserCubit.get(context)
                                     .sendEmail("users", emailController.text);
                                 Navigator.pop(context);
+                                  myToast(
+                                  message: mytranslate(context, "Emailissent"));
                               }));
                     },
                     child: Text(

@@ -242,6 +242,7 @@ class CustomerCubit extends Cubit<Customer_States> {
   }
 
   /////////firebase/////////
+  String? img;
   Future<void> getCustomerData(myCustomerId) async {
     emit(CustomerLoadinggState());
     await FirebaseFirestore.instance
@@ -250,7 +251,9 @@ class CustomerCubit extends Cubit<Customer_States> {
         .get()
         .then((value) {
       model = CustomerModel.fromJson(value.data()!);
+
       getCustomerStrapi(model!.email);
+
       emit(CustomerSuccessState());
     }).catchError((error) {
       print(error.toString());

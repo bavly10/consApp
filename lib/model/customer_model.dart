@@ -13,14 +13,15 @@ class CustomerModel {
       username: json["username"],
       email: json["email"],
       phone: json["phone"],
-      image: json["image"],
+      image: json["imageCustomer"],
       walletPoint: json["WalletPoint"]);
   Map<String, dynamic> toMap() {
     return {
       'username': username,
       'email': email,
       'phone': phone,
-      'walletPoint': walletPoint
+      'walletPoint': walletPoint,
+      "imageCustomer": image,
     };
   }
 

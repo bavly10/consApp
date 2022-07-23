@@ -125,19 +125,6 @@ class UserProfileScreen extends StatelessWidget {
                       top: 5,
                     ),
                     child: CustomListTile(
-                      textTitle: "wallet",
-                      trailingIcon: Icons.arrow_forward_ios_rounded,
-                      onTap: () {
-                        navigateTo(context, const WalletScreen());
-                      },
-                    )),
-                Padding(
-                    padding: const EdgeInsets.only(
-                      right: 5,
-                      bottom: 8,
-                      top: 5,
-                    ),
-                    child: CustomListTile(
                       textTitle: "nfile",
                       trailingIcon: Icons.arrow_forward_ios_rounded,
                       onTap: () {

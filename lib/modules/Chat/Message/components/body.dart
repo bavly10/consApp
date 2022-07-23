@@ -52,6 +52,7 @@ class BodyMessage extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: kDefaultPadding),
                 child: ListView.builder(
+                  physics: const BouncingScrollPhysics(),
                   controller: _controller,
                   reverse: true,
                   itemCount: docs.length,

@@ -5,18 +5,20 @@ import 'package:helpy_app/shared/my_colors.dart';
 import 'package:helpy_app/shared/strings.dart';
 import 'package:intl/intl.dart' as intl;
 
+import '../../../../shared/compononet/read_more.dart';
+
 class mesagebuble extends StatelessWidget {
   mesagebuble(
       {required this.mesage,
-        required this.username,
-        required this.useriamg,
-        required this.isme,
-        required this.isopen,
-        required this.date,
-        required this.viewd});
+      required this.username,
+      required this.useriamg,
+      required this.isme,
+      required this.isopen,
+      required this.date,
+      required this.viewd});
 
   final String mesage, username, useriamg;
-  final bool isme, isopen,viewd;
+  final bool isme, isopen, viewd;
   Timestamp date;
   @override
   Widget build(BuildContext context) {
@@ -25,14 +27,14 @@ class mesagebuble extends StatelessWidget {
     var formattedData = intl.DateFormat('h:mm a').format(datee);
     return Padding(
       padding:
-      const EdgeInsets.only(bottom: kDefaultPadding, top: kDefaultPadding),
+          const EdgeInsets.only(bottom: kDefaultPadding, top: kDefaultPadding),
       child: Column(
         crossAxisAlignment:
-        isme ? CrossAxisAlignment.start : CrossAxisAlignment.end,
+            isme ? CrossAxisAlignment.start : CrossAxisAlignment.end,
         children: [
           Row(
             mainAxisAlignment:
-            isme ? MainAxisAlignment.start : MainAxisAlignment.end,
+                isme ? MainAxisAlignment.start : MainAxisAlignment.end,
             children: [
               if (isme) ...[
                 CircleAvatar(
@@ -73,30 +75,17 @@ class mesagebuble extends StatelessWidget {
                       alignment: WrapAlignment.end,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(3.0),
-                          child: Text(
-                            mesage,
-                            textWidthBasis: TextWidthBasis.longestLine,
-                            softWrap: true,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.right,
-                            maxLines: 5,
-                            style: TextStyle(
-                              height: 1,
-                              wordSpacing: 1,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 18,
-                              color: isme ? Colors.white : Colors.blueGrey,
-                            ),
-                          ),
+                          padding: const EdgeInsets.only(top: 3.0),
+                          child: ExpandableText(mesage,
+                              textColor: isme ? Colors.white : Colors.blueGrey),
                         ),
                         const SizedBox(
                           width: 10,
                         ),
                         ConstrainedBox(
                           constraints: const BoxConstraints(
-                            minHeight:5,
-                            maxHeight:14,
+                            minHeight: 5,
+                            maxHeight: 14,
                           ),
                           child: Text(
                             formattedData,
@@ -110,23 +99,23 @@ class mesagebuble extends StatelessWidget {
                   ),
                 ),
               ),
-              if (!isme)
-                Container(
-                  margin: EdgeInsetsDirectional.only(
-                      top: MediaQuery.of(context).size.height * .04),
-                  height: 14,
-                  width: 14,
-                  decoration: const BoxDecoration(
-                    ///is showed hn8yr loon
-                    color: Colors.grey,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    Icons.done,
-                    size: 8,
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                  ),
-                ),
+              // if (!isme)
+              //   Container(
+              //     margin: EdgeInsetsDirectional.only(
+              //         top: MediaQuery.of(context).size.height * .04),
+              //     height: 14,
+              //     width: 14,
+              //     decoration: const BoxDecoration(
+              //       ///is showed hn8yr loon
+              //       color: Colors.grey,
+              //       shape: BoxShape.circle,
+              //     ),
+              //     child: Icon(
+              //       Icons.done,
+              //       size: 8,
+              //       color: Theme.of(context).scaffoldBackgroundColor,
+              //     ),
+              //   ),
             ],
           ),
           const SizedBox(

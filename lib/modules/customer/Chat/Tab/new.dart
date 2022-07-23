@@ -61,7 +61,7 @@ class _newTestState extends State<newTest> {
                 diff1 = nowDate.difference(dateTime2).inHours;
 
                 // print("difference time is $diff1");
-                if (diff1! < 18) {
+                if (diff1! < 48) {
                   print("difference time is $diff1");
                   allData.add(element.data());
                   diff.add(diff1!);
