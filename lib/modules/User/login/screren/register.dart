@@ -72,7 +72,9 @@ class _Register_introState extends State<Register_intro> {
   Widget build(BuildContext context) {
     final cubit = UserCubit.get(context);
     final listCateg = ConsCubit.get(context).mycat;
-    final listSpec = ConsCubit.get(context).myspec.where((element) => element.catTitle.title == cubit.catSelect);
+    final listSpec = ConsCubit.get(context)
+        .myspec
+        .where((element) => element.catTitle.title == cubit.catSelect);
     return BlocConsumer<UserCubit, cons_login_Register_States>(
       listener: (ctx, state) {
         /// success
@@ -302,7 +304,8 @@ class _Register_introState extends State<Register_intro> {
                                       color: myAmber,
                                       size: 35,
                                     ),
-                                    items: listSpec.map<DropdownMenuItem<Specailsts>>(
+                                    items: listSpec
+                                        .map<DropdownMenuItem<Specailsts>>(
                                             (spec) => DropdownMenuItem(
                                                   value: spec,
                                                   child: Text(spec.specTitle),
@@ -312,13 +315,17 @@ class _Register_introState extends State<Register_intro> {
                                       cubit.changeSelectSpec(val);
                                     },
                                   ),
-                                  const SizedBox(height: 10,),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
                                   SizedBox(
-                                    width: MediaQuery.of(context).size.width * 0.60,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.60,
                                     child: ElevatedButton(
                                       child: Text(
                                           mytranslate(context, "Uploadimage"),
-                                          style: const TextStyle(color: Colors.white)),
+                                          style: const TextStyle(
+                                              color: Colors.white)),
                                       onPressed: () {
                                         FocusScope.of(context).unfocus();
                                         CustomAlertDialogButtons(
@@ -328,7 +335,8 @@ class _Register_introState extends State<Register_intro> {
                                               Navigator.of(context).pop();
                                             },
                                             onTapImages: () {
-                                              cubit.pickFiles(['png', 'jpg'], true);
+                                              cubit.pickFiles(
+                                                  ['png', 'jpg'], true);
                                               cubit.changeMedia(true);
                                               Navigator.pop(context);
                                             },
@@ -337,14 +345,18 @@ class _Register_introState extends State<Register_intro> {
                                             images: "Images",
                                             onTapDelete: () {
                                               if (cubit.result == null) {
-                                                myToast(message: "Not Selected");
+                                                myToast(
+                                                    message: "Not Selected");
                                               } else {
                                                 cubit.deleteImageBlocList();
                                                 Navigator.pop(context);
                                               }
                                             });
                                       },
-                                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(myAmber)),
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  myAmber)),
                                     ),
                                   ),
                                   const SizedBox(
@@ -354,18 +366,42 @@ class _Register_introState extends State<Register_intro> {
                                     Column(
                                       children: [
                                         CarouselSlider(
-                                            carouselController: CarouselControllerImpl(),
+                                            carouselController:
+                                                CarouselControllerImpl(),
                                             items: cubit.result!.files
                                                 .map((e) => Column(
                                                       children: [
                                                         FadeInImage(
-                                                            height: MediaQuery.of(context).size.height * 0.20, width: double.infinity,
-                                                            placeholder: const ExactAssetImage("assets/logo.png"),
-                                                            imageErrorBuilder: (context, object, stacktrace) {
-                                                              return const Icon(Icons.picture_as_pdf, size: 130,);
+                                                            height: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height *
+                                                                0.20,
+                                                            width:
+                                                                double.infinity,
+                                                            placeholder:
+                                                                const ExactAssetImage(
+                                                                    "assets/logo.png"),
+                                                            imageErrorBuilder:
+                                                                (context,
+                                                                    object,
+                                                                    stacktrace) {
+                                                              return const Icon(
+                                                                Icons
+                                                                    .picture_as_pdf,
+                                                                size: 130,
+                                                              );
                                                             },
-                                                            image: FileImage(File(e.path!))),
-                                                        Text(e.name, style: const TextStyle(color: Colors.deepPurple, fontWeight: FontWeight.bold),
+                                                            image: FileImage(
+                                                                File(e.path!))),
+                                                        Text(
+                                                          e.name,
+                                                          style: const TextStyle(
+                                                              color: Colors
+                                                                  .deepPurple,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
                                                         ),
                                                       ],
                                                     ))
@@ -381,8 +417,11 @@ class _Register_introState extends State<Register_intro> {
                                                 initialPage: 0,
                                                 scrollDirection:
                                                     Axis.horizontal)),
-                                        const SizedBox(height: 1,),
-                                        Text("${cubit.myimagecount} ${mytranslate(context, "list_image")}")
+                                        const SizedBox(
+                                          height: 1,
+                                        ),
+                                        Text(
+                                            "${cubit.myimagecount} ${mytranslate(context, "list_image")}")
                                       ],
                                     )
                                 ],
@@ -403,13 +442,13 @@ class _Register_introState extends State<Register_intro> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               My_TextFormFiled(
-                                onchanged: (String? s){
-                                  if(s!.isEmpty){
-                                    cubit.total=0;
-                                  }else{
-                                    cubit.getTotal(int.parse(s));
-                                  }
-                                },
+                                  onchanged: (String? s) {
+                                    if (s!.isEmpty) {
+                                      cubit.total = 0;
+                                    } else {
+                                      cubit.getTotal(int.parse(s));
+                                    }
+                                  },
                                   validator: (String? s) {
                                     if (s!.isEmpty) return "price is required";
                                   },
@@ -419,7 +458,7 @@ class _Register_introState extends State<Register_intro> {
                               Row(
                                 children: [
                                   Text(
-                                    mytranslate(context,"Tax"),
+                                    mytranslate(context, "Tax"),
                                     style: TextStyle(
                                         fontSize: 20, color: Colors.grey[600]),
                                   ),
@@ -434,21 +473,23 @@ class _Register_introState extends State<Register_intro> {
                               Row(
                                 children: [
                                   Text(
-                                    mytranslate(context,"total"),
+                                    mytranslate(context, "total"),
                                     style: TextStyle(
                                         fontSize: 20, color: Colors.grey[600]),
                                   ),
                                   const Spacer(),
                                   RichText(
-                                    text:TextSpan(
-                                        text: cubit.total.toString(),style:const TextStyle(color: Colors.black,height: 1.4,fontSize: 18),
+                                    text: TextSpan(
+                                        text: cubit.total.toString(),
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            height: 1.4,
+                                            fontSize: 18),
                                         children: [
                                           TextSpan(
-                                              text: mytranslate(context, "SR"),style: TextStyle(color:myAmber)
-                                          )
-                                        ]
-                                    ),
-
+                                              text: mytranslate(context, "SR"),
+                                              style: TextStyle(color: myAmber))
+                                        ]),
                                   ),
                                 ],
                               ),
@@ -459,7 +500,9 @@ class _Register_introState extends State<Register_intro> {
                           ),
                         ),
                       ),
-                    ), ///price
+                    ),
+
+                    ///price
                     CustomSwitch(
                         label: UserCubit.get(context).privacyLabel,
                         selected: UserCubit.get(context).isChecked,
@@ -468,8 +511,7 @@ class _Register_introState extends State<Register_intro> {
                               context: context,
                               builder: (context) {
                                 return CustomClipPath(
-                                  myText:
-                                      "con built the Consolutios app as a Commercial app This SERVICE is provided by con and is intended for This page is used to inform visitors regarding our policies with the collection use and disclosure of Personal Information if anyone decided to use our Service If you choose to use our Service, then you agree to the collection and use of information in relation to this policy. The Personal Information that we collect is used for providing and improving the Service. We will not use or share your information with anyone except as described in this Privacy Policy  The terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, which are accessible at Consolutios unless otherwise defined in this Privacy PolicyInformation Collection and UseFor a better experience, while using our Service, we may require you to provide us with certain personally identifiable information, including but not limited to con. The information that we request will be retained by us and used as described in this privacy policy The app does use third-party services that may collect information used to identify you Link to the privacy policy of third-party service providers used by the app Google Play Services Log Data We want to inform you that whenever you use our Service, in a case of an error in the app we collect data and information (through third-party products) on your phone called Log Data. This Log Data may include information such as your device Internet Protocol (“IP”) address, device name, operating system version, the configuration of the app when utilizing our Service, the time and date of your use of the Service, and other statistics Cookies Cookies are files with a small amount of data that are commonly used as anonymous unique identifiers. These are sent to your browser from the websites that you visit and are stored on your device's internal memory This Service does not use these cookies explicitly. However, the app may use third-party code and libraries that use “cookies” to collect information and improve their services. You have the option to either accept or refuse these cookies and know when a cookie is being sent to your device. If you choose to refuse our cookies, you may not be able to use some portions of this Service Service Providers We may employ third-party companies and individuals due to the following reasons To facilitate our Service To provide the Service on our behalf",
+                                  myText: "con built the Consolutios app ",
                                 );
                               });
                         }),
@@ -484,12 +526,12 @@ class _Register_introState extends State<Register_intro> {
                                 if (cubit.result != null) {
                                   try {
                                     await cubit.register(
-                                      address: addressController.text,
-                                      email: widget.email,
-                                      username: nameController.text,
-                                      password: passwordController.text,
-                                      phone: phoneController.text,
-                                      about: aboutController.text);
+                                        address: addressController.text,
+                                        email: widget.email,
+                                        username: nameController.text,
+                                        password: passwordController.text,
+                                        phone: phoneController.text,
+                                        about: aboutController.text);
                                   } on FirebaseException catch (e) {
                                     var emesage = "Error In Signup";
                                     if (e.code == 'email-already-in-use') {

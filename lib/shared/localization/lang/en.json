@@ -177,5 +177,17 @@
    "pdff": "Are you Sure To Sending File?",
    "pressr": "Press To Stop Record",
    "path": "Your File in Files/Storage/Android/data/com.example.helpy_app/files/",
+<<<<<<< HEAD
    "exceed": " FAiled Uploading..Your File is bigger than 5 MB😢"
+=======
+   "exceed": " FAiled Uploading..Your File is bigger than 5 MB😢",
+   "closed": "Closed",
+   "okay": "Okey",
+   "win": "Congrate🎉🎁You Win 500SR.. Check your Points ",
+   "adding": " Add you ..Check your Chat",
+   "hours": "Hours",
+   "searchr": "Results of Search:",
+   "readmore": "... read more",
+   "readless": " read less"
+>>>>>>> ff02c8d854b318f5802abd1f9fc0381421f64c75
 }

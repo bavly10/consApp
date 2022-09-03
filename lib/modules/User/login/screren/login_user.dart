@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fadein/flutter_fadein.dart';
@@ -49,12 +51,11 @@ class _LoginIntroState extends State<LoginIntro> {
       listener: (ctx, state) {
         if (state is cons_Loading_login) {
           myState = true;
-        }
-        else if (state is cons_Login_Scusess) {
-           // ignore: unrelated_type_equality_checks
-           if (state.confirmed == true) {
-           navigateTo(context, UserMain());
-          // navigateTo(context,CreatePost());
+        } else if (state is cons_Login_Scusess) {
+          // ignore: unrelated_type_equality_checks
+          if (state.confirmed == true) {
+            navigateTo(context, UserMain());
+            // navigateTo(context,CreatePost());
           } else {
             My_CustomAlertDialog(
               icon: Icons.warning_rounded,
@@ -114,11 +115,18 @@ class _LoginIntroState extends State<LoginIntro> {
                       color: myAmber,
                       context: context,
                       onPress: () async {
-                        if (formState.currentState != null && formState.currentState!.validate()) {
+                        if (formState.currentState != null &&
+                            formState.currentState!.validate()) {
                           FocusScope.of(context).unfocus();
-                          try{
-                            await UserCubit.get(context).login(emailsController.text, passsController.text);
-                          }catch (error) {
+                          try {
+                            await UserCubit.get(context).login(
+                                emailsController.text, passsController.text);
+                            //ConsCubit.get(context).sendFcm(
+                            //   title: "Welcom to Surely GateWay..",
+                            //  body: "You Are provider Now",
+                            //  fcmToken: await FirebaseMessaging.instance
+                            //    .getToken());
+                          } catch (error) {
                             var errormsg = mytranslate(context, "errorlogin");
                             print('error:${error.toString()}');
                             if (error.toString().contains('INVALID_EMAIL')) {
@@ -137,19 +145,19 @@ class _LoginIntroState extends State<LoginIntro> {
                               errormsg = "This Email is Not Found";
                             }
                             myToast(message: errormsg);
-                            myState=false;
+                            myState = false;
                           }
                         }
                       },
                       title: myState
-                          ?const SpinKitCircle(
-                            color: Colors.white,
-                          )
+                          ? const SpinKitCircle(
+                              color: Colors.white,
+                            )
                           : Text(
-                        mytranslate(context, "login"),
-                        style: const TextStyle(
-                            color: Colors.white, fontSize: 18),
-                      ))),
+                              mytranslate(context, "login"),
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 18),
+                            ))),
               const SizedBox(
                 height: 20,
               ),
@@ -190,8 +198,11 @@ class _LoginIntroState extends State<LoginIntro> {
                               buttonText: "Send",
                               hintText: "email",
                               onPressed: () {
-                                UserCubit.get(context).sendEmail("users",emailController.text);
+                                UserCubit.get(context)
+                                    .sendEmail("users", emailController.text);
                                 Navigator.pop(context);
+                                  myToast(
+                                  message: mytranslate(context, "Emailissent"));
                               }));
                     },
                     child: Text(

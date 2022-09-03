@@ -13,8 +13,6 @@ class MessagesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fcm = FirebaseMessaging.instance;
-    fcm.subscribeToTopic("AllChat");
     return Scaffold(
       appBar: buildAppBar(context),
       body: BodyMessage(userid: senderid, username: username, myid: myid),
@@ -39,9 +37,7 @@ class MessagesScreen extends StatelessWidget {
                   username,
                   style: const TextStyle(fontSize: 16),
                 ),
-                TypingMessage(
-                  myid: myid,
-                )
+                TypingMessage(myid: myid, senderid: senderid)
               ],
             ),
           ),

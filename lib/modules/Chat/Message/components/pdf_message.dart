@@ -143,6 +143,7 @@ class PdfMessage extends StatelessWidget {
                             color: Theme.of(context).scaffoldBackgroundColor,
                           ),
                         ),
+
                     ],
                   ),
                   const SizedBox(

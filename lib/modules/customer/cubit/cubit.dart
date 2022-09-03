@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:helpy_app/model/complian.dart';
@@ -80,7 +81,7 @@ class CustomerCubit extends Cubit<Customer_States> {
       'email': email,
       'password': password,
       "phone": phone,
-      "walletPoint":0
+      "walletPoint": 0
     };
     try {
       authres = await _auth.createUserWithEmailAndPassword(
@@ -93,12 +94,24 @@ class CustomerCubit extends Cubit<Customer_States> {
         'email': email,
         "phone": phone,
         "userid": authres.user!.uid,
+        "token": FirebaseMessaging.instance.getToken()
       }).then((value) async {
         response = await http.post(url, headers: headrs, body: body);
         if (response.statusCode == 200) {
           var jdson = jsonDecode(response.body);
           myid = jdson["id"];
           print(response.body);
+          FirebaseFirestore.instance
+              .collection('customers')
+              .doc(myid.toString())
+              .collection('tokens')
+              .doc()
+              .set({'token': await FirebaseMessaging.instance.getToken()}).then(
+                  (value) {
+            print("login token");
+          }).catchError((onError) {
+            print('like post error is ${onError.toString()}');
+          });
           emit(RegisterSuccessState());
           return true;
         } else if (response.statusCode == 400) {
@@ -126,24 +139,55 @@ class CustomerCubit extends Cubit<Customer_States> {
             'email': email,
             'password': pass,
             'returnSecureToken': true,
+            // 'token': await FirebaseMessaging.instance.getToken()
           }));
       final resdata = json.decode(res.body);
       if (resdata['error'] != null) {
         throw "${resdata['error']['message']}";
       }
+
       tokenCustomer = resdata['idToken'];
       myCustomerId = resdata['localId'];
       print("token is :$tokenCustomer");
       print("token is :$myCustomerId");
       CashHelper.putData("tokenCustomer", tokenCustomer);
       CashHelper.putData("cust_id", myCustomerId);
+      saveToken("customers", myCustomerId);
       getCustomerData(myCustomerId);
       getCustomerStrapi(email);
+
       emit(LoginSuccessState());
     } catch (e) {
       emit(LoginErrorState());
       throw e;
     }
+  }
+
+  String? custToken;
+  Future<void> saveToken(name, id) async {
+    FirebaseFirestore.instance
+        .collection(name)
+        .doc(id.toString())
+        .collection('tokens')
+        .doc(id.toString())
+        .update({'token': await FirebaseMessaging.instance.getToken()}).then(
+            (value) {
+      FirebaseFirestore.instance
+          .collection(name)
+          .doc(id.toString())
+          .collection('tokens')
+          .doc(id.toString())
+          .get()
+          .then((value) {
+        custToken = value.get('token');
+        CashHelper.putData("customerToken", custToken);
+        print(custToken);
+        // emit(GettingUserToken());
+      });
+      print("login token");
+    }).catchError((onError) {
+      print('like post error is ${onError.toString()}');
+    });
   }
 
 //////strapi////////////
@@ -170,7 +214,7 @@ class CustomerCubit extends Cubit<Customer_States> {
       var customer = jsonDecode(res.body);
       for (var x in customer) {
         xmyId = x['id'];
-        walletcustomer=x['walletPoint'];
+        walletcustomer = x['walletPoint'];
       }
       CashHelper.putData("customer_idStrapi", xmyId);
     }
@@ -198,6 +242,7 @@ class CustomerCubit extends Cubit<Customer_States> {
   }
 
   /////////firebase/////////
+  String? img;
   Future<void> getCustomerData(myCustomerId) async {
     emit(CustomerLoadinggState());
     await FirebaseFirestore.instance
@@ -206,7 +251,9 @@ class CustomerCubit extends Cubit<Customer_States> {
         .get()
         .then((value) {
       model = CustomerModel.fromJson(value.data()!);
+
       getCustomerStrapi(model!.email);
+
       emit(CustomerSuccessState());
     }).catchError((error) {
       print(error.toString());

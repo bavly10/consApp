@@ -5,8 +5,9 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:helpy_app/shared/my_colors.dart';
 
 class TypingMessage extends StatelessWidget {
-  final String myid;
-  TypingMessage({Key? key, required this.myid}) : super(key: key);
+  final String myid, senderid;
+  TypingMessage({Key? key, required this.myid, required this.senderid})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     FirebaseFirestore fire = FirebaseFirestore.instance;
@@ -14,6 +15,8 @@ class TypingMessage extends StatelessWidget {
         stream: FirebaseFirestore.instance
             .collection("AllChat")
             .doc(myid)
+            .collection('contact')
+            .doc(senderid)
             .snapshots(),
         builder: (BuildContext context,
             AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {

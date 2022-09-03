@@ -59,3 +59,9 @@ class ConsChatUploadFilePdfChatSucess extends ConsChatStates {}
 class ConsChatUploadFilePdfChatError extends ConsChatStates {}
 
 class DownloadFileChat extends ConsChatStates {}
+class TakeImageState extends ConsChatStates {}
+
+class UploadImageChatSucessState extends ConsChatStates {}
+
+class UploadImageChatErrorState extends ConsChatStates {}
+

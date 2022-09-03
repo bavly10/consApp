@@ -19,7 +19,7 @@ class CashHelper {
     return sharedPreferences.get(key);
   }
 
-  static Future<bool> removeData(String key) async {
+  static Future<bool> removeData(String key, [void navigateToFinish]) async {
     return await sharedPreferences.remove(key);
   }
 }

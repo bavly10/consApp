@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/modules/Deatils_Special/cubit/cubit.dart';
 import 'package:helpy_app/modules/Deatils_Special/cubit/states.dart';
+import 'package:helpy_app/modules/User/cubit/cubit.dart';
 import 'package:helpy_app/modules/User_screen/slide_dialog.dart';
 import 'package:helpy_app/modules/User_screen/tabs/about.dart';
 import 'package:helpy_app/modules/User_screen/tabs/posts/posts.dart';
@@ -24,6 +25,9 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:slide_popup_dialog_null_safety/slide_popup_dialog.dart'
     as slideDialog;
 
+import '../Chat/cubit.dart';
+import '../customer/cubit/state.dart';
+
 class Introducer extends StatelessWidget {
   final int id;
 
@@ -33,6 +37,7 @@ class Introducer extends StatelessWidget {
   List<String> images = ["assets/logo.png"];
   @override
   Widget build(BuildContext context) {
+    ConsCubit.get(context).getMyShared();
     return BlocConsumer<ConsCubitIntro, cons_StatesIntro>(
         listener: (ctx, state) {
       if (state is Cons_Payment_Loading) {
@@ -85,6 +90,7 @@ class Introducer extends StatelessWidget {
             duration: const Duration(seconds: 3));
       }
     }, builder: (context, state) {
+      ConsCubit.get(context).getMyShared();
       final cubit = ConsCubitIntro.get(context).findbyid(id);
       return Scaffold(
         backgroundColor: Colors.white,
@@ -103,33 +109,35 @@ class Introducer extends StatelessWidget {
                 Container(
                     color: Colors.white,
                     height: MediaQuery.of(context).size.height * 0.35),
-                  cubit.introImg!.isEmpty?
-                const Image(image: ExactAssetImage("assets/logo.png"),fit: BoxFit.cover,) : CarouselSlider(
+                cubit.introImg!.isEmpty
+                    ? const Image(
+                        image: ExactAssetImage("assets/logo.png"),
+                        fit: BoxFit.cover,
+                      )
+                    : CarouselSlider(
                         carouselController: CarouselControllerImpl(),
-                        items:cubit.introImg!
+                        items: cubit.introImg!
                             .map((e) => CachedNetworkImage(
-                          imageUrl: imgurl + e.url!,
-                          fit: BoxFit.fill,
-                          imageBuilder: (context, imageProvider) =>
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.only(
-                                      bottomLeft: Radius.circular(25.0),
-                                      bottomRight:
-                                      Radius.circular(25.0)),
-                                  image: DecorationImage(
-                                    image: imageProvider,
-                                    fit: BoxFit.fill,
+                                  imageUrl: imgurl + e.url!,
+                                  fit: BoxFit.fill,
+                                  imageBuilder: (context, imageProvider) =>
+                                      Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.only(
+                                          bottomLeft: Radius.circular(25.0),
+                                          bottomRight: Radius.circular(25.0)),
+                                      image: DecorationImage(
+                                        image: imageProvider,
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                          placeholder: (context, url) =>
-                              SpinKitCircle(
-                                color: myAmber,
-                              ),
-                          errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                        ))
+                                  placeholder: (context, url) => SpinKitCircle(
+                                    color: myAmber,
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
+                                ))
                             .toList(),
                         options: CarouselOptions(
                             enableInfiniteScroll: true,
@@ -286,13 +294,22 @@ class Introducer extends StatelessWidget {
                   child: MySlideDialog(
                       cubit.username, mytranslate(context, "connect")));
             } else {
+              var model = CustomerCubit.get(context).model;
               CustomerCubit.get(context)
                   .getCustomerData(ConsCubit.get(context).customerID)
                   .then((value) async {
-                var model = CustomerCubit.get(context).model;
-                if (model?.walletPoint == null)
-                {
-                  addchat(context,cubit.id.toString(),cubit.username);
+                ConsCubit.get(context).sendAddingNotification(
+                    name: 'users',
+                    id: id,
+                    tittle: "Surely",
+                    body: mytranslate(context, "adding"),
+                    nameSender: model?.username ?? "",
+                    context: context);
+                print(cubit.username);
+                UserCubit.get(context).changePoint(cubit.points, id, context);
+
+                if (model?.walletPoint == null) {
+                  addchat(context, cubit.id.toString(), cubit.username);
                   // await ConsCubitIntro.get(context).getPay(
                   //     user: cubit.username,
                   //     name: model!.username,
@@ -335,31 +352,47 @@ class Introducer extends StatelessWidget {
       );
     });
   }
-  addchat(context,userid,username)async{
+
+  addchat(context, userid, username) async {
     ConsCubit.get(context).getMyShared();
-    String? custId=ConsCubit.get(context).customerID;
-    final customerdata = await FirebaseFirestore.instance.collection('customers').doc(custId).get();
-    final userdata = await FirebaseFirestore.instance.collection('users').doc(userid.toString()).get();
-    await FirebaseFirestore.instance.collection("AllChat").doc(custId).set({
-      "senderID":userid,
+    String? custId = ConsCubit.get(context).customerID;
+    final customerdata = await FirebaseFirestore.instance
+        .collection('customers')
+        .doc(custId)
+        .get();
+    final userdata = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userid.toString())
+        .get();
+    await FirebaseFirestore.instance
+        .collection("AllChat")
+        .doc(custId)
+        .collection('contact')
+        .doc(userid)
+        .set({
+      "senderID": userid,
       "myID": custId,
       "myname": customerdata["username"],
-      "sendername":username,
-      "myimage":customerdata["imageCustomer"],
-      "senderimage":userdata["imageIntroduce"],
-      "typing":"false",
-      "time":Timestamp.now(),
-    }).then((value) => null);
-    await FirebaseFirestore.instance.collection("AllChat").doc(userid.toString()).set({
-      "myID":userid,
+      "sendername": username,
+      "myimage": customerdata["imageCustomer"],
+      "senderimage": userdata["imageIntroduce"],
+      "typing": "false",
+      "time": Timestamp.now(),
+    });
+    await FirebaseFirestore.instance
+        .collection("AllChat")
+        .doc(userid.toString())
+        .collection('contact')
+        .doc(custId)
+        .set({
+      "myID": userid,
       "senderID": custId,
-      "myname":username,
+      "myname": username,
       "sendername": customerdata["username"],
-      "myimage":userdata["imageIntroduce"],
-      "senderimage":customerdata["imageCustomer"],
-      "typing":"false",
-      "time":Timestamp.now(),
-    }).then((value) =>  myToast(message: "تم اضافه الي قائمه الاصدقاء"));
+      "myimage": userdata["imageIntroduce"],
+      "senderimage": customerdata["imageCustomer"],
+      "typing": "false",
+      "time": Timestamp.now(),
+    }).then((value) => myToast(message: "تم اضافه الي قائمه الاصدقاء"));
   }
-
 }

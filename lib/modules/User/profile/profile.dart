@@ -125,19 +125,6 @@ class UserProfileScreen extends StatelessWidget {
                       top: 5,
                     ),
                     child: CustomListTile(
-                      textTitle: "wallet",
-                      trailingIcon: Icons.arrow_forward_ios_rounded,
-                      onTap: () {
-                        navigateTo(context, const WalletScreen());
-                      },
-                    )),
-                Padding(
-                    padding: const EdgeInsets.only(
-                      right: 5,
-                      bottom: 8,
-                      top: 5,
-                    ),
-                    child: CustomListTile(
                       textTitle: "nfile",
                       trailingIcon: Icons.arrow_forward_ios_rounded,
                       onTap: () {
@@ -189,19 +176,6 @@ class UserProfileScreen extends StatelessWidget {
                       ),
                     )),
                 Padding(
-                    padding: const EdgeInsets.only(
-                      right: 5,
-                      bottom: 8,
-                      top: 5,
-                    ),
-                    child: CustomListTile(
-                      textTitle: "rating",
-                      trailingIcon: Icons.arrow_forward_ios_rounded,
-                      onTap: () {
-                        navigateTo(context, const UserRateScreen());
-                      },
-                    )),
-                Padding(
                   padding: const EdgeInsets.only(right: 13, left: 15),
                   child: Container(
                     height: 1,
@@ -250,6 +224,7 @@ class UserProfileScreen extends StatelessWidget {
                         trailingIcon: Icons.arrow_forward_ios_rounded,
                         onTap: () {
                           CashHelper.removeData("userToken");
+
                           navigateToFinish(context, Main_login());
                         })),
                 Padding(

@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:helpy_app/modules/Chat/Message/components/audio_message.dart';
-
+import 'package:helpy_app/modules/Chat/Message/components/image_message.dart';
 import 'package:helpy_app/modules/Chat/Message/components/mesage_buble.dart';
 import 'package:helpy_app/modules/Chat/Message/components/pdf_message.dart';
 import 'package:helpy_app/modules/Chat/cubit.dart';
 import 'package:helpy_app/modules/Chat/states.dart';
+import 'package:helpy_app/shared/localization/translate.dart';
 import 'package:helpy_app/shared/strings.dart';
-
 import 'chat_input_field.dart';
 
 class BodyMessage extends StatelessWidget {
@@ -29,6 +29,8 @@ class BodyMessage extends StatelessWidget {
       stream: FirebaseFirestore.instance
           .collection("AllChat")
           .doc(myid)
+          .collection('contact')
+          .doc(userid)
           .collection("chats")
           .doc(userid)
           .collection("message")
@@ -40,7 +42,7 @@ class BodyMessage extends StatelessWidget {
             color: Colors.brown,
           );
         }
-        final docs = snapshot.requireData.docs;
+        final docs = snapshot.data.docs;
         return Column(
           children: [
             Expanded(
@@ -48,6 +50,7 @@ class BodyMessage extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: kDefaultPadding),
                 child: ListView.builder(
+                  physics: const BouncingScrollPhysics(),
                   controller: _controller,
                   reverse: true,
                   itemCount: docs.length,
@@ -68,6 +71,13 @@ class BodyMessage extends StatelessWidget {
                         );
                       } else if (docs[index]["type"] == "pdf") {
                         return PdfMessage(
+                          document: docs[index],
+                          isme: docs[index]['senderid'] == myid,
+                          index: index,
+                          length: docs.length,
+                        );
+                      } else if (docs[index]["type"] == "image") {
+                        return ImageMessage(
                           document: docs[index],
                           isme: docs[index]['senderid'] == myid,
                           index: index,
@@ -101,12 +111,20 @@ class BodyMessage extends StatelessWidget {
                 ),
               ),
             ),
-            ChatInputField(
-              userid: userid,
-              username: username,
-              custid: myid,
-              listController: _controller,
-            )
+            ConsChat.get(context).isClose == false
+                ? ChatInputField(
+                    userid: userid,
+                    username: username,
+                    custid: myid,
+                    listController: _controller,
+                  )
+                : Text(
+                    mytranslate(context, "closed"),
+                    style: const TextStyle(
+                        color: Colors.blueGrey,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18),
+                  )
           ],
         );
       },

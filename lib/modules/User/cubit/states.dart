@@ -16,6 +16,8 @@ class DeleteImages_State extends cons_login_Register_States {}
 
 class UploadImage_State extends cons_login_Register_States {}
 
+class IncreasePoint extends cons_login_Register_States {}
+
 class TakeImagess_State extends cons_login_Register_States {}
 
 class TakeImagess_Error_State extends cons_login_Register_States {}
@@ -130,3 +132,7 @@ class ChangeCoverUserImageSuessState extends cons_login_Register_States {}
 class ChangeCoverUserImageLoadingState extends cons_login_Register_States {}
 
 class ChangeCoverUserImageErrorState extends cons_login_Register_States {}
+
+class GettingUserToken extends cons_login_Register_States {}
+
+class ExceedPoint extends cons_login_Register_States {}

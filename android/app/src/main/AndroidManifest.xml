@@ -24,7 +24,12 @@ package="com.example.helpy_app">
     android:label="Consultation"
     android:icon="@mipmap/ic_launcher"
     android:requestLegacyExternalStorage="true">
+<<<<<<< HEAD
 
+=======
+    
+   
+>>>>>>> ff02c8d854b318f5802abd1f9fc0381421f64c75
     <activity
         android:name=".MainActivity"
         android:exported="true"
