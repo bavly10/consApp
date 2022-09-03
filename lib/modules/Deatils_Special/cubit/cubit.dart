@@ -44,11 +44,7 @@ class ConsCubitIntro extends Cubit<cons_StatesIntro> {
               introLogo: value["intro_logo"] == null
                   ? null
                   : Img_user.fromJson(value["intro_logo"]),
-              introImg: (value['intro_img'] as List<dynamic>)
-                  .map((e) => Img_user(
-                        url: e["url"],
-                      ))
-                  .toList(),
+              introImg: (value['intro_img'] as List<dynamic>).map((e) => Img_user(url: e["url"],)).toList(),
               posts: (value['posts'] as List<dynamic>)
                   .map((e) => Post_user(
                       content: e["content"],
