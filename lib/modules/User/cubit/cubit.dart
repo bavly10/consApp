@@ -153,11 +153,16 @@ class UserCubit extends Cubit<cons_login_Register_States> {
   final pickers = ImagePicker();
   var pickedFile, pickedFils;
   File? imagee;
+  File? image1;
+  File? image2;
 
-  Future getImageBloc(ImageSource src) async {
+  Future getImageBloc(ImageSource src, imge) async {
     pickedFile = await picker.pickImage(source: src, imageQuality: 50);
     if (pickedFile != null) {
-      imagee = File(pickedFile.path);
+      if (imge == imagee)
+        imagee = File(pickedFile.path);
+      else if (imge == image1) image1 = File(pickedFile.path);
+
       emit(TakeImage_State());
       print("image selected");
     } else {

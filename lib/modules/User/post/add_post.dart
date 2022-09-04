@@ -37,7 +37,7 @@ class CreatePost extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        final image = UserCubit.get(context).imagee;
+        final image = UserCubit.get(context).image1;
         return Scaffold(
           appBar: AppBar(
             centerTitle: false,
@@ -49,7 +49,8 @@ class CreatePost extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: InkWell(
                   onTap: () {
-                    UserCubit.get(context).getImageBloc(ImageSource.gallery);
+                    UserCubit.get(context)
+                        .getImageBloc(ImageSource.gallery, image);
                   },
                   child: Icon(
                     Icons.add_a_photo_outlined,

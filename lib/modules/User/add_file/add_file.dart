@@ -158,12 +158,14 @@ class CreateFile extends StatelessWidget {
                                                 fontStyle: FontStyle.italic),
                                           ),
                                         ),
-                                        Text(
-                                          result.files.single.name,
-                                          style: const TextStyle(
-                                              color: Colors.blueGrey,
-                                              fontWeight: FontWeight.w600,
-                                              fontStyle: FontStyle.italic),
+                                        Expanded(
+                                          child: Text(
+                                            result.files.single.name,
+                                            style: const TextStyle(
+                                                color: Colors.blueGrey,
+                                                fontWeight: FontWeight.w600,
+                                                fontStyle: FontStyle.italic),
+                                          ),
                                         ),
                                       ],
                                     ),

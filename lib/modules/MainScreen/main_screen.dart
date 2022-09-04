@@ -37,7 +37,7 @@ class _MainscreenState extends State<Mainscreen> {
             index: cubit.currentindex,
             onTap: cubit.changeIndex,
             iconData0: MdiIcons.home,
-            iconData1: Icons.add_comment_sharp,
+            iconData1: MdiIcons.googleAds,
             iconData2: MdiIcons.adjust,
             iconData3: MdiIcons.login,
           ),
@@ -56,12 +56,16 @@ class _MainscreenState extends State<Mainscreen> {
                   },
                   items: lanugage.lang_list
                       .map<DropdownMenuItem<lanugage>>(
-                          (lang) => DropdownMenuItem(value: lang,
-                            child: Row(
-                              children: [
-                                Text(lang.flag!),
-                                const SizedBox(width: 10,),
-                                Text(lang.name!)],
+                          (lang) => DropdownMenuItem(
+                                value: lang,
+                                child: Row(
+                                  children: [
+                                    Text(lang.flag!),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(lang.name!)
+                                  ],
                                 ),
                               ))
                       .toList(),

@@ -24,8 +24,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ConsCubit.get(context).getMyShared();
-    CustomerCubit.get(context)
-        .getCustomerData(ConsCubit.get(context).customerID);
+
     return BlocConsumer<CustomerCubit, Customer_States>(
       listener: (context, state) {},
       builder: (context, state) {

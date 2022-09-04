@@ -26,14 +26,19 @@ class EditProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ConsCubit.get(context).getMyShared();
+
     return BlocConsumer<CustomerCubit, Customer_States>(
       listener: (context, state) {
         if (state is LoadingChangeCustomerImage) {
           myToast(message: mytranslate(context, "loadimage"));
         } else if (state is ChangeCustomerImageSuessState) {
           myToast(message: mytranslate(context, "changproimage"));
+          CustomerCubit.get(context)
+              .getCustomerData(ConsCubit.get(context).customerID);
         } else if (state is UpdateCustomerDataSucessState) {
           myToast(message: mytranslate(context, "editing"));
+          CustomerCubit.get(context)
+              .getCustomerData(ConsCubit.get(context).customerID);
         } else if (state is TakeImageCustomer_State) {
           CustomerCubit.get(context)
               .uploadProfileImage(id: ConsCubit.get(context).customerID!);
@@ -47,6 +52,7 @@ class EditProfile extends StatelessWidget {
         File? image = CustomerCubit.get(context).imagee;
         String? cusImage = CustomerCubit.get(context).model?.image;
         CustomerModel? model = CustomerCubit.get(context).model;
+
         return Scaffold(
             appBar: AppBar(
               title: Text(

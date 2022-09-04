@@ -181,14 +181,14 @@ class Introducer extends StatelessWidget {
                                     errorWidget: (context, url, error) =>
                                         const Icon(Icons.error),
                                   ),
-                                  const Align(
-                                    alignment: AlignmentDirectional.bottomStart,
-                                    child: Icon(
-                                      MdiIcons.checkCircle,
-                                      size: 25,
-                                      color: Colors.white,
-                                    ),
-                                  ),
+                                  // const Align(
+                                  //   alignment: AlignmentDirectional.bottomStart,
+                                  //   child: Icon(
+                                  //     MdiIcons.checkCircle,
+                                  //     size: 25,
+                                  //     color: Colors.white,
+                                  //   ),
+                                  // ),
                                 ],
                               ),
                             ),

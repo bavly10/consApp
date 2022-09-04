@@ -54,7 +54,7 @@ class _LoginIntroState extends State<LoginIntro> {
         } else if (state is cons_Login_Scusess) {
           // ignore: unrelated_type_equality_checks
           if (state.confirmed == true) {
-            navigateTo(context, UserMain());
+            navigateToFinish(context, UserMain());
             // navigateTo(context,CreatePost());
           } else {
             My_CustomAlertDialog(
@@ -121,11 +121,6 @@ class _LoginIntroState extends State<LoginIntro> {
                           try {
                             await UserCubit.get(context).login(
                                 emailsController.text, passsController.text);
-                            //ConsCubit.get(context).sendFcm(
-                            //   title: "Welcom to Surely GateWay..",
-                            //  body: "You Are provider Now",
-                            //  fcmToken: await FirebaseMessaging.instance
-                            //    .getToken());
                           } catch (error) {
                             var errormsg = mytranslate(context, "errorlogin");
                             print('error:${error.toString()}');
@@ -201,8 +196,9 @@ class _LoginIntroState extends State<LoginIntro> {
                                 UserCubit.get(context)
                                     .sendEmail("users", emailController.text);
                                 Navigator.pop(context);
-                                  myToast(
-                                  message: mytranslate(context, "Emailissent"));
+                                myToast(
+                                    message:
+                                        mytranslate(context, "Emailissent"));
                               }));
                     },
                     child: Text(

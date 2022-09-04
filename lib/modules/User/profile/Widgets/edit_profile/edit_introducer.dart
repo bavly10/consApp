@@ -31,6 +31,7 @@ class EditIntroducer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ConsCubit.get(context).getMyShared();
+    UserCubit? cubit = UserCubit.get(context);
     return BlocConsumer<UserCubit, cons_login_Register_States>(
         listener: (ctx, state) {
       if (state is TakeImage_State) {
@@ -64,6 +65,7 @@ class EditIntroducer extends StatelessWidget {
         );
       } else if (state is ChangeUserImageSuessState) {
         myToast(message: mytranslate(context, "changproimage"));
+        UserCubit.get(context).getUserDetails(loginmodel!.userClass!.id);
       } else if (state is LoadingChangeUserImageState) {
         myToast(message: mytranslate(context, "loadimage"));
       } else if (state is ChangeUserImageErrorState) {
@@ -79,7 +81,7 @@ class EditIntroducer extends StatelessWidget {
           UserCubit.get(context).loginModel?.userClass?.introLogo;
       List<Img_user>? introImg =
           UserCubit.get(context).loginModel?.userClass?.introImg;
-      UserCubit? cubit = UserCubit.get(context);
+
       return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -254,8 +256,8 @@ class EditIntroducer extends StatelessWidget {
                                   width: 20,
                                   child: InkWell(
                                     onTap: () {
-                                      UserCubit.get(context)
-                                          .getImageBloc(ImageSource.gallery);
+                                      UserCubit.get(context).getImageBloc(
+                                          ImageSource.gallery, cubit.imagee);
                                     },
                                     child: const Align(
                                       alignment: Alignment.center,

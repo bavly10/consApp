@@ -1,6 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:helpy_app/model/user_model.dart';
+import 'package:helpy_app/modules/User/cubit/cubit.dart';
+import 'package:helpy_app/modules/User/cubit/states.dart';
 import 'package:helpy_app/modules/User_screen/tabs/posts/deatils_post.dart';
 import 'package:helpy_app/shared/componotents.dart';
 import 'package:helpy_app/shared/error_compon.dart';
@@ -12,105 +16,120 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 class PostsIntro extends StatelessWidget {
   UserStrapi? cubit;
+
   PostsIntro(this.cubit);
   String imgurl = base_api;
   @override
   Widget build(BuildContext context) {
-    return cubit!.posts!.isEmpty
-        ? noPostFound(context)
-        : ListView(
-            children: cubit!.posts!.map((e) {
-              DateTime now = DateTime.parse(e.publishedAt.toString());
-              String formattedDate =
-                  intl.DateFormat('yyyy-MM-dd – kk:mm').format(now).toString();
-              return GestureDetector(
-                onTap: () {
-                  navigateTo(
-                      context,
-                      DetailsPost(e.content, formattedDate, e.imgPost,
-                          imgurl + cubit!.introLogo!.url!, cubit?.username));
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 5, right: 12, left: 4),
-                                child: cubit?.introLogo != null
-                                    ? CircleAvatar(
-                                        backgroundImage: NetworkImage(
-                                            imgurl + cubit!.introLogo!.url!),
-                                        radius: 28,
-                                      )
-                                    : const CircleAvatar(
-                                        backgroundImage:
-                                            AssetImage('assets/logo.png'),
-                                        radius: 28,
-                                      )),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+    // UserCubit.get(context).getUserDetails(id);
+    return BlocConsumer<UserCubit, cons_login_Register_States>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        return cubit!.posts!.isEmpty
+            ? noPostFound(context)
+            : ListView(
+                children: cubit!.posts!.map((e) {
+                  DateTime now = DateTime.parse(e.publishedAt.toString());
+                  String formattedDate = intl.DateFormat('yyyy-MM-dd – kk:mm')
+                      .format(now)
+                      .toString();
+                  return GestureDetector(
+                    onTap: () {
+                      navigateTo(
+                          context,
+                          DetailsPost(
+                              e.content,
+                              formattedDate,
+                              e.imgPost,
+                              imgurl + cubit!.introLogo!.url!,
+                              cubit?.username,
+                              imgurl));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(left: 8.0, right: 8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Text(
-                                  cubit!.username,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: myAmber),
-                                ),
-                                const SizedBox(
-                                  height: 2,
-                                ),
-                                Row(
+                                Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 5, right: 12, left: 4),
+                                    child: cubit?.introLogo != null
+                                        ? CircleAvatar(
+                                            backgroundImage: NetworkImage(
+                                                imgurl +
+                                                    cubit!.introLogo!.url!),
+                                            radius: 28,
+                                          )
+                                        : const CircleAvatar(
+                                            backgroundImage:
+                                                AssetImage('assets/logo.png'),
+                                            radius: 28,
+                                          )),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      formattedDate,
-                                      style:
-                                          const TextStyle(color: Colors.grey),
+                                      cubit!.username,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: myAmber),
                                     ),
                                     const SizedBox(
-                                      width: 5,
+                                      height: 2,
                                     ),
-                                    Icon(
-                                      MdiIcons.earth,
-                                      size: 14,
-                                      color: Colors.grey[700],
-                                    )
+                                    Row(
+                                      children: [
+                                        Text(
+                                          formattedDate,
+                                          style: const TextStyle(
+                                              color: Colors.grey),
+                                        ),
+                                        const SizedBox(
+                                          width: 5,
+                                        ),
+                                        Icon(
+                                          MdiIcons.earth,
+                                          size: 14,
+                                          color: Colors.grey[700],
+                                        )
+                                      ],
+                                    ),
                                   ],
                                 ),
+                                const Spacer(),
                               ],
                             ),
-                            const Spacer(),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          "${e.content}",
-                          style: const TextStyle(
-                            fontSize: 18,
                           ),
-                          textDirection: TextDirection.rtl,
-                        ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              "${e.content}",
+                              style: const TextStyle(
+                                fontSize: 18,
+                              ),
+                              textDirection: TextDirection.rtl,
+                            ),
+                          ),
+                          const Divider(
+                            height: 1,
+                            color: Colors.black,
+                          )
+                        ],
                       ),
-                      const Divider(
-                        height: 1,
-                        color: Colors.black,
-                      )
-                    ],
-                  ),
-                ),
+                    ),
+                  );
+                }).toList(),
+                physics: const BouncingScrollPhysics(),
               );
-            }).toList(),
-            physics: const BouncingScrollPhysics(),
-          );
+      },
+    );
   }
 }

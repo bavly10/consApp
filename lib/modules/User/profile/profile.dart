@@ -27,14 +27,17 @@ class UserProfileScreen extends StatelessWidget {
   String imgurl = base_api;
   @override
   Widget build(BuildContext context) {
+    final model2 = UserCubit.get(context).loginModel?.userClass?.id;
+    UserCubit.get(context).getUserDetails(model2);
     return BlocBuilder<UserCubit, cons_login_Register_States>(
       builder: (context, state) {
         final model = UserCubit.get(context).loginModel;
-        final model2 = UserCubit.get(context).loginModel?.userClass?.id;
+
         final image = UserCubit.get(context).loginModel?.userClass?.introLogo;
 
         final cubit = ConsCubit.get(context);
         ConsCubit.get(context).getMyShared();
+        // UserCubit.get(context).getUserDetails(model2);
         return Scaffold(
           body: SingleChildScrollView(
             child: Column(

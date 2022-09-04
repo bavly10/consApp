@@ -4,7 +4,6 @@ import 'package:flutter_fadein/flutter_fadein.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:helpy_app/modules/User/cubit/cubit.dart';
 
-
 import 'package:helpy_app/modules/customer/cubit/state.dart';
 import 'package:helpy_app/modules/customer/main.dart';
 
@@ -15,7 +14,6 @@ import 'package:helpy_app/shared/componotents.dart';
 import 'package:helpy_app/shared/error_compon.dart';
 import 'package:helpy_app/shared/localization/translate.dart';
 import 'package:helpy_app/shared/my_colors.dart';
-
 
 class LoginUser extends StatefulWidget {
   @override
@@ -96,9 +94,10 @@ class _LoginUserState extends State<LoginUser> {
                             FocusScope.of(context).unfocus();
                             try {
                               await CustomerCubit.get(context)
-                                  .signin(emailController.text, passController.text)
+                                  .signin(
+                                      emailController.text, passController.text)
                                   .then((value) {
-                                navigateTo(context, MainCustomer());
+                                navigateToFinish(context, MainCustomer());
                               });
                             } catch (error) {
                               var errormsg = mytranslate(context, "errorlogin");
