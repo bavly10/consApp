@@ -41,6 +41,9 @@ final navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+
   Bloc.observer = MyBlocObserver();
   await Firebase.initializeApp();
   await CashHelper.init();

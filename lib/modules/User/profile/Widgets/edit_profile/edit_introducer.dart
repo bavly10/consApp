@@ -65,7 +65,7 @@ class EditIntroducer extends StatelessWidget {
         );
       } else if (state is ChangeUserImageSuessState) {
         myToast(message: mytranslate(context, "changproimage"));
-        UserCubit.get(context).getUserDetails(loginmodel!.userClass!.id);
+        UserCubit.get(context).getUserDetails(ConsCubit.get(context).userID);
       } else if (state is LoadingChangeUserImageState) {
         myToast(message: mytranslate(context, "loadimage"));
       } else if (state is ChangeUserImageErrorState) {
