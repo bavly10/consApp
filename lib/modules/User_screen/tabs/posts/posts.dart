@@ -14,6 +14,8 @@ import 'package:helpy_app/shared/network.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
+import '../../../../Cubit/cubit.dart';
+
 class PostsIntro extends StatelessWidget {
   UserStrapi? cubit;
 
