@@ -27,16 +27,14 @@ import 'modules/User/login/screren/register.dart';
 import 'modules/customer/Chat/chats_screen.dart';
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  if (message.data["click_action"] == "FLUTTER_NOTIFICATION_CLICK") {
-    navigateTo(
-      BuildContext,
-      ChatsScreen(),
-    );
-  }
+//  if (message.data["click_action"] == "FLUTTER_NOTIFICATION_CLICK") {
+  navigatorKey.currentState?.pushNamed('ChatScreen');
+
   print('When app in background:${message.data.toString()}');
 }
 
-final navigatorKey = GlobalKey<NavigatorState>();
+//final navigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,8 +51,9 @@ void main() async {
     print(tokenFcm);
   });
 
-  BuildContext dialogContext; //
+  BuildContext? dialogContext; //
   FirebaseMessaging.onMessage.listen((RemoteMessage event) {
+    // navigatorKey.currentState?.pushNamed('ChatScreen');
     print('when open ${event.notification!.body}');
 
     // myToast(message: "${event.notification!.body}");
@@ -70,13 +69,8 @@ void main() async {
 
   FirebaseMessaging.onMessageOpenedApp.listen((event) {
     print('when app open in background:${event.data.toString()}');
-    if (event.data["click_action"] == "FLUTTER_NOTIFICATION_CLICK") {
-      navigateTo(
-        BuildContext,
-        ChatsScreen(),
-      );
-      // navigateTo(context, )
-    }
+    //  if (event.data["click_action"] == "FLUTTER_NOTIFICATION_CLICK") {
+    navigatorKey.currentState?.pushNamed('ChatScreen');
   });
   FirebaseMessaging.onBackgroundMessage((firebaseMessagingBackgroundHandler));
 
@@ -110,6 +104,12 @@ class MyApp extends StatelessWidget {
         builder: (context, state) {
           final cubit = ConsCubit.get(context);
           return MaterialApp(
+            routes: {
+              // When navigating to the "homeScreen" route, build the HomeScreen widget.
+              'ChatScreen': (context) =>
+                  ChatsScreen(), // When navigating to the "secondScreen" route, build the SecondScreen widget.
+            },
+
             navigatorKey: navigatorKey,
             locale: cubit.locale_cubit,
             localizationsDelegates: const [
