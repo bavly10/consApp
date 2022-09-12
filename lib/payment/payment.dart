@@ -67,7 +67,8 @@ class PaymentsTest extends StatelessWidget {
                     ConsCubit.get(context).sendFcm(
                         title: "Surely",
                         body: "New message from customer",
-                        fcmToken: ConsCubit.get(context).userTokenDevice);
+                        fcmToken: ConsCubit.get(context).userTokenDevice,
+                        id: "1");
 
                     navigateToFinish(context, ChatsScreen());
                   } else {
@@ -105,6 +106,7 @@ class PaymentsTest extends StatelessWidget {
     }).then((value) => ConsCubit.get(context).sendFcm(
         title: "Surely",
         body: "New message from customer",
-        fcmToken: ConsCubit.get(context).userTokenDevice));
+        fcmToken: ConsCubit.get(context).userTokenDevice,
+        id: "2"));
   }
 }

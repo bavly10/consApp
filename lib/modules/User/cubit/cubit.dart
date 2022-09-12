@@ -65,7 +65,8 @@ class UserCubit extends Cubit<cons_login_Register_States> {
           tittle: "Surely👌",
           body: mytranslate(context, "win"),
           nameSender: "",
-          context: context);
+          context: context,
+          idNotifi: "2");
       emit(ExceedPoint());
     }
   }

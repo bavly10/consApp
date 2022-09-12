@@ -8,9 +8,11 @@ import 'package:helpy_app/Cubit/my_observer.dart';
 import 'package:helpy_app/Cubit/cubit.dart';
 import 'package:helpy_app/model/user_model.dart';
 import 'package:helpy_app/modules/Chat/cubit.dart';
+import 'package:helpy_app/modules/MainScreen/main_screen.dart';
 import 'package:helpy_app/modules/User/cubit/cubit.dart';
 import 'package:helpy_app/modules/Splash_screen/animation_Splash/main.dart';
 import 'package:helpy_app/Cubit/states.dart';
+import 'package:helpy_app/modules/User/home_screen/user_main.dart';
 import 'package:helpy_app/modules/customer/cubit/cubit.dart';
 import 'package:helpy_app/shared/compononet/custom_notification_dialog.dart';
 import 'package:helpy_app/shared/componotents.dart';
@@ -27,10 +29,15 @@ import 'modules/User/login/screren/register.dart';
 import 'modules/customer/Chat/chats_screen.dart';
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-//  if (message.data["click_action"] == "FLUTTER_NOTIFICATION_CLICK") {
-  navigatorKey.currentState?.pushNamed('ChatScreen');
+  if (message.data["id"] == "1") {
+    print("chatscreen${message.data["id"]}");
+    navigatorKey.currentState?.pushNamed('ChatScreen');
+  } else if (message.data["id"] == "2") {
+    navigatorKey.currentState?.pushNamed('main');
+  }
 
-  print('When app in background:${message.data.toString()}');
+  print('When app in background1:${message.data.toString()}');
+  print('When app in background1:${message.data["id"].toString()}');
 }
 
 //final navigatorKey = GlobalKey<NavigatorState>();
@@ -68,9 +75,14 @@ void main() async {
   });
 
   FirebaseMessaging.onMessageOpenedApp.listen((event) {
+    print('when app open in background:${event.data["id"].toString()}');
     print('when app open in background:${event.data.toString()}');
-    //  if (event.data["click_action"] == "FLUTTER_NOTIFICATION_CLICK") {
-    navigatorKey.currentState?.pushNamed('ChatScreen');
+    if (event.data["id"] == "1") {
+      print("chatscreen${event.data["id"]}");
+      navigatorKey.currentState?.pushNamed('ChatScreen');
+    } else if (event.data["id"] == "2") {
+      navigatorKey.currentState?.pushNamed('main');
+    }
   });
   FirebaseMessaging.onBackgroundMessage((firebaseMessagingBackgroundHandler));
 
@@ -106,8 +118,9 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             routes: {
               // When navigating to the "homeScreen" route, build the HomeScreen widget.
-              'ChatScreen': (context) =>
-                  ChatsScreen(), // When navigating to the "secondScreen" route, build the SecondScreen widget.
+              'ChatScreen': (context) => ChatsScreen(),
+              'main': (context) =>
+                  UserHome() // When navigating to the "secondScreen" route, build the SecondScreen widget.
             },
 
             navigatorKey: navigatorKey,

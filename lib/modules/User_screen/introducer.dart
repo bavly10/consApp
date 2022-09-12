@@ -299,6 +299,7 @@ class Introducer extends StatelessWidget {
                   .getCustomerData(ConsCubit.get(context).customerID)
                   .then((value) async {
                 ConsCubit.get(context).sendAddingNotification(
+                    idNotifi: "1",
                     name: 'users',
                     id: id,
                     tittle: "Surely",

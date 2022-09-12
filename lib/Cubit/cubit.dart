@@ -301,6 +301,7 @@ class ConsCubit extends Cubit<cons_States> {
     required String body,
     String? nameSender,
     String? fcmToken,
+    String? id,
   }) async {
     var response = await http.post(Uri.parse(fcmUrl),
         body: jsonEncode({
@@ -312,6 +313,7 @@ class ConsCubit extends Cubit<cons_States> {
             "sound": "default"
           },
           "data": {
+            "id": id,
             "click_action": "FLUTTER_NOTIFICATION_CLICK",
             "sound": "default",
           },
@@ -330,7 +332,8 @@ class ConsCubit extends Cubit<cons_States> {
     }
   }
 
-  void sendAddingNotification({name, id, tittle, body, context, nameSender}) {
+  void sendAddingNotification(
+      {name, id, tittle, body, context, nameSender, idNotifi}) {
     FirebaseFirestore.instance
         .collection(name)
         .doc(id.toString())
@@ -339,6 +342,7 @@ class ConsCubit extends Cubit<cons_States> {
         .get()
         .then((value) {
       ConsCubit.get(context).sendFcm(
+          id: idNotifi,
           title: tittle,
           body: body,
           nameSender: nameSender ?? "",
