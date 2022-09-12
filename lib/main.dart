@@ -13,6 +13,7 @@ import 'package:helpy_app/modules/User/cubit/cubit.dart';
 import 'package:helpy_app/modules/Splash_screen/animation_Splash/main.dart';
 import 'package:helpy_app/Cubit/states.dart';
 import 'package:helpy_app/modules/User/home_screen/user_main.dart';
+import 'package:helpy_app/modules/User/main.dart';
 import 'package:helpy_app/modules/customer/cubit/cubit.dart';
 import 'package:helpy_app/shared/compononet/custom_notification_dialog.dart';
 import 'package:helpy_app/shared/componotents.dart';
@@ -120,7 +121,7 @@ class MyApp extends StatelessWidget {
               // When navigating to the "homeScreen" route, build the HomeScreen widget.
               'ChatScreen': (context) => ChatsScreen(),
               'main': (context) =>
-                  UserHome() // When navigating to the "secondScreen" route, build the SecondScreen widget.
+                  UserMain() // When navigating to the "secondScreen" route, build the SecondScreen widget.
             },
 
             navigatorKey: navigatorKey,
