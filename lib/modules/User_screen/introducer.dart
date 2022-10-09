@@ -298,25 +298,26 @@ class Introducer extends StatelessWidget {
               CustomerCubit.get(context)
                   .getCustomerData(ConsCubit.get(context).customerID)
                   .then((value) async {
-                ConsCubit.get(context).sendAddingNotification(
-                    idNotifi: "1",
-                    name: 'users',
-                    id: id,
-                    tittle: "Surely",
-                    body: mytranslate(context, "adding"),
-                    nameSender: model?.username ?? "",
-                    context: context);
-                print(cubit.username);
-                UserCubit.get(context).changePoint(cubit.points, id, context);
+                // ConsCubit.get(context).sendAddingNotification(
+                //     idNotifi: "1",
+                //     name: 'users',
+                //     id: id,
+                //     tittle: "Surely",
+                //     body: mytranslate(context, "adding"),
+                //     nameSender: model?.username ?? "",
+                //     context: context);
+                // print(cubit.username);
+                // UserCubit.get(context).changePoint(cubit.points, id, context);
 
                 if (model?.walletPoint == null) {
-                  addchat(context, cubit.id.toString(), cubit.username);
-                  // await ConsCubitIntro.get(context).getPay(
-                  //     user: cubit.username,
-                  //     name: model!.username,
-                  //     email: model.email,
-                  //     phone: model.phone,
-                  //     amount: cubit.introPrice);
+                  await ConsCubitIntro.get(context).getPay(
+                      user: cubit.username,
+                      name: model!.username,
+                      email: model.email,
+                      phone: model.phone,
+                      amount: cubit.introPrice);
+                  // .then((value) => addchat(
+                  //     context, cubit.id.toString(), cubit.username));
                 } else {
                   My_CustomAlertDialog(
                     pressTitle: mytranslate(context, "done"),

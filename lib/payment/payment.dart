@@ -14,6 +14,9 @@ import 'package:helpy_app/modules/customer/Chat/chats_screen.dart';
 import 'package:helpy_app/payment/pay_errors/pay_errors.dart';
 import 'package:helpy_app/shared/componotents.dart';
 
+import '../modules/customer/cubit/cubit.dart';
+import '../shared/localization/translate.dart';
+
 class PaymentsTest extends StatelessWidget {
   final String url;
 
@@ -62,13 +65,25 @@ class PaymentsTest extends StatelessWidget {
                           .toString()
                           .contains("Transaction successful") ||
                       value.toString().contains("معاملة ناجحة")) {
+                    var model = CustomerCubit.get(context).model;
                     addchat(context, cubit.id.toString(), cubit.username);
+                    ConsCubit.get(context).sendAddingNotification(
+                        idNotifi: "1",
+                        name: 'users',
+                        id: id,
+                        tittle: "Surely",
+                        body: mytranslate(context, "adding"),
+                        nameSender: model?.username ?? "",
+                        context: context);
+                    print(cubit.username);
+                    UserCubit.get(context)
+                        .changePoint(cubit.points, id, context);
 
-                    ConsCubit.get(context).sendFcm(
-                        title: "Surely",
-                        body: "New message from customer",
-                        fcmToken: ConsCubit.get(context).userTokenDevice,
-                        id: "1");
+                    // ConsCubit.get(context).sendFcm(
+                    //     title: "Surely",
+                    //     body: "New message from customer",
+                    //     fcmToken: ConsCubit.get(context).userTokenDevice,
+                    //     id: "1");
 
                     navigateToFinish(context, ChatsScreen());
                   } else {
